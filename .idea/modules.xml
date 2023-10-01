@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../NodeJs/sharedspacefinder-back-end/.idea/sharedspacefinder-back-end.iml" filepath="$PROJECT_DIR$/../../NodeJs/sharedspacefinder-back-end/.idea/sharedspacefinder-back-end.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/sharedspacefinder-front-end.iml" filepath="$PROJECT_DIR$/.idea/sharedspacefinder-front-end.iml" />
     </modules>
   </component>
