@@ -19,7 +19,7 @@ const Footer = () => {
                     <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                         <div>
                             <h2 className="mb-6 text-sm font-bold text-white uppercase">Quick Links</h2>
-                            <ul className="text-gray-50 font-semibold">
+                            <ul className="text-gray-50 text-xs font-semibold">
                                 <li className="mb-4">
                                     <Link to="/" className="hover:underline">Trang Chủ</Link>
                                 </li>
@@ -37,7 +37,7 @@ const Footer = () => {
                         </div>
                         <div>
                             <h2 className="mb-6 text-sm font-bold text-white uppercase">Follow us</h2>
-                            <ul className="text-gray-50 font-semibold">
+                            <ul className="text-gray-50  text-xs font-semibold">
                                 <li className="mb-4">
                                     <Link to="/" className="hover:underline ">Facebook</Link>
                                 </li>
