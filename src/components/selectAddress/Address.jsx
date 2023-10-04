@@ -1,0 +1,66 @@
+import SelectAddress from "./SelectAddress";
+import React, {useEffect, useState} from "react";
+import {getDistrict, getProvinces, getWard} from "../../services/address";
+
+const Address = ( {setAddress}) => {
+
+    const [provinces, setProvinces] = useState([])
+    const [districts, setDistricts] = useState([])
+    const [wards, setWards] = useState([])
+
+    const [provinceId, setProvinceId] = useState("")
+    const [districtId, setDistrictId] = useState("")
+    const [wardId, setWardId] = useState("")
+
+    useEffect(() => {
+        const fetchProvince = async () => {
+            const provincesResponse = await getProvinces();
+            if(provincesResponse.status === 200)
+                setProvinces(provincesResponse?.data?.results)
+        }
+        fetchProvince()
+    }, [])
+
+
+    useEffect(() => {
+
+        const fetchDistricts = async () => {
+
+            const districtResponse = await getDistrict(provinceId);
+            if(districtResponse.status === 200)
+                setDistricts(districtResponse?.data?.results)
+        }
+        provinceId && fetchDistricts()
+
+
+    }, [provinceId])
+
+    useEffect(() => {
+
+        const fetchWards = async () => {
+            const wardResponse = await getWard(districtId);
+            if(wardResponse.status === 200)
+                setWards(wardResponse?.data?.results)
+        }
+        districtId && fetchWards()
+
+
+    }, [districtId])
+
+    useEffect(() => {
+        const fullAddress = `${wardId ? `${wards.find((item) => item.ward_id === wardId)?.ward_name},` : ''} ${districtId ? `${districts.find((item) => item.district_id === districtId)?.district_name},` : ''} ${provinceId ? `${provinces.find((item) => item.province_id === provinceId)?.province_name}` : ''}`
+        setAddress(fullAddress)
+    }, [provinceId , districtId, wardId]);
+
+
+    return (
+       <>
+           <SelectAddress type="province" value={provinceId} setValue={setProvinceId} label="Tỉnh / Thành Phố" options={provinces}/>
+           <SelectAddress type="district" value={districtId} setValue={setDistrictId} label="Quận / Huyện" options={districts} />
+           <SelectAddress type="ward" value={wardId} setValue={setWardId} label="Phường / Xã" options={wards} />
+       </>
+    )
+}
+
+
+export  default Address
