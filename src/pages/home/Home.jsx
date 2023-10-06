@@ -9,7 +9,7 @@ const Home = () => {
 
     return (
         <div className="">
-            <div className="max-w-[1200px] mx-auto mt-4 sm:w-[1400px] w-auto">
+            <div className="max-w-[1200px] mx-auto px-10 mt-4 text-center">
                 <img className="w-full h-[300px] object-cover"
                      src="https://png.pngtree.com/background/20230527/original/pngtree-modern-highquality-exterior-render-of-a-modern-house-with-glass-windows-picture-image_2766516.jpg"
                      alt="introduce"/>

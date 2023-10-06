@@ -55,31 +55,31 @@ const Space = () => {
                             </div>
 
                             <div className="grid grid-cols-2 gap-2 text-[#d4d4d4] text-sm">
-                                <div className="">
+                                <div className="text-left ">
                                     <FontAwesomeIcon className="-rotate-45" icon={faArrowsLeftRight}
                                                      style={{color: "#c2c2c2",}}/>
                                     <span className="ml-3">120 m^2</span>
                                 </div>
-                                <div className="">
+                                <div className="text-right ">
                                     <FontAwesomeIcon icon={faBed}/>
                                     <span className="ml-3">02 Bedrooms</span>
                                 </div>
-                                <div className="">
+                                <div className="text-left ">
                                     <FontAwesomeIcon icon={faUserGroup}/>
                                     <span className="ml-3">04 Guess</span>
                                 </div>
-                                <div className="">
+                                <div className="text-right ">
                                     <FontAwesomeIcon icon={faBath}/>
                                     <span className="ml-3">01 Bathroom</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex items-center justify-between text-[#d4d4d4] bg-[#fafafa] rounded-b-xl px-3 py-1">
+                        <div className="flex items-center justify-between text-textBoldColor bg-[#fafafa] rounded-b-xl px-3 py-1">
                             <div>
-                                <FontAwesomeIcon icon={faMapLocationDot}/>
-                                <span className="mx-3">18 Tô Hiệu, Liên Chiểu, Đà Nẵng</span>
+                                <FontAwesomeIcon icon={faMapLocationDot} />
+                                <span className="mx-3 ">18 Tô Hiệu, Liên Chiểu, Đà Nẵng</span>
                             </div>
-                            <FontAwesomeIcon className="text-textBoldColor" icon={faEllipsisVertical}/>
+                            <FontAwesomeIcon  icon={faEllipsisVertical}/>
                         </div>
                     </div>
                 </div>

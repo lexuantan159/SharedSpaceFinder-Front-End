@@ -2,7 +2,7 @@ import SelectAddress from "./SelectAddress";
 import React, {useEffect, useState} from "react";
 import {getDistrict, getProvinces, getWard} from "../../services/address";
 
-const Address = ( {setAddress}) => {
+const Address = ( {setAddress , hiddenTitle = false}) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -55,9 +55,9 @@ const Address = ( {setAddress}) => {
 
     return (
        <>
-           <SelectAddress type="province" value={provinceId} setValue={setProvinceId} label="Tỉnh / Thành Phố" options={provinces}/>
-           <SelectAddress type="district" value={districtId} setValue={setDistrictId} label="Quận / Huyện" options={districts} />
-           <SelectAddress type="ward" value={wardId} setValue={setWardId} label="Phường / Xã" options={wards} />
+           <SelectAddress hiddenTitle={hiddenTitle} type="province" value={provinceId} setValue={setProvinceId} label="Tỉnh / Thành Phố" options={provinces}/>
+           <SelectAddress hiddenTitle={hiddenTitle} type="district" value={districtId} setValue={setDistrictId} label="Quận / Huyện" options={districts} />
+           <SelectAddress hiddenTitle={hiddenTitle} type="ward" value={wardId} setValue={setWardId} label="Phường / Xã" options={wards} />
        </>
     )
 }
