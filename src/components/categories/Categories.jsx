@@ -99,7 +99,7 @@ const Categories = () => {
             </div>
             <div className="container mx-auto my-2 text-center">
                 <Link to="/"
-                      className="inline-block px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold hover:shadow-primaryColor hover:shadow ">View
+                      className="inline-block px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow ">View
                     All</Link>
             </div>
         </>
