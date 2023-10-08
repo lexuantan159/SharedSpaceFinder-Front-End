@@ -20,18 +20,14 @@ const Home = () => {
 
             <Categories/>
             {/*    */}
-            <TitlePart title="Không Gian Nổi Trội" subTitle="Lựa Chọn Nhanh Chóng"
-                       subDesc="Khám phá đa dạng vô tận: Danh mục định hình thế giới"/>
 
-            <SlideShow typeSlide='space'/>
+
+            <SlideShow typeSlide='space' titlePart="Không Gian Nổi Trội"/>
 
             {/*feedback*/}
-            <div className="py-12 bg-[#F7F8F9]">
-                <TitlePart title="Phản Hồi Của Khách Hàng" subTitle="Lựa Chọn Nhanh Chóng"
-                           subDesc="Khám phá đa dạng vô tận: Danh mục định hình thế giới"/>
 
-                <SlideShow typeSlide='feedback'/>
-            </div>
+            <SlideShow typeSlide='feedback' titlePart="Phản Hồi Của Khách Hàng" background={true}/>
+
 
         </div>
     )
