@@ -1,0 +1,21 @@
+/* @import "../../../../node_modules/antd/dist/reset.css"; */
+
+.table-owner {
+    text-align: center;
+  }
+  .table-owner-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: white;
+  }
+  
+  .ant-table-cell {
+      width: 300px;
+  }
+
+  .name-input {
+    margin-top: 20px
+  }
