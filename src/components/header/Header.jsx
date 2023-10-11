@@ -12,17 +12,17 @@ const Header = () => {
 
     return (
         <header className="shadow">
-            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6 py-2.5">
+            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6">
                 <div className="w-full flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                    <Link to="/" className="flex items-center">
-                        {/*<img*/}
-                        {/*    src="https://flowbite.com/docs/images/logo.svg"*/}
-                        {/*    className="mr-3 h-6 sm:h-9"*/}
-                        {/*    alt="Flowbite Logo"*/}
-                        {/*/>*/}
-                        <span className="text-primaryColor self-center text-xl font-semibold whitespace-nowrap ">
-                             SharedSpaceFinder
-                        </span>
+                    <Link to="/" className="flex items-center h-[80px] w-[200px] overflow-hidden">
+                        <img
+                            src={require('../../../src/assets/images/logoTransparent.png')}
+                            className=""
+                            alt="SharedSpaceFinder Logo"
+                        />
+                        {/*<span className="text-primaryColor self-center text-xl font-semibold whitespace-nowrap ">*/}
+                        {/*     SharedSpaceFinder*/}
+                        {/*</span>*/}
                     </Link>
                     <div className="flex items-center lg:order-2">
                         {/*not login*/}
@@ -49,23 +49,23 @@ const Header = () => {
 
                             {/*<!-- Dropdown menu -->*/}
                             <div id="dropdown"
-                                 className={`${isDropdown ? 'hidden' : 'block'} absolute top-18 left-0 right-0 z-10 bg-white divide-gray-100 rounded-lg shadow `}>
+                                 className={`${isDropdown ? 'hidden' : 'block'} absolute top-18 left-0 -right-5 z-10 bg-white divide-gray-100 rounded-lg shadow `}>
                                 <ul className="py-2 px-2 text-sm text-gray-700 font-semibold"
                                     aria-labelledby="dropdownDefaultButton">
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faUser}/>
                                         <Link to="/"
-                                              className="block pr-4 py-2">Profile</Link>
+                                              className="block pr-4 py-2">Thông Tin Cá Nhân</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faHeart}/>
                                         <Link to="/"
-                                              className="block pr-4 py-2">Favorite Spaces</Link>
+                                              className="block pr-4 py-2">Không Gian Yêu Thích</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faShare}/>
                                         <Link to="/"
-                                              className="block pr-4 py-2">Sharing</Link>
+                                              className="block pr-4 py-2">Chia Sẻ Không Gian</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
@@ -76,8 +76,7 @@ const Header = () => {
                                         <FontAwesomeIcon className="mx-3" icon={faArrowRightFromBracket}
                                                          rotation={180}/>
                                         <Link to="/"
-                                              className="block pr-4 py-2">Sign
-                                            out</Link>
+                                              className="block pr-4 py-2">Đăng Xuất</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -85,13 +84,13 @@ const Header = () => {
                             to="/login"
                             className="text-gray-800 hover:bg-gray-300 transition-all hover:text-primaryColor font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 "
                         >
-                            LogIn
+                            Đăng Nhập
                         </Link>
                             <Link
                                 to="/register"
-                                className="text-white bg-primaryColor transition-all font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hover:opacity-90"
+                                className="text-white bg-primaryColor transition-all font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hover:bg-primaryColor/90"
                             >
-                                SignUp
+                                Đăng Ký
                             </Link></>}
 
 

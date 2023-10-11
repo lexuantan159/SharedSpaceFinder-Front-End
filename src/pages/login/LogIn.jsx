@@ -13,7 +13,11 @@ const LogIn = () => {
         <div className="mx-auto grid grid-cols-12">
             <div className="h-screen col-span-12 md:col-span-5 lg:col-span-4 ">
                 <form action="" className="pb-12 w-[90%] mx-auto pl-5 pr-10">
-                    <h1 className="pt-12 pb-20 text-4xl text-primaryColor font-bold">LogIn To Shared Space Finder</h1>
+                    <h1 className="pt-12 text-4xl text-primaryColor font-bold text-center">Đăng Nhập</h1>
+                    <div className="w-full h-[200px] mb-9 overflow-hidden">
+                        <img className="w-full h-full object-cover"
+                             src={require('../../assets/images/logoTransparent.png')} alt=""/><
+                        /div>
                     <div className="w-full mb-4">
                         <label className="block text-[18px] font-bold text-textBoldColor mb-2"
                                htmlFor="inputEmail">Email</label>
@@ -26,7 +30,7 @@ const LogIn = () => {
                     </div>
                     <div className="relative w-full mb-4">
                         <label className="block text-[18px] font-bold text-textBoldColor mb-2"
-                               htmlFor="inputPassword">Password</label>
+                               htmlFor="inputPassword">Mật Khẩu</label>
                         <div className="w-full">
                             <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none"
                                    id="inputPassword"
@@ -45,18 +49,22 @@ const LogIn = () => {
                             }
                         </div>
                     </div>
-                    <div className="flex items-center justify-end">
-                        <input type="checkbox" className=" mr-1 mt-1 hover:cursor-pointer"/>
-                        <span className=" text-primaryColor">save password</span>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <input type="checkbox" className="h-full mr-1 mt-1 pt-1 hover:cursor-pointer"/>
+                            <span className=" text-primaryColor">lưu mật khẩu</span>
+                        </div>
+                        <Link to="/" className=" text-primaryColor">Quên mật khẩu!</Link>
                     </div>
                     <div className=" mt-5">
                         <button
-                            className=" w-full px-4 py-3 text-xl font-bold text-white bg-primaryColor rounded-2xl shadow-primaryColor hover:shadow-lg hover:opacity-90">LogIn
+                            className=" w-full px-4 py-3 text-xl font-bold text-white bg-primaryColor rounded-2xl shadow-primaryColor hover:shadow-lg hover:opacity-90">Đăng
+                            Nhập
                         </button>
                     </div>
                     <div className=" mt-5 text-center">
-                        <p className="">Have no account! <Link to="/register"
-                                                               className=" text-primaryColor">SignUp</Link></p>
+                        <p className="">Chưa Có Tài Khoản! <Link to="/register"
+                                                                 className=" text-primaryColor">Đăng Ký</Link></p>
                     </div>
                 </form>
             </div>
