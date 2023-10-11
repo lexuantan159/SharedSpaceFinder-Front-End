@@ -35,7 +35,7 @@ const Space = () => {
                     </div>
                     <div className="rounded-b-xl border-gray-400 border-[1px]">
                         <div className="px-3 py-3 ">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
+                            <p className="text-sm font-semibold text-primaryColor ">Phòng Trọ</p>
                             <h4 className="text-xm font-bold text-textBoldColor ">Tên Owner</h4>
                             <div className="flex justify-between items-center mb-2">
                                 <p className="text-xm font-bold text-textBoldColor">1.450.000 <span

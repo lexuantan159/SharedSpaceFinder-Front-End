@@ -1,15 +1,18 @@
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowsLeftRight, faBath, faBed, faStar, faUserGroup} from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowsLeftRight,
+    faBath,
+    faBed,
+    faStar,
+    faUserGroup,
+} from "@fortawesome/free-solid-svg-icons";
 import Map from "../../components/map/Map";
 import {Link} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
-import TitlePart from "../../components/titlePart/TitlePart";
 import SlideImages from "../../components/slideImages/SlideImages";
 
 const SpaceDetail = () => {
-
-
 
     return (
         <>
@@ -108,9 +111,11 @@ const SpaceDetail = () => {
                                 <p className="text-primaryColor font-semibold">40.000đ</p>
                             </div>
                             <div className="mx-5 text-center mt-5">
-                                <Link to="/"
-                                      className="block px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow ">Thuê
-                                    Ngay</Link>
+                                <Link to="/booking"
+                                    className="block w-full px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow "
+
+                                >Thuê Ngay
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -150,6 +155,8 @@ const SpaceDetail = () => {
             {/*slide show*/}
 
             <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
+
+
 
         </>
     )

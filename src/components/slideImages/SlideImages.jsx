@@ -93,8 +93,8 @@ const SlideImages = () => {
                 {
                     images.map((image) => {
                         return (
-                            <div className="pr-5">
-                                <img onMouseOver={() => setThisImage(image)} key={image.imgId}
+                            <div key={image.imgId} className="pr-5">
+                                <img onMouseOver={() => setThisImage(image)}
                                      className="w-full h-[100px] object-cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
                                      src={image.imgUrl} alt={image.imaName}/>
                             </div>
