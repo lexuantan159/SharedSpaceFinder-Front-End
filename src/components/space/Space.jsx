@@ -11,7 +11,17 @@ import {
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Space = () => {
+const Space = ({typeSpace}) => {
+
+    const cutOverLetter = (string, limit) => {
+        const dots = "...";
+        if (string.length > limit) {
+            // you can also use substr instead of substring
+            string = string.substring(0, limit) + dots;
+        }
+        return string;
+    }
+
     return (
         <div className="py-4">
             <Link to="/">
@@ -20,8 +30,12 @@ const Space = () => {
                     <div className="h-[300px] w-full relative">
                         <img className="w-full h-full object-cover rounded-t-xl"
                              src="https://afamilycdn.com/thumb_w/710/2017/photo-2-1507000784259.jpg" alt="anh phong"/>
-                        <p className="absolute top-3 left-3 uppercase bg-primaryColor rounded text-white text-xs font-semibold px-4 py-[1px]">Top
-                            rate</p>
+                        {typeSpace.toLowerCase() === 'top rate' &&
+                            <p className="absolute top-3 left-3 uppercase bg-primaryColor rounded text-white text-xs font-semibold px-4 py-[1px]">Top
+                                rate</p>}
+                        {typeSpace.toLowerCase() === 'sharing' &&
+                            <p className="absolute top-3 right-3 uppercase bg-primaryColor rounded text-white text-xs font-semibold px-2 py-[1px] tracking-[.30em]">Sharing</p>}
+
                         <div className=" absolute bottom-3 left-3 right-3 flex justify-between text-white">
                             <div className="font-bold">
                                 <FontAwesomeIcon className="pr-3" icon={faLayerGroup}/>
@@ -74,12 +88,13 @@ const Space = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex items-center justify-between text-textBoldColor bg-[#fafafa] rounded-b-xl px-3 py-1">
-                            <div>
-                                <FontAwesomeIcon icon={faMapLocationDot} />
-                                <span className="mx-3 ">18 Tô Hiệu, Liên Chiểu, Đà Nẵng</span>
+                        <div
+                            className="flex items-center justify-between text-textBoldColor bg-[#fafafa] rounded-b-xl px-3 py-1">
+                            <div className="">
+                                <FontAwesomeIcon className="inline" icon={faMapLocationDot}/>
+                                <span className="mx-5"> {cutOverLetter("18 Tô Hiệu, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng" , 30)}</span>
                             </div>
-                            <FontAwesomeIcon  icon={faEllipsisVertical}/>
+                            <FontAwesomeIcon icon={faEllipsisVertical}/>
                         </div>
                     </div>
                 </div>

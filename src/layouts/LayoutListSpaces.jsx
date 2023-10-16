@@ -1,11 +1,12 @@
-import Space from "../components/space/Space";
 import React from "react";
+import Space from "../components/space/Space";
 import SidebarFilter from "../components/sidebarFilter/SidebarFilter";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
+import Pagination from "../components/pagination/Pagination";
 
 
-const LayoutListSpaces = () => {
+const LayoutListSpaces = ( {type='none'}) => {
     return (
         <div className="max-w-[1200px] mx-auto grid grid-cols-12 gap-5 mt-[200px] md:mt-[200px] lg:mt-[100px]  px-10">
             {/*    sidebar*/}
@@ -22,39 +23,20 @@ const LayoutListSpaces = () => {
                     </select>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2">
-                    <Space/>
-                    <Space/>
-                    <Space/>
-                    <Space/>
-                </div>
-            </div>'
-            {/*pagination*/}
-            <div className="col-span-12 flex justify-between mb-9">
-                <button className="px-3 py-1 border-[0.5px] group border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">
-                    <FontAwesomeIcon  className="text-gray-400 transition-all group-hover:text-white" icon={faAngleLeft} />
-                </button>
-                <ul className="hidden md:flex ">
-                    <li className="mx-2">
-                        <button className="px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">1</button>
-                    </li>
-                    <li className="mx-2">
-                        <button className="px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">2</button>
-                    </li>
-                    <li className="mx-2">
-                        <button className="px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">3</button>
-                    </li>
-                    <li className="mx-2">
-                        <button className="px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">4</button>
-                    </li>
-                    <li className="mx-2">
-                        <button className="px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">5</button>
-                    </li>
 
-                </ul>
-                <button className="px-3 py-1 border-[0.5px] group border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg">
-                    <FontAwesomeIcon className="text-gray-400 transition-all group-hover:text-white" icon={faAngleRight} />
-                </button>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+                    <Space typeSpace={type}/>
+
+                </div>
             </div>
+            {/*pagination*/}
+            <Pagination/>
         </div>
     )
 }

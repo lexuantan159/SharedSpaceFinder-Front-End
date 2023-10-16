@@ -22,7 +22,7 @@ const Home = () => {
             {/*    */}
 
 
-            <SlideShow typeSlide='space' titlePart="Không Gian Nổi Trội"/>
+            <SlideShow typeSlide='space' typeSpace="Top Rate" titlePart="Không Gian Nổi Trội"/>
 
             {/*feedback*/}
 

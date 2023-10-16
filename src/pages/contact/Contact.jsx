@@ -46,7 +46,7 @@ const Contact = () => {
             {/*Info And Map*/}
             <div className="w-full h-[500px] mt-80 relative">
                 <Map></Map>
-                <div className="max-w-[1200px] mx-auto bg-white absolute -top-[55%] md:-top-[25%] lg:-top-[15%] left-[5%] right-[5%] grid grid-cols-12 gap-5 p-5 rounded shadow-lg">
+                <div className="max-w-[1200px] mx-auto bg-white absolute -top-[55%] md:-top-[25%] lg:-top-[15%] left-[5%] right-[5%] grid grid-cols-12 gap-5 p-5 rounded shadow-[0_0_10px_gray]">
                     <div className="col-span-12 md:col-span-6 lg:col-span-3 flex flex-col justify-center items-center">
                         <FontAwesomeIcon className="text-5xl text-primaryColor mb-3" icon={faPhone} />
                         <p className="text-xm text-gray-400 mb-2">Số Điện Thoại</p>

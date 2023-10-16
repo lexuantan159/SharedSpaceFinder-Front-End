@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import React from "react";
+import MultiRangeSlider from "../rangeSlider/MultipleRangeSlider";
 
 
 const SidebarFilter = () => {
@@ -35,30 +36,11 @@ const SidebarFilter = () => {
                         </div>
                     </div>
                 </div>
-                <div className="pb-4">
+                <div className="pb-4 h-[120px]">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Giá: </p>
-                    <div className="grid grid-cols-2 gap-3 pl-4 ">
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">0 - 2.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">2.5tr - 4.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">4.5tr - 6.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">6.5tr - 8.5tr</label>
-                        </div>
-                    </div>
+
+                    <MultiRangeSlider min={100000} max={12000000} />
+
                 </div>
             </div>
             {/* Top Rate   */}

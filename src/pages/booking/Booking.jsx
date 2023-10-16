@@ -10,10 +10,12 @@ import {
 import Map from "../../components/map/Map";
 import {Link} from "react-router-dom";
 import React from "react";
+import TitlePart from "../../components/titlePart/TitlePart";
 
 const Booking = () => {
     return (
         <>
+
             <div className="w-full h-[300px] relative">
                 <img className="w-full h-full object-cover"
                      src="https://khoinguonsangtao.vn/wp-content/uploads/2022/08/anh-thien-nhien-dep-nhat-the-gioi-chat-luong-cao.jpg"
@@ -23,6 +25,11 @@ const Booking = () => {
                     <p className="text-xm font-medium text-white">Trang Chủ > Booking</p>
                 </div>
             </div>
+
+            {/*title part*/}
+            <TitlePart title="Thanh Toán Ngay" subTitle="Dễ dàng, An toàn, Nhanh chóng" subDesc="Thanh toán - Kết nối giữa bạn và thế giới. Tiện lợi, đáng tin cậy, và luôn theo kịp cuộc sống hiện đại của bạn."/>
+
+
             <div className="max-w-[1200px] mx-auto px-10 my-10  grid grid-cols-12 gap-5">
                 {/*GG Map*/}
                 <div className="col-span-12 h-[200px] lg:h-full lg:col-span-4 w-full ">
@@ -151,6 +158,12 @@ const Booking = () => {
                                     <p className="text-primaryColor font-semibold">Total</p>
                                     <p className="text-primaryColor font-semibold">1.700.000 VNĐ</p>
                                 </div>
+
+                                <select name="" id="" className="block w-full pl-4 pr-10 py-3 mt-5 shadow rounded-xl outline-none border-[0.5px] border-gray-400">
+                                    <option value="">Phương Thức Thanh Toán</option>
+                                    <option value="">Paypal</option>
+                                    <option value="">Zalo Pay</option>
+                                </select>
                             </div>
 
                             <div
