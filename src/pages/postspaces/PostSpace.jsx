@@ -1,14 +1,15 @@
 import React from "react";
 import SidebarManage from "../../components/sidebarmanage/SidebarManage";
-import Header from "../../components/header/Header";
+
 import Footer from "../../components/footer/Footer";
 import PostSpaceHome from "./PostSpaceHome";
+import HeaderManage from "../../components/header/HeaderManage";
 
 const PostSpace = () => {
   return (
     <div>
       <div className="w-full h-screen flex flex-col">
-        <Header />
+        <HeaderManage />
         <div className="flex w-full flex-auto">
           <SidebarManage />
           <div className="flex-auto p-4">
