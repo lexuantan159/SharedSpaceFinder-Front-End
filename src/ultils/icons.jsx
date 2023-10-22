@@ -4,4 +4,4 @@ import { HiOutlineUsers ,HiOutlineChatAlt,HiOutlineHeart,HiOutlineBookmark,HiOut
 const icons ={
     HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineBookmark,HiOutlineClipboardList,HiOutlinePencilAlt
 }
-export default icons
+export default icons;
