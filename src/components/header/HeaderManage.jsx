@@ -8,16 +8,17 @@ const nav = [
   { name: "Chia Sẻ", path: "/sharing" },
 ];
 
-const notActive ="hover:bg-[#fd7e14] px-8 h-full flex items-center bg-primaryColor";
+const notActive =
+  "hover:bg-[#fd7e14] px-8 h-full flex items-center bg-primaryColor";
 const active = "hover:bg-[#fd7e14] px-8 h-full flex items-center  bg-[#fd7e14]";
 const HeaderManage = () => {
   return (
     <div className="w-full flex">
       <div className="flex justify-center items-center font-bold bg-primaryColor text-white w-[256px] flex-none">
-      SharedSpaceFinder
+        SharedSpaceFinder
       </div>
       <div className="flex-auto">
-        <div className="w-screen flex h-[40px] bg-primaryColor text-white">
+        <div className="w-screen flex h-[60px] bg-primaryColor text-white">
           <div className="w-1100 flex h-full text-sm font-medium">
             {nav?.length > 0 &&
               nav.map((item, index) => {
