@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { router } from './routes/index';
+import { router, routerAdmin } from './routes/index';
 import { Layout } from './layouts/index'
+import LayoutAdmin  from './layouts/LayoutAdmin';
 
 function App() {
   return (
@@ -8,6 +9,13 @@ function App() {
         <Routes>
             <Route element={<Layout hideHeaderPaths={['/login' , '/register','/profile', '/postspaces', '/managepost','/messenge', '/favoritespace']} />}>
                 {router.map((route, index) => {
+                    return <Route key={index} path={route.path} element={
+                            <route.component />
+                    }></Route>;
+                })}
+            </Route>
+            <Route element={<LayoutAdmin hideHeaderPaths={['/admin/']}/>}>
+              {routerAdmin.map((route, index) => {
                     return <Route key={index} path={route.path} element={
                             <route.component />
                     }></Route>;
