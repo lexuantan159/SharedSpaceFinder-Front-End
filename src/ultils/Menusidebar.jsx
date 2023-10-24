@@ -9,22 +9,22 @@ export const sidebarMenu = [
         icons: <HiOutlineUsers size={23}/>
     },
     {
-        path: '/postspaces',
+        path: '/post-spaces',
         text: 'Đăng Tin Cho Thuê',
         icons: <HiOutlinePencilAlt size={23}/>
     },
     {
-        path: '/managepost',
+        path: '/manage-post',
         text: 'Quản Lý Tin Đăng',
         icons: <HiOutlineClipboardList size={23}/>
     },
     {
-        path: '/favoritespace',
+        path: '/favorite-space',
         text: 'Yêu thích',
         icons: <HiOutlineHeart size={23} />
     },
     {
-        path: '/messenge',
+        path: '/messenger',
         text: 'Messenge',
         icons: <HiOutlineChatAlt size={23}/>
     },

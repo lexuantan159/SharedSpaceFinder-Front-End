@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Map, Marker} from 'react-map-gl';
+import  Map, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLocationDot} from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,6 @@ const MapBox = ({address = ""}) => {
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((pos) => {
-            console.log(pos)
             setViewPort({
                 latitude: pos.coords.latitude,
                 longitude: pos.coords.longitude,
@@ -23,11 +22,9 @@ const MapBox = ({address = ""}) => {
     }, [])
 
 
-
     return (
-
-        <div className="overflow-hidden">
-            <Map
+        <div className="">
+             <Map
                 mapLib={import('mapbox-gl')}
                 initialViewState={viewPort}
                 style={{width: "100%", height: 500}}

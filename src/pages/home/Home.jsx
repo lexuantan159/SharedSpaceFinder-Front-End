@@ -24,6 +24,10 @@ const Home = () => {
 
             <SlideShow typeSlide='space' typeSpace="Top Rate" titlePart="Không Gian Nổi Trội"/>
 
+            {/**/}
+            {/*<div className="h-[300px] w-full mb-100 bg-cover bg-fixed bg-center bg-[url('https://e.khoahoc.tv/photos/image/2016/02/25/thien-nhien-650.jpg')]" >*/}
+            {/*    /!*<img className="w-full h-full " src="" alt="" />*!/*/}
+            {/*</div>*/}
             {/*feedback*/}
 
             <SlideShow typeSlide='feedback' titlePart="Phản Hồi Của Khách Hàng" background={true}/>

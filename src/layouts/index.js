@@ -1,2 +1,3 @@
 export {default as Layout} from './Layout'
-export {default as LayoutHome} from './LayoutHome'
+export {default as LayoutAdmin} from './LayoutAdmin'
+export {default as LayoutListSpaces} from './LayoutListSpaces'

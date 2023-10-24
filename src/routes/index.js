@@ -4,7 +4,8 @@ import { Home, Spaces, LogIn, Register ,SpaceDetail, Contact, Profile, PostSpace
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
 import User from '../components/admin/User';
-import Admin from '../pages/admin/Admin';
+import  {LayoutAdmin} from "../layouts/index";
+
 const router = [
     { path: '/', component: Home },
     { path: '/spaces', component: Spaces },
@@ -15,17 +16,16 @@ const router = [
     { path: '/booking', component: Booking },
     { path: '/sharing', component: Sharing },
     { path: '/profile', component: Profile },
-    { path: '/postspaces', component: PostSpace },
-    { path: '/messenge', component: Messenge },
-    { path: '/managepost', component: ManagePost },
-    { path: '/favoritespace', component: FavoriteSpace },
+    { path: '/post-spaces', component: PostSpace },
+    { path: '/messenger', component: Messenge },
+    { path: '/manage-post', component: ManagePost },
+    { path: '/favorite-space', component: FavoriteSpace },
     { path: '/spaces/:spaceId', component: SpaceDetail },
+    { path: '/admin/dashboard', layout: LayoutAdmin, component: Dashboard},
+    { path: '/admin/user', layout: LayoutAdmin, component: User},
+    { path: '/admin/owner', layout: LayoutAdmin, component: Owner},
+    { path: '/admin/posts-pace', layout: LayoutAdmin, component: PostSpace}
 ];
-export const routerAdmin = [
-    { path: '/admin/dashboard', layout: '/admin', component: Dashboard},
-    { path: '/admin/user', layout: '/admin', component: User},
-    { path: '/admin/owner', layout: '/admin', component: Owner},
-    { path: '/admin/postspace', layout: '/admin', component: PostSpace}
-]
+
 
 export {router}

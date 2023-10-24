@@ -20,9 +20,6 @@ const Header = () => {
                             className=""
                             alt="SharedSpaceFinder Logo"
                         />
-                        {/*<span className="text-primaryColor self-center text-xl font-semibold whitespace-nowrap ">*/}
-                        {/*     SharedSpaceFinder*/}
-                        {/*</span>*/}
                     </Link>
                     <div className="flex items-center lg:order-2">
                         {/*not login*/}
@@ -42,8 +39,8 @@ const Header = () => {
                                 <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                          stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+                                          strokeWidth="2" d="m1 1 4 4 4-4"/>
                                 </svg>
                             </button>
 
@@ -59,7 +56,7 @@ const Header = () => {
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faHeart}/>
-                                        <Link to="/favoritespace"
+                                        <Link to="/favorite-space"
                                               className="block pr-4 py-2">Không Gian Yêu Thích</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
@@ -69,7 +66,7 @@ const Header = () => {
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
-                                        <Link to="/messenge"
+                                        <Link to="/messenger"
                                               className="block pr-4 py-2">Chat</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">

@@ -11,7 +11,7 @@ import {
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Space = ({typeSpace = "none" , spaceValue= {}}) => {
+const Space = ({typeSpace = "none", spaceValue = {}}) => {
 
     const cutOverLetter = (string, limit) => {
         const dots = "...";
@@ -29,7 +29,8 @@ const Space = ({typeSpace = "none" , spaceValue= {}}) => {
                     className="w-auto mx-3 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2 ">
                     <div className="h-[300px] w-full relative">
                         <img className="w-full h-full object-cover rounded-t-xl"
-                             src={spaceValue?.imagesUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"} alt="anh phong"/>
+                             src={spaceValue?.imagesUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
+                             alt="anh phong"/>
                         {typeSpace.toLowerCase() === 'top rate' &&
                             <p className="absolute top-3 left-3 uppercase bg-primaryColor rounded text-white text-xs font-semibold px-4 py-[1px]">Top
                                 rate</p>}
@@ -92,7 +93,8 @@ const Space = ({typeSpace = "none" , spaceValue= {}}) => {
                             className="flex items-center justify-between text-textBoldColor bg-[#fafafa] rounded-b-xl px-3 py-1">
                             <div className="">
                                 <FontAwesomeIcon className="inline" icon={faMapLocationDot}/>
-                                <span className="mx-5"> {cutOverLetter(`${spaceValue?.address}, ${spaceValue?.ward}, ${spaceValue?.district}, ${spaceValue?.province}` , 28)}</span>
+                                <span
+                                    className="mx-5"> {spaceValue?.address ? cutOverLetter(`${spaceValue?.address}, ${spaceValue?.ward}, ${spaceValue?.district}, ${spaceValue?.province}`, 28) : cutOverLetter("380 Tôn Đức Thắng, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng", 28)}</span>
                             </div>
                             <FontAwesomeIcon icon={faEllipsisVertical}/>
                         </div>

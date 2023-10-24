@@ -27,13 +27,13 @@ const SidebarManage = () => {
                         to={item.path}
                         className={({isActive}) => isActive ? activeStyle : notActiveStyle }                    
                     >
-                        {item.icons}
+                        <span className='pl-2'> {item.icons}</span>
                         <span>{item.text}</span>
                     </NavLink>
                 ))}
 
-                <Link to="/">
-                    <span className={notActiveStyle}><HiOutlineLogout size={23}/>Thoát</span>
+                <Link to="/" >
+                    <span className={notActiveStyle + " pl-2"}><HiOutlineLogout size={23}/>Thoát</span>
                 </Link>
             </div>
             

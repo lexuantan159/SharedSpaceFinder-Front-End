@@ -22,7 +22,11 @@ const SpaceDetail = () => {
                     <SlideImages/>
                     <div className="">
                         {/*Type of space*/}
+                        <h2 className="text-xl font-bold text-primaryColor mb-2">
+                            Cho Thuê Phòng Trọ GIÁ RẺ- DÀNH CHO HSSV VÀ NGƯỜI ĐI LÀM ĐỂU ĐƯỢC</h2>
+
                         <h2 className="text-xl font-bold text-textBoldColor">Phòng Trọ</h2>
+
                         {/**/}
                         <div className="mb-4">
                             <p className="text-xm text-primaryColor font-bold mb-3">Tiện Ích</p>
@@ -47,24 +51,49 @@ const SpaceDetail = () => {
                         </div>
                         {/* price detail*/}
                         <div className="mb-4">
-                            <p className="text-xm text-primaryColor font-bold mb-3">Giá Chi Tiết</p>
-                            <div className="flex text-textBoldColor">
-                                <ul className="text-textBoldColor">
-                                    <li>
-                                        Tiền phòng
+                            <p className="text-xm text-primaryColor font-bold mb-3">Đặt Điểm Tin Đăng</p>
+                            <div className="flex text-textBoldColor w-full">
+                                <ul className="text-textBoldColor w-full">
+                                    <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Mã Tin</p>
+                                        <p className="col-span-8">#638404</p>
                                     </li>
-                                    <li>
-                                        Tiền Điện
+                                    <li className="pl-2 py-2 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Đối tượng thuê:</p>
+                                        <p className="col-span-8">Tất cả</p>
                                     </li>
-                                    <li>
-                                        Tiền Nước
+                                    <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Khu vực</p>
+                                        <p className="col-span-8">Cho thuê phòng trọ Đà Nẵng</p>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* price detail*/}
+                        <div className="mb-4">
+                            <p className="text-xm text-primaryColor font-bold mb-3">Thông Tin Liên Hệ</p>
+                            <div className="flex text-textBoldColor w-full">
+                                <ul className="text-textBoldColor w-full">
+                                    <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Liên hệ:</p>
+                                        <p className="col-span-8">Nguyễn Văn A</p>
+                                    </li>
+                                    <li className="pl-2 py-2 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Điện thoại:</p>
+                                        <p className="col-span-8">0886448551</p>
+                                    </li>
+                                    <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
+                                        <p className="col-span-4">Zalo</p>
+                                        <p className="col-span-8">0886448551</p>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         {/* describe */}
                         <div className="mb-4">
-                            <p className="text-xm text-primaryColor font-bold mb-3">Giá Chi Tiết</p>
+                            <p className="text-xm text-primaryColor font-bold mb-3">Mô Tả</p>
                             <div className="flex text-textBoldColor">
                                 <p className="">Căn phòng trọ này nằm tại tầng trệt của một tòa nhà chung cư mới xây,
                                     được
@@ -79,10 +108,22 @@ const SpaceDetail = () => {
                             </div>
                         </div>
 
+                        {/* describe */}
+                        <div className="mb-4">
+                            <p className="text-xm text-primaryColor font-bold mb-3">Ghi Chú</p>
+                            <div className="flex text-textBoldColor">
+                                <p className="">Căn phòng trọ này nằm tại tầng trệt của một tòa nhà chung cư mới xây,
+                                    được
+                                    thiết kế đặc
+                                </p>
+                            </div>
+                        </div>
+
                         {/* address */}
 
                         <div className="mb-4">
-                            <p className="text-xm text-primaryColor font-bold mb-3">Địa Chỉ</p>
+                            <p className="text-xm text-primaryColor font-bold mb-3">Bản Đồ</p>
+                            <p className="mb-4">Địa chỉ: Đường Phạm Ngũ Lão, Phường 2, Thành Phố Đà Lạt, Lâm Đồng</p>
                             <div className="w-full h-[300px] rounded overflow-hidden shadow-[0_0_10px_gray]">
                                 <MapBox></MapBox>
                             </div>
@@ -112,7 +153,7 @@ const SpaceDetail = () => {
                             </div>
                             <div className="mx-5 text-center mt-5">
                                 <Link to="/booking"
-                                    className="block w-full px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow "
+                                      className="block w-full px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow "
 
                                 >Thuê Ngay
                                 </Link>
@@ -155,9 +196,6 @@ const SpaceDetail = () => {
             {/*slide show*/}
 
             <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
-
-
-
         </>
     )
 }

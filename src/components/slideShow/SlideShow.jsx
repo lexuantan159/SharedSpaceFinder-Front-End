@@ -73,7 +73,7 @@ const SlideShow = ({typeSlide = "space" , typeSpace="none", titlePart , backgrou
         <div className={`${background ? "py-12 bg-[#F7F8F9]" : ""}`}>
             <TitlePart title={titlePart} subTitle="Lựa Chọn Nhanh Chóng"
                        subDesc="Khám phá đa dạng vô tận: Danh mục định hình thế giới"/>
-            <div className="max-w-[1200px] mx-auto my-9 px-10">
+            <div className="max-w-[1200px] mx-auto my-24 px-10">
                 <Slider {...settings}>
                     {renderSlides()}
                 </Slider>
