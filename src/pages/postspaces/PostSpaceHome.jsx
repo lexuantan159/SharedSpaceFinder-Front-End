@@ -2,7 +2,7 @@ import React from "react";
 import AddressPost from "./AddressPost";
 import Overview from "./Overview";
 import { HiOutlineCamera } from "react-icons/hi";
-import Map from "../../components/map/Map";
+import MapBox from "../../components/map/MapBox";
 
 const PostSpaceHome = () => {
   return (
@@ -37,7 +37,7 @@ const PostSpaceHome = () => {
 
         <div className="w-[30%] flex-none">
           <div className="py-10 h-[350px]">
-            <Map />
+            <MapBox />
           </div>
           <div className="w-full bg-[#fff3cd]">
             <h2 className="text-[#856404] text-xl p-2">Lưu ý Khi đăng tin</h2>

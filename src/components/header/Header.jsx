@@ -6,7 +6,7 @@ import {faArrowRightFromBracket, faCommentDots, faHeart, faShare, faUser} from '
 
 const Header = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [isLogin, setIsLogin] = useState(false)
+    const [isLogin, setIsLogin] = useState(true)
     const [isDropdown, setIsDropdown] = useState(true)
 
 
@@ -54,22 +54,22 @@ const Header = () => {
                                     aria-labelledby="dropdownDefaultButton">
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faUser}/>
-                                        <Link to="/"
+                                        <Link to="/profile"
                                               className="block pr-4 py-2">Thông Tin Cá Nhân</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faHeart}/>
-                                        <Link to="/"
+                                        <Link to="/favoritespace"
                                               className="block pr-4 py-2">Không Gian Yêu Thích</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faShare}/>
-                                        <Link to="/"
+                                        <Link to="/sharing"
                                               className="block pr-4 py-2">Chia Sẻ Không Gian</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
-                                        <Link to="/"
+                                        <Link to="/messenge"
                                               className="block pr-4 py-2">Chat</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
