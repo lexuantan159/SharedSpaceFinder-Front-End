@@ -18,7 +18,6 @@ export const routerAdmin = [
     { path: '/admin/user', layout: '/admin', component: User},
     { path: '/admin/owner', layout: '/admin', component: Owner},
     { path: '/admin/postspace', layout: '/admin', component: PostSpace}
-
 ]
 
 export {router}

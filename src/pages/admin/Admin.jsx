@@ -13,7 +13,6 @@ const Admin = () => {
     <div className='grid-container'>
       
     </div>
-
   )
 
 }

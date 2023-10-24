@@ -4,7 +4,7 @@ const PostSpace = () => {
     return (
         <>
         <div>
-            <h2>PostSpaceeeeeeeeeeeeeeeeeeesssssssssssssssssssssssssssssssssssssssssssssssssssssssseeeee</h2>
+            <h2>Post Space</h2>
         </div>
         </>
     )
