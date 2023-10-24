@@ -7,20 +7,20 @@ import {
     faStar,
     faUserGroup
 } from "@fortawesome/free-solid-svg-icons";
-import Map from "../../components/map/Map";
 import {Link} from "react-router-dom";
 import React from "react";
 import TitlePart from "../../components/titlePart/TitlePart";
+import MapBox from "../../components/map/MapBox";
 
 const Booking = () => {
     return (
         <>
 
-            <div className="w-full h-[300px] relative">
+            <div className="w-full h-[300px] relative mb-9">
                 <img className="w-full h-full object-cover"
                      src="https://khoinguonsangtao.vn/wp-content/uploads/2022/08/anh-thien-nhien-dep-nhat-the-gioi-chat-luong-cao.jpg"
                      alt="title"/>
-                <div className="absolute top-1/3 left-[10%]">
+                <div className="absolute top-1/3 left-[15%]">
                     <h1 className="text-2xl font-bold text-white">Chúng Tôi Rất Vui Được Phục Vụ Bạn</h1>
                     <p className="text-xm font-medium text-white">Trang Chủ > Booking</p>
                 </div>
@@ -30,10 +30,10 @@ const Booking = () => {
             <TitlePart title="Thanh Toán Ngay" subTitle="Dễ dàng, An toàn, Nhanh chóng" subDesc="Thanh toán - Kết nối giữa bạn và thế giới. Tiện lợi, đáng tin cậy, và luôn theo kịp cuộc sống hiện đại của bạn."/>
 
 
-            <div className="max-w-[1200px] mx-auto px-10 my-10  grid grid-cols-12 gap-5">
+            <div className="max-w-[1200px] mx-auto px-10 my-16  grid grid-cols-12 gap-5">
                 {/*GG Map*/}
                 <div className="col-span-12 h-[200px] lg:h-full lg:col-span-4 w-full ">
-                    <Map></Map>
+                    <MapBox></MapBox>
                 </div>
                 {/*Item Space*/}
                 <div className="col-span-12 lg:col-span-8 ">

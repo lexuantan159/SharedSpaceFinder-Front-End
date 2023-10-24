@@ -1,12 +1,10 @@
 import React from "react";
 import Space from "../components/space/Space";
 import SidebarFilter from "../components/sidebarFilter/SidebarFilter";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../components/pagination/Pagination";
 
 
-const LayoutListSpaces = ( {type='none'}) => {
+const LayoutListSpaces = ( {type='none' , spacesList = []}) => {
     return (
         <div className="max-w-[1200px] mx-auto grid grid-cols-12 gap-5 mt-[200px] md:mt-[200px] lg:mt-[100px]  px-10">
             {/*    sidebar*/}
@@ -23,16 +21,18 @@ const LayoutListSpaces = ( {type='none'}) => {
                     </select>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2">
-
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-                    <Space typeSpace={type}/>
-
+                    {spacesList.length > 0 ? spacesList.map(space => {
+                        return <Space key={space?.id} typeSpace={type} spaceValue={space}/>
+                    }) : <>
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                        <Space typeSpace="sharing" />
+                    </>}
                 </div>
             </div>
             {/*pagination*/}

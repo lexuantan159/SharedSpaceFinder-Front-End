@@ -11,7 +11,7 @@ import {
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Space = ({typeSpace}) => {
+const Space = ({typeSpace = "none" , spaceValue= {}}) => {
 
     const cutOverLetter = (string, limit) => {
         const dots = "...";
@@ -24,12 +24,12 @@ const Space = ({typeSpace}) => {
 
     return (
         <div className="py-4">
-            <Link to="/">
+            <Link to={`/spaces/${spaceValue?.id}`}>
                 <div
                     className="w-auto mx-3 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2 ">
                     <div className="h-[300px] w-full relative">
                         <img className="w-full h-full object-cover rounded-t-xl"
-                             src="https://afamilycdn.com/thumb_w/710/2017/photo-2-1507000784259.jpg" alt="anh phong"/>
+                             src={spaceValue?.imagesUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"} alt="anh phong"/>
                         {typeSpace.toLowerCase() === 'top rate' &&
                             <p className="absolute top-3 left-3 uppercase bg-primaryColor rounded text-white text-xs font-semibold px-4 py-[1px]">Top
                                 rate</p>}
@@ -49,7 +49,7 @@ const Space = ({typeSpace}) => {
                     </div>
                     <div className="rounded-b-xl border-gray-400 border-[1px]">
                         <div className="px-3 py-3 ">
-                            <p className="text-sm font-semibold text-primaryColor ">Phòng Trọ</p>
+                            <p className="text-sm font-semibold text-primaryColor ">{spaceValue?.categoryData?.categoryValue}</p>
                             <h4 className="text-xm font-bold text-textBoldColor ">Tên Owner</h4>
                             <div className="flex justify-between items-center mb-2">
                                 <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
@@ -72,19 +72,19 @@ const Space = ({typeSpace}) => {
                                 <div className="text-left ">
                                     <FontAwesomeIcon className="-rotate-45" icon={faArrowsLeftRight}
                                                      style={{color: "#c2c2c2",}}/>
-                                    <span className="ml-3">120 m^2</span>
+                                    <span className="ml-3">{spaceValue?.area} m^2</span>
                                 </div>
                                 <div className="text-right ">
                                     <FontAwesomeIcon icon={faBed}/>
-                                    <span className="ml-3">02 Bedrooms</span>
+                                    <span className="ml-3">{spaceValue?.numBedRooms} Bedrooms</span>
                                 </div>
                                 <div className="text-left ">
                                     <FontAwesomeIcon icon={faUserGroup}/>
-                                    <span className="ml-3">04 Guess</span>
+                                    <span className="ml-3">{spaceValue?.numPeople} Guess</span>
                                 </div>
                                 <div className="text-right ">
                                     <FontAwesomeIcon icon={faBath}/>
-                                    <span className="ml-3">01 Bathroom</span>
+                                    <span className="ml-3">{spaceValue?.numBathRooms} Bathroom</span>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ const Space = ({typeSpace}) => {
                             className="flex items-center justify-between text-textBoldColor bg-[#fafafa] rounded-b-xl px-3 py-1">
                             <div className="">
                                 <FontAwesomeIcon className="inline" icon={faMapLocationDot}/>
-                                <span className="mx-5"> {cutOverLetter("18 Tô Hiệu, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng" , 30)}</span>
+                                <span className="mx-5"> {cutOverLetter(`${spaceValue?.address}, ${spaceValue?.ward}, ${spaceValue?.district}, ${spaceValue?.province}` , 28)}</span>
                             </div>
                             <FontAwesomeIcon icon={faEllipsisVertical}/>
                         </div>

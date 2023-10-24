@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-    baseURL: 'url',
+    baseURL: 'http://localhost:8080',
 });
 
 const requestAddress = axios.create({
@@ -10,6 +10,11 @@ const requestAddress = axios.create({
 
 export const getAddress = async (endPoints, option = {}) => {
     const response = await requestAddress.get(endPoints, option);
+    return response;
+};
+
+export const getSpaces = async (endPoints, option = {}) => {
+    const response = await request.get(endPoints, option);
     return response;
 };
 

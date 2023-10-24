@@ -7,10 +7,10 @@ import {
     faStar,
     faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import Map from "../../components/map/Map";
 import {Link} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
+import MapBox from "../../components/map/MapBox";
 
 const SpaceDetail = () => {
 
@@ -83,8 +83,8 @@ const SpaceDetail = () => {
 
                         <div className="mb-4">
                             <p className="text-xm text-primaryColor font-bold mb-3">Địa Chỉ</p>
-                            <div className="w-full h-[300px] rounded">
-                                <Map></Map>
+                            <div className="w-full h-[300px] rounded overflow-hidden shadow-[0_0_10px_gray]">
+                                <MapBox></MapBox>
                             </div>
                         </div>
                     </div>

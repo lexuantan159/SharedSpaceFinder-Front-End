@@ -68,11 +68,11 @@ const SidebarFilter = () => {
                     <div
                         className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
                         <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
+                             src="https://cafefcdn.com/thumb_w/640/pr/2022/photo1661937906060-1661937906180659152859-63797578230425.jpg"
                              alt=""/>
                         <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
+                            <p className="text-sm text-primaryColor font-semibold">Văn Phòng</p>
+                            <p className="text-xm font-bold text-textBoldColor">2.450.000 <span
                                 className="text-[#d4d4d4] font-thin">/ tháng</span></p>
                         </div>
                     </div>
@@ -81,11 +81,11 @@ const SidebarFilter = () => {
                     <div
                         className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
                         <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
+                             src="https://danviet.mediacdn.vn/296231569849192448/2021/5/10/nha-cho-thue-nguyen-can-16206399961522129160390.jpg"
                              alt=""/>
                         <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
+                            <p className="text-sm text-primaryColor font-semibold">Nhà Ở</p>
+                            <p className="text-xm font-bold text-textBoldColor">5.450.000 <span
                                 className="text-[#d4d4d4] font-thin">/ tháng</span></p>
                         </div>
                     </div>

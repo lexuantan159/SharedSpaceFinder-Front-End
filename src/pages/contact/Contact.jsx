@@ -1,13 +1,13 @@
 import TitlePart from "../../components/titlePart/TitlePart";
 import React from "react";
-import Map from "../../components/map/Map";
+import MapBox from "../../components/map/MapBox";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faMapLocationDot, faPhone} from "@fortawesome/free-solid-svg-icons";
 
 const Contact = () => {
     return (
         <div>
-            <div className="w-full h-[300px] relative">
+            <div className="w-full h-[300px] relative mb-9">
                 <img className="w-full  h-full object-cover"
                      src="https://khoinguonsangtao.vn/wp-content/uploads/2022/08/anh-thien-nhien-dep-nhat-the-gioi-chat-luong-cao.jpg"
                      alt="title"/>
@@ -44,8 +44,10 @@ const Contact = () => {
             </div>
 
             {/*Info And Map*/}
-            <div className="w-full h-[500px] mt-80 relative">
-                <Map></Map>
+            <div className="w-full h-[500px] mt-40 relative ">
+                <div className="w-full h-full absolute top-0 left-0 right-0 bottom-0">
+                    <MapBox></MapBox>
+                </div>
                 <div className="max-w-[1200px] mx-auto bg-white absolute -top-[55%] md:-top-[25%] lg:-top-[15%] left-[5%] right-[5%] grid grid-cols-12 gap-5 p-5 rounded shadow-[0_0_10px_gray]">
                     <div className="col-span-12 md:col-span-6 lg:col-span-3 flex flex-col justify-center items-center">
                         <FontAwesomeIcon className="text-5xl text-primaryColor mb-3" icon={faPhone} />

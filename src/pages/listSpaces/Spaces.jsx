@@ -1,9 +1,10 @@
 import Address from "../../components/selectAddress/Address";
 import SelectAddress from "../../components/selectAddress/SelectAddress";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import LayoutListSpaces from "../../layouts/LayoutListSpaces";
+import * as serviceSpaces  from '../../services/spaces'
 
 const Spaces = () => {
     const categories = [
@@ -15,6 +16,20 @@ const Spaces = () => {
     ]
     const [categoryId, setCategoryID] = useState("")
     const [address, setAddress] = useState("")
+    const [spaces, setSpaces] = useState([])
+
+    useEffect(() => {
+        console.log(1)
+        const fetchSpaces = async () => {
+            const response = await serviceSpaces.getSpace()
+            if(response?.status === 200)
+                setSpaces(response?.data?.spaceData)
+            else {
+                console.log(response?.message)
+            }
+        }
+        fetchSpaces()
+    },[])
 
     return (
         <div className="">
@@ -37,7 +52,7 @@ const Spaces = () => {
                 </div>
             </div>
             {/*Layout display item */}
-            <LayoutListSpaces/>
+            <LayoutListSpaces spacesList={spaces}/>
         </div>
     )
 }
