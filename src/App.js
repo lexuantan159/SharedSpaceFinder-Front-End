@@ -6,7 +6,7 @@ function App() {
   return (
     <>
         <Routes>
-            <Route element={<Layout hideHeaderPaths={['/login' , '/register']} />}>
+            <Route element={<Layout hideHeaderPaths={['/login' , '/register','/profile', '/postspaces', '/managepost','/messenge', '/favoritespace']} />}>
                 {router.map((route, index) => {
                     return <Route key={index} path={route.path} element={
                             <route.component />
