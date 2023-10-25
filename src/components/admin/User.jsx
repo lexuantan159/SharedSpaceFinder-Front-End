@@ -1,55 +1,60 @@
 import React from "react";
 
 const User = () => {
+  const users = [
+    {
+      'id': 1, 
+      'name': 'Hardik', 
+      'email': 'haridik@gmail.com',
+      'phone': '123012030',
+      'address': 'da nang'
+    },
+    {
+      'id': 2, 
+      'name': 'Paresh', 
+      'email': 'paresh@gmail.com',
+      'phone': 123012030,
+      'address': 'da nang'
+    },
+    {
+      'id': 2, 
+      'name': 'Karan', 
+      'email': 'karan@gmail.com',
+      'phone': '123012030',
+      'address': 'da nang'
+    },
+];
+
     return (
     <div className="">
       <div>
         <h2 className="my-5 text-3xl font-bold">Management User Account</h2>
       </div>
-      <table class="w-full table-auto bg-white">
-        <thead>
-          <tr className="flex w-full bg-gray-100">
-            <th className="border flex-1 p-2 text-black ">ID</th>
-            <th className="border flex-1 p-2 text-black ">Name</th>
-            <th className="border flex-1 p-2 text-black ">Email</th>
-            <th className="border flex-1 p-2 text-black ">Phone</th>
-            <th className="border flex-1 p-2 text-black ">Address</th>
-            <th className="border flex-1 p-2 text-black ">Tùy Chọn</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="flex items-center h-16">
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">1</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">Mit Blue</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">vuacatxe@gmail.com</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">012391238</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">Đà Nẵng</td>
-            <td className="border px-2 flex-1 h-full flex items-center justify-center gap-4">
-              <button className="px-2 py-1 text-white bg-green-600 rounded-md hover:underline">
-                Sửa
-              </button>
-              <button className="px-2 py-1 text-white bg-red-600 rounded-md hover:underline">
-                Xóa
-              </button>
-            </td>
-          </tr>
-          <tr className="flex items-center h-16">
-          <td className="border px-2 flex-1 h-full flex justify-center items-center">2</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">Mit Red</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">vuacatxe@gmail.com</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">092848421</td>
-            <td className="border px-2 flex-1 h-full flex justify-center items-center">Hà Nội</td>
-            <td className="border px-2 flex-1 h-full flex items-center justify-center gap-4">
-              <button className="px-2 py-1 text-white bg-green-600 rounded-md hover:underline">
-                Sửa
-              </button>
-              <button className="px-2 py-1 text-white bg-red-600 rounded-md hover:underline">
-                Xóa
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      
+   
+          <table class="w-full table-auto bg-white">
+            <thead>
+              <tr className="flex w-full bg-gray-100">
+                <th className="border flex-1 p-2 text-black ">ID</th>
+                <th className="border flex-1 p-2 text-black ">Name</th>
+                <th className="border flex-1 p-2 text-black ">Email</th>
+                <th className="border flex-1 p-2 text-black ">Phone</th>
+                <th className="border flex-1 p-2 text-black ">Address</th>
+                {/* <th className="border flex-1 p-2 text-black ">Tùy Chọn</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr className="flex items-center h-16" data-index={index}>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.id}</td>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.name}</td>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.email}</td>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.phone}</td>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.address}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
     </div>
         
     )
