@@ -27,7 +27,7 @@ const MapBox = ({address = ""}) => {
              <Map
                 mapLib={import('mapbox-gl')}
                 initialViewState={viewPort}
-                style={{width: "100%", height: 500}}
+                style={{width: "100%", height: 500 }}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 mapboxAccessToken={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
             >
