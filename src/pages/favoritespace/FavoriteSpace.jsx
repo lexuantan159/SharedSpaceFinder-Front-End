@@ -1,14 +1,14 @@
 import React from "react";
 import SidebarManage from "../../components/sidebarmanage/SidebarManage";
-import Footer from "../../components/footer/Footer";
+// import Footer from "../../components/footer/Footer";
 
-import HeaderManage from "../../components/header/HeaderManage";
+// import HeaderManage from "../../components/header/HeaderManage";
 import ItemFavoriteSpace from "../../components/itemfavoritespace/ItemFavoriteSpace";
 
 const FavoriteSpace = () => {
   return (
     <div className="w-full flex flex-col">
-      <HeaderManage />
+      {/* <HeaderManage /> */}
       <div className="flex w-full flex-auto">
         <SidebarManage />
         <div className="flex-auto p-4">
