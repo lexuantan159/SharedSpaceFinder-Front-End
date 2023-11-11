@@ -25,7 +25,7 @@ const Spaces = () => {
             if(response?.status === 200)
                 setSpaces(response?.data?.spaceData)
             else {
-                console.log(response?.message)
+                console.log( "Call Api: ",response?.message)
             }
         }
         fetchSpaces()

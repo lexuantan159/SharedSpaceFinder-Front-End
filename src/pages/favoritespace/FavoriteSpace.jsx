@@ -8,7 +8,7 @@ import ItemFavoriteSpace from "../../components/itemfavoritespace/ItemFavoriteSp
 const FavoriteSpace = () => {
   return (
     <div className="w-full flex flex-col">
-      <HeaderManage />
+      {/*<HeaderManage />*/}
       <div className="flex w-full flex-auto">
         <SidebarManage />
         <div className="flex-auto p-4">

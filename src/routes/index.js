@@ -15,7 +15,7 @@ const router = [
     { path: '/spaces/:spaceId', component: SpaceDetail },
     { path: '/booking', component: Booking },
     { path: '/sharing', component: Sharing },
-    { path: '/profile', component: Profile },
+    { path: '/profile',component: Profile },
     { path: '/post-spaces', component: PostSpace },
     { path: '/messenger', component: Messenge },
     { path: '/manage-post', component: ManagePost },
