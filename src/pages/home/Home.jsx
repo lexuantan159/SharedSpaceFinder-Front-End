@@ -1,10 +1,25 @@
 
 import TitlePart from "../../components/titlePart/TitlePart";
 import Categories from "../../components/categories/Categories";
-import React from "react";
+import React, {useEffect} from "react";
 import SlideShow from "../../components/slideShow/SlideShow";
+import {useLocation, useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const Home = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    useEffect(() => {
+        if (location.state?.toastMessage !== '') {
+            notify(location.state?.toastMessage, 'success');
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+    }, []);
 
 
     return (

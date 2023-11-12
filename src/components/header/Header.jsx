@@ -1,14 +1,24 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect, useContext} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowRightFromBracket, faCommentDots, faHeart, faShare, faUser} from '@fortawesome/free-solid-svg-icons';
+import AuthContext from "../../context/authProvider";
 
 const Header = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
-    const [isLogin, setIsLogin] = useState(true)
+    const [isLogin, setIsLogin] = useState(false)
     const [isDropdown, setIsDropdown] = useState(true)
+    const [user, setUser] = useState({})
+    const {auth} = useContext(AuthContext)
 
+
+    useEffect(() => {
+            if(auth.hasOwnProperty("name")) {
+                setIsLogin(true)
+                setUser(auth)
+            }
+    }, [])
 
     return (
         <header className="shadow">
@@ -31,10 +41,10 @@ const Header = () => {
                                     onClick={() => setIsDropdown(!isDropdown)}>
 
                                 <span className="text-sm font-medium">
-                                    Name User
+                                    {user?.name || "Name User"}
                                 </span>
-                                <img className="w-[40px] h-[40px] rounded-full mx-3"
-                                     src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                                <img className="w-[35px] h-[35px] rounded-full mx-3"
+                                     src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
                                      alt="customer"></img>
                                 <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none"

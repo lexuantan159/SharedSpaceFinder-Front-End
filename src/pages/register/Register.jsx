@@ -62,6 +62,7 @@ const Register = () => {
         // check output and display error if has error
         if (registerResponse?.status === 200) {
             setAuth({name, email, password, province, district, ward, address})
+            localStorage.setItem('auth',JSON.stringify({name, email, password, province, district, ward, address}));
             navigate('/login', {state: {toastMessage: "Đăng Ký Thành Công!"}});
         } else {
             if (registerResponse?.response?.status === 409) {
@@ -72,9 +73,10 @@ const Register = () => {
         }
     }
 
+
     return (
         <div className="mx-auto grid grid-cols-12">
-            <div className="col-span-12 md:col-span-8 lg:col-span-7 ">
+            <div className="col-span-12  lg:col-span-7 ">
                 <form action="" onSubmit={(e) => {
                     handleSubmit(e)
                 }} className="pb-12 w-[90%] mx-auto pl-5 pr-5">
@@ -93,7 +95,7 @@ const Register = () => {
                                        type="email"
                                        placeholder="email@gmail.com"
                                        pattern=".+@gmail\.com"
-                                       title="Please enter a valid email address ending with @gmail.com"
+                                       title="Vui lòng nhập đúng địa chỉ email với đuôi @gmail.com"
                                        autoComplete
                                        required
                                        value={email}
@@ -192,7 +194,7 @@ const Register = () => {
                     </div>
                 </form>
             </div>
-            <div className="h-full hidden md:block lg:block md:col-span-4 lg:col-span-5">
+            <div className="h-full hidden md:block lg:block  lg:col-span-5">
                 <img
                     className="w-full h-full object-cover"
                     src="https://img.freepik.com/fotos-premium/diseno-hogar-moderno-fondo-jardin-cielo_741910-5826.jpg?w=2000"

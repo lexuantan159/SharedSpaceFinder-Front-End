@@ -23,10 +23,12 @@ export const register = async (name, email, password, province, district, ward, 
 
 const LOGIN_ENDPOINT = "/api/auth/login"
 
-export const getCategories = async ({email, password}) => {
-    const body = {email, password}
+export const login = async (email, password) => {
     try {
-        return await request.postWithoutHeader(LOGIN_ENDPOINT, body);
+        return await request.postWithoutHeader(LOGIN_ENDPOINT, {
+            email: email,
+            password:password
+        });
     } catch (error) {
         return error
     }
