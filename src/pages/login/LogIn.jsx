@@ -1,13 +1,29 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const LogIn = () => {
     const [hiddenPassword, setHiddenPassword] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (location.state?.toastMessage !== '') {
+            notify(location.state?.toastMessage, 'success');
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+    }, []);
 
     return (
         <div className="mx-auto grid grid-cols-12">
@@ -23,6 +39,7 @@ const LogIn = () => {
                                htmlFor="inputEmail">Email</label>
                         <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
                                type="email" placeholder="email@gmail.com"
+                               pattern=".+@gmail\.com" size="30"
                                autoComplete
                                required
                                value={email}

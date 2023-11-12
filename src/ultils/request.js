@@ -20,8 +20,12 @@ export const getSpaces = async (endPoints, option = {}) => {
 
 
 // Method system
-export const postWithoutHeader = async (endPoints, option = {}) => {
-    const response = await request.post(endPoints, option);
+export const postWithoutHeader = async (endPoints, data  = {}) => {
+    const response= await request.post(endPoints, data, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    });
     return response;
 };
 

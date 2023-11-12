@@ -4,14 +4,14 @@ import { Home, Spaces, LogIn, Register ,SpaceDetail, Contact, Profile, PostSpace
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
 import User from '../components/admin/User';
-import  {LayoutAdmin} from "../layouts/index";
+import  {LayoutAdmin,LayoutAuth} from "../layouts/index";
 
 const router = [
     { path: '/', component: Home },
     { path: '/spaces', component: Spaces },
     { path: '/contact', component: Contact  },
-    { path: '/login', component: LogIn },
-    { path: '/register', component: Register },
+    { path: '/login',layout: LayoutAuth ,component: LogIn },
+    { path: '/register',layout: LayoutAuth ,component: Register },
     { path: '/spaces/:spaceId', component: SpaceDetail },
     { path: '/booking', component: Booking },
     { path: '/sharing', component: Sharing },
