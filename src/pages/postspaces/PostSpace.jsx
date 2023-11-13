@@ -9,7 +9,7 @@ const PostSpace = () => {
   return (
     <div>
       <div className="w-full flex flex-col">
-        <HeaderManage />
+        {/* <HeaderManage /> */}
         <div className="flex w-full flex-auto">
           <SidebarManage />
           <div className="flex-auto p-4">

@@ -47,7 +47,7 @@ const PostSpaceHome = () => {
             <div className="w-full">
               <label
                 className="my-4 flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border border-2 border-dashed border-gray-300"
-                htmlFor="file"
+                htmlFor="file"  
               >
                 <HiOutlineCamera size={50} />
                 Thêm ảnh
