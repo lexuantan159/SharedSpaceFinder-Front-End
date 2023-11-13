@@ -3,13 +3,12 @@ import {router} from './routes/index';
 import {Layout} from './layouts/index'
 import {Fragment} from "react";
 
+
 function App() {
 
 
     return (
-
         <Routes>
-
             {router.map((route, index) => {
                 const Page = route.component
 
@@ -32,7 +31,6 @@ function App() {
                 )
             })}
         </Routes>
-
     );
 }
 
