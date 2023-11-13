@@ -50,8 +50,8 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
             onFocus={() => setInvalidFields([])}
           ></textarea>
           <small className="block w-full text-red-500">
-            {invalidFields?.some((item) => item.name == "description") &&
-              invalidFields?.find((item) => item.name == "description")
+            {invalidFields?.some((item) => (item.name == "description")) &&
+              invalidFields?.find((item) => (item.name == "description"))
                 ?.message}
           </small>
         </div>
