@@ -16,8 +16,8 @@ const LogIn = () => {
                     <h1 className="pt-12 text-4xl text-primaryColor font-bold text-center">Đăng Nhập</h1>
                     <div className="w-full h-[200px] mb-9 overflow-hidden">
                         <img className="w-full h-full object-cover"
-                             src={require('../../assets/images/logoTransparent.png')} alt=""/><
-                        /div>
+                             src={require('../../assets/images/logoTransparent.png')} alt=""/>
+                             </div>
                     <div className="w-full mb-4">
                         <label className="block text-[18px] font-bold text-textBoldColor mb-2"
                                htmlFor="inputEmail">Email</label>

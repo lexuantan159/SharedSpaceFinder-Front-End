@@ -58,7 +58,7 @@ const MessengeHome = () => {
     <div>
       <div className="flex h-screen">
 
-
+            {/* sideBarleff */}
         <div className="h-full w-[25%] touch-pan-y overflow-auto border-r border-gray-200 bg-[#f3f5ff]">
           <h1 className=" text-3x1 px-6 py-2 text-xl font-medium text-primaryColor">
             {" "}
@@ -78,7 +78,7 @@ const MessengeHome = () => {
             {contacts.map(({ name, conversation, send_date, avatar }) => {
               return (
                 <div className="flex cursor-pointer items-center rounded-md py-2 hover:bg-gray-200 ">
-                  
+                 
                   <div>
                     <img
                       src={avatar}
@@ -87,7 +87,7 @@ const MessengeHome = () => {
                     /> 
                     
                   </div>
-
+                  
                   <div className="ml-4 flex-auto">
                     <h3 className="text-[15px] font-semibold">{name}</h3>
                     <div className="flex ">
@@ -101,9 +101,12 @@ const MessengeHome = () => {
               );
             })}
           </div>
-        </div>
+        </div>  {/* sideBarleff */}
 
+
+                {/* body */}
         <div className="flex w-[75%] flex-col items-center bg-white">
+              
           <div className="mb-4 mt-6 flex h-[70px] w-[60%] items-center rounded-full bg-[#f3f5ff] px-14">
             <div>
               <img
@@ -122,7 +125,10 @@ const MessengeHome = () => {
               </span>
             </div>
           </div>
+
+           {/* Messenge */}
           <div className="h-[75%] w-full touch-pan-y overflow-auto border-t">
+            
             <div className="p-6">
               <div className="mb-6 max-w-[45%] rounded-b-xl rounded-tr-xl bg-[#f3f5ff] p-4">
                 Sở hữu bảng mã màu CSS chuẩn, bạn sẽ tự tin hơn khi thiết kế,
@@ -153,8 +159,14 @@ const MessengeHome = () => {
                 Sở hữu bảng mã màu CSS chuẩn, bạn sẽ tự tin hơn khi thiết kế,
               </div>
             </div>
-          </div>
-          <div className="flex w-full items-center p-6 px-10">
+
+          </div>{/* Messenge */}
+
+            {/* Type a messenge.... */}
+          <div className="flex w-full items-center p-6 px-6">
+            <div className="ml-auto ml-4 px-2 ">
+              <HiOutlineDocumentAdd size={30} color="blue" />
+            </div>
             <input
               type="text"
               className="w-[90%] rounded-full border border-gray-200 bg-[#f3f5ff] bg-gray-100 p-2 px-6 shadow-md outline-none focus:border-0 focus:ring-0"
@@ -163,11 +175,12 @@ const MessengeHome = () => {
             <div className="ml-4 px-2 ">
               <AiOutlineSend size={30} color="blue" />
             </div>
-            <div className="ml-4 px-2 ">
-              <HiOutlineDocumentAdd size={30} color="blue" />
-            </div>
-          </div>
-        </div>
+            
+          </div>{/* Type a messenge.... */}
+
+        </div> {/* body */}
+
+
       </div>
     </div>
   );

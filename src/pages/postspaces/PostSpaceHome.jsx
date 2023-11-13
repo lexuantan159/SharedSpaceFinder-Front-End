@@ -21,12 +21,13 @@ const PostSpaceHome = () => {
     address: "",
     image: "",
   });
+
   const [invalidFields, setInvalidFields] = useState([])
   
   const handleSubmit = async () => {
 
 
-  console.log(payload);
+    console.log(payload)
   const result = validate(payload,setInvalidFields)
   console.log(result)
   }

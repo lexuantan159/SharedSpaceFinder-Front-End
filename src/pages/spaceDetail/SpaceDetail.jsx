@@ -7,6 +7,7 @@ import {
     faStar,
     faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
+
 import {Link} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
@@ -179,7 +180,7 @@ const SpaceDetail = () => {
                                     <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
                                     <span className="ml-3 text-[#d4d4d4] ">12 reviews</span>
                                 </div>
-                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Nguyễn Văn A</p>
+                                    <p className="ml-2 text-xm font-semibold text-textBoldColor mr-auto">Nguyễn Văn A</p>
                             </div>
                         </div>
                         <div className="mx-5 text-center mb-5">
