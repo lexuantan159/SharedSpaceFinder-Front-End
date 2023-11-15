@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import InputFormV2 from "../../components/inputform/InputFormV2";
 import anonAvatar from "../../assets/images/avatar.jpg";
 import Button from "../../components/button/Button";
-// import validate from "../../components/inputform/ValidateFields";
+import validate from "../../components/inputform/ValidateFields";
 // import InputFormV1 from "../../components/inputform/InputFormV1";
 
-
+///api/users/edit-profile/
 const Editprofile = () => {
   const [payload, setpayload] = useState({
     name: "",
@@ -17,8 +17,9 @@ const Editprofile = () => {
   });
 
   const [invalidFields, setInvalidFields] = useState([]);
-  const handleSubmit =  async () => {
-
+  const handleSubmit =  () => {
+    // const invalidcounter = validate (payload,setInvalidFields)
+    // console.log(invalidcounter);
     console.log(payload);
     }
   // console.log(payload);
@@ -91,12 +92,13 @@ const Editprofile = () => {
               <input type="file" className="my-4 appearance-none" id="avatar" />
             </div>
           </div>
-          <Button
-            text="Cập Nhật"
-            bgColor="bg-blue-600"
-            textColor="text-white"
-            onClick={handleSubmit}
-          />
+          <button className="w-full rounded-md bg-green-600 px-2 py-2 text-white hover:underline" 
+           onClick={handleSubmit}
+         
+          >
+            Tiếp Tục
+            
+          </button>
         </div>
       </div>
     </div>
