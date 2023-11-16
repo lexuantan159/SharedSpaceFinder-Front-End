@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import  Map, {Marker} from 'react-map-gl';
+import  ReactMapLG, {Marker,GeolocateControl ,FullscreenControl,NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLocationDot} from "@fortawesome/free-solid-svg-icons";
@@ -24,18 +24,23 @@ const MapBox = ({address = ""}) => {
 
     return (
         <div className="">
-             <Map
+
+             <ReactMapLG
                 mapLib={import('mapbox-gl')}
-                initialViewState={viewPort}
+                {...viewPort}s
                 style={{width: "100%", height: 500}}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 mapboxAccessToken={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+                transitionDuration = '200'
+                onMove={(evt => {setViewPort(evt.viewState)})}
             >
-                <Marker longitude={viewPort.longitude} latitude={viewPort.latitude} anchor="center" >
+                <Marker longitude={viewPort.longitude} latitude={viewPort.latitude} >
                     <FontAwesomeIcon icon={faLocationDot} style={{color: "#ff0000",fontSize:'30px'}} />
                 </Marker>
-
-            </Map>
+                 <GeolocateControl/>
+                 <FullscreenControl/>
+                 <NavigationControl/>
+            </ReactMapLG>
         </div>
 
     );

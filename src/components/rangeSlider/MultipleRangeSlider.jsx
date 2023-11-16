@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
+import _debounce from "lodash/debounce";
 
-
-const MultiRangeSlider = ({ min, max }) => {
+const MultiRangeSlider = ({ min, max,onRangeChange }) => {
     const [minVal, setMinVal] = useState(min);
     const [maxVal, setMaxVal] = useState(max);
     const minValRef = useRef(min);
@@ -9,10 +9,15 @@ const MultiRangeSlider = ({ min, max }) => {
     const range = useRef(null);
 
 
+    const debouncedRangeChange = useRef(
+        _debounce(onRangeChange, 300) // Debounce the API call for 300 milliseconds
+    ).current;
+
     // Convert to percentage
     const getPercent = useCallback(
         value => Math.round(((value - min) / (max - min)) * 100),
         [min, max]
+
     );
 
     // Set width of the range to decrease from the left side
@@ -24,6 +29,7 @@ const MultiRangeSlider = ({ min, max }) => {
             range.current.style.left = `${minPercent}%`;
             range.current.style.width = `${maxPercent - minPercent}%`;
         }
+        debouncedRangeChange({ min: minVal, max: maxVal });
     }, [minVal, getPercent]);
 
     // Set width of the range to decrease from the right side
@@ -34,6 +40,7 @@ const MultiRangeSlider = ({ min, max }) => {
         if (range.current) {
             range.current.style.width = `${maxPercent - minPercent}%`;
         }
+        debouncedRangeChange({ min: minVal, max: maxVal });
     }, [maxVal, getPercent]);
 
     const formatNumber = (number) => {

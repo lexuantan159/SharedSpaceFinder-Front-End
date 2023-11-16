@@ -1,6 +1,5 @@
 import * as request from '../ultils/request'
 
-
 const REGISTER_ENDPOINT = "/api/auth/register"
 
 export const register = async (name, email, password, province, district, ward, address) => {
@@ -28,6 +27,29 @@ export const login = async (email, password) => {
         return await request.postWithoutHeader(LOGIN_ENDPOINT, {
             email: email,
             password:password
+        });
+    } catch (error) {
+        return error
+    }
+};
+
+const LOGOUT_ENDPOINT = "/api/auth/logout"
+
+export const logOut = async () => {
+    try {
+        return await request.postWithoutHeader(LOGOUT_ENDPOINT);
+    } catch (error) {
+        return error
+    }
+};
+
+
+const REFRESHTOKEN_ENDPOINT = "/api/auth/refresh-token"
+
+export const refreshToken = async (refreshToken) => {
+    try {
+        return await request.postWithoutHeader(REFRESHTOKEN_ENDPOINT, {
+            refreshToken: refreshToken
         });
     } catch (error) {
         return error

@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const SelectAddress = ({type, label, options, value, setValue, hiddenTitle = false}) => {
+const SelectAddress = ({type,label,options, value,setValue,hiddenTitle = false,}) => {
 
     const address = (type, item) => {
         if (type === "province") {
@@ -33,9 +33,11 @@ const SelectAddress = ({type, label, options, value, setValue, hiddenTitle = fal
                 <label className="block text-[18px] font-bold text-textBoldColor mb-2"
                        htmlFor="address">{label}</label>
             }
-            <select value={value} onChange={(e) => setValue(e.target.value)} name="address" id="address"
+            <select value={value} onChange={(e) => setValue(e.target.value)} name="address"
+                    id="address"
                     className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none">
-                <option className='pl-4 pr-10 py-3 shadow' value={label}>{hiddenTitle ? label : `--Chọn: ${label}--`}</option>
+                <option className='pl-4 pr-10 py-3 shadow'
+                        value="None">{hiddenTitle ? label : `--Chọn: ${label}--`}</option>
                 {options?.map(item => {
                     return (
                         <option key={address(type, item).id}

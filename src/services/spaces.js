@@ -1,11 +1,12 @@
 import * as request from '../ultils/request'
+import queryString from 'query-string';
 
+const SPACES_ENDPOINT = "/api/spaces/list-spaces"
 
-const SPACES_ENDPOINT = "/api/spaces"
-
-export const getSpace = async () => {
+export const getSpace = async (paramsObject) => {
     try {
-        const response = await request.getSpaces(SPACES_ENDPOINT, {});
+        const params = queryString.stringify(paramsObject);
+        const response = await request.getSpaces(`${SPACES_ENDPOINT}/?${params}`, {});
         return response;
 
     } catch (error) {

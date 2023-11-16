@@ -1,24 +1,49 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState, useEffect, useContext} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowRightFromBracket, faCommentDots, faHeart, faShare, faUser} from '@fortawesome/free-solid-svg-icons';
 import AuthContext from "../../context/authProvider";
+import * as authServices from "../../services/auth"
+import {toast} from "react-toastify";
 
 const Header = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isLogin, setIsLogin] = useState(false)
     const [isDropdown, setIsDropdown] = useState(true)
     const [user, setUser] = useState({})
-    const {auth} = useContext(AuthContext)
+    const {setAuth} = useContext(AuthContext)
+    const navigate = useNavigate();
 
+
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
 
     useEffect(() => {
-            if(auth.hasOwnProperty("name")) {
-                setIsLogin(true)
-                setUser(auth)
-            }
-    }, [])
+        const myDataString = localStorage.getItem('auth');
+        if ( myDataString !== null ) {
+            const myDataObject = JSON.parse(myDataString);
+            setAuth(myDataObject);
+            setIsLogin(true)
+            setUser(myDataObject);
+        }else {
+            setIsLogin(false);
+        }
+    },[]);
+
+    const handleLogout = async (e) => {
+        const fetchLogout = await authServices.logOut();
+        if(fetchLogout?.status === 200) {
+            localStorage.removeItem("auth");
+            navigate('/login', {state: {toastMessage: "Đăng Xuất Thành Công!"}})
+        }else {
+            console.log(fetchLogout?.response)
+            notify("Đăng Xuất Thất Bại!", "error")
+        }
+
+    }
 
     return (
         <header className="shadow">
@@ -82,8 +107,10 @@ const Header = () => {
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faArrowRightFromBracket}
                                                          rotation={180}/>
-                                        <Link to="/"
-                                              className="block pr-4 py-2">Đăng Xuất</Link>
+                                        <button
+                                              className="block pr-4 py-2"
+                                              onClick={(e) => {handleLogout(e)}}
+                                        >Đăng Xuất</button>
                                     </li>
                                 </ul>
                             </div>

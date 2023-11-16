@@ -14,7 +14,11 @@ export const getAddress = async (endPoints, option = {}) => {
 };
 
 export const getSpaces = async (endPoints, option = {}) => {
-    const response = await request.get(endPoints, option);
+    const response = await request.get(endPoints, option,  {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
     return response;
 };
 

@@ -3,7 +3,51 @@ import React from "react";
 import MultiRangeSlider from "../rangeSlider/MultipleRangeSlider";
 
 
-const SidebarFilter = () => {
+const SidebarFilter = ({setState}) => {
+
+    const areaValue = [
+        {
+            id: 1,
+            areaFrom: 0,
+            areaTo: 20
+        }, {
+            id: 2,
+            areaFrom: 20,
+            areaTo: 40
+        }, {
+            id: 3,
+            areaFrom: 40,
+            areaTo: 60
+        }, {
+            id: 4,
+            areaFrom: 60,
+            areaTo: 80
+        },
+    ]
+
+    const handleSetArea = (e) => {
+        const selectedAreaId = Number(e.target.value);
+        const selectedArea = areaValue.find((item) => item.id === selectedAreaId);
+       setState((prevState) => ({
+           ...prevState,
+           areaFrom: selectedArea.areaFrom,
+           areaTo: selectedArea.areaTo
+       }))
+    }
+
+    const handleRangeChange = ({ min, max }) => {
+        // Update the state or perform any other necessary actions
+        console.log("API call with range:", { min, max });
+        setState((prevState) => ({
+            ...prevState,
+            priceFrom: min,
+            priceTo: max
+        }))
+    };
+
+
+
+
     return (
         <>
             {/*Filter*/}
@@ -16,30 +60,38 @@ const SidebarFilter = () => {
                     <div className="grid grid-cols-2 gap-3 pl-4 ">
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={1}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">0m<sup>2</sup> - 20m<sup>2</sup></label>
+                        </div>
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={2}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">20m<sup>2</sup> - 40m<sup>2</sup></label>
                         </div>
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={3}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">40m<sup>2</sup> - 60m<sup>2</sup></label>
                         </div>
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={4}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">60m<sup>2</sup> - 80m<sup>2</sup></label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">80m<sup>2</sup> - 100m<sup>2</sup></label>
                         </div>
                     </div>
                 </div>
                 <div className="pb-4 h-[120px]">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Giá: </p>
 
-                    <MultiRangeSlider min={100000} max={12000000} />
+                    <MultiRangeSlider min={100000} max={12000000}  onRangeChange={handleRangeChange}/>
 
                 </div>
             </div>

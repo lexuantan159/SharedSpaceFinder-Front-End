@@ -83,7 +83,7 @@ const SlideImages = () => {
     const [thisImage, setThisImage] = useState(images[0])
     return (
         <div className="">
-            <div className="rounded w-full h-[400px] shadow overflow-hidden">
+            <div className="rounded w-full h-[500px] shadow overflow-hidden">
                 <img className="rounded w-full h-full object-cover transition-all hover:cursor-pointer hover:scale-110"
                      src={thisImage.imgUrl}
                      alt={thisImage.imaName}/>
@@ -95,7 +95,7 @@ const SlideImages = () => {
                         return (
                             <div key={image.imgId} className="pr-5">
                                 <img onMouseOver={() => setThisImage(image)}
-                                     className="w-full h-[100px] object-cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
+                                     className="w-full h-[110px] object-cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
                                      src={image.imgUrl} alt={image.imaName}/>
                             </div>
                         )

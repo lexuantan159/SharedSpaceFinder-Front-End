@@ -15,7 +15,6 @@ const Messenge = () => {
            <div>
             <Footer />
            </div>
-                
         </div>
     )
 }
