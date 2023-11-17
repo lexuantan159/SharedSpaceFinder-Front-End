@@ -11,14 +11,41 @@ import {Link, useParams} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
+import * as spaceServices from "../../services/spaces";
+import {toast} from "react-toastify";
 const SpaceDetail = () => {
     const {spaceId} = useParams();
+    const [spaceDetail, setSpaceDetail] = useState({})
+    console.log(spaceId)
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    const formatNumber = (number) => {
+        if (typeof number === 'number' && !isNaN(number)) {
+            const formattedString = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return formattedString.replace(/\.00$/, '');
+        }
+    }
+
 
     useEffect(() => {
-
+        if (spaceId) {
+            const fetchSpaceDetails = async() => {
+                const spaceParam = {spaceId: spaceId,
+                status: 3};
+                const listSpaces = await spaceServices.getSpace(spaceParam);
+                if(listSpaces?.status === 200){
+                    const spaceDetail = listSpaces?.data?.listSpaces[0];
+                    console.log(spaceDetail)
+                    setSpaceDetail(spaceDetail)
+                }else
+                    notify("Không tìm thấy phòng nào!");
+            }
+            fetchSpaceDetails();
+        }
     }, [] )
-
-    console.log(spaceId)
 
 
 
@@ -27,7 +54,7 @@ const SpaceDetail = () => {
             <div className="max-w-[1200px] mx-auto px-10 my-10  grid grid-cols-12 gap-5">
                 <div className=" col-span-12 md:col-span-8">
                     {/* images of space*/}
-                    <SlideImages/>
+                    <SlideImages images={spaceDetail?.images || []} />
                 </div>
                 <div className=" col-span-12 md:col-span-4">
                     {/*booking*/}
@@ -38,17 +65,13 @@ const SpaceDetail = () => {
                         <div className="pb-4">
                             <ul className="mx-5 mt-5 pb-4 mb-4 border-b-[0.5px] border-[#B2B2B2]">
                                 <li className="flex justify-between">
-                                    <p>1.500.000 x tháng</p>
-                                    <p>1.500.000đ</p>
-                                </li>
-                                <li className="flex justify-between">
-                                    <p>40.000 x tháng</p>
-                                    <p>40.000đ</p>
+                                    <p>{formatNumber(spaceDetail?.price) + "đ"} x tháng</p>
+                                    <p>{formatNumber(spaceDetail?.price)}đ</p>
                                 </li>
                             </ul>
                             <div className="flex justify-between px-5 ">
                                 <p className="text-primaryColor font-semibold">Total</p>
-                                <p className="text-primaryColor font-semibold">40.000đ</p>
+                                <p className="text-primaryColor font-semibold">{formatNumber(spaceDetail?.price)}đ</p>
                             </div>
                             <div className="mx-5 text-center mt-5">
                                 <Link to="/booking"
@@ -76,14 +99,14 @@ const SpaceDetail = () => {
                                 <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
                                 <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
                                 <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
-                                <span className="ml-3 text-[#d4d4d4] ">12 reviews</span>
+                                <span className="ml-3 text-[#d4d4d4] ">0 reviews</span>
                             </div>
                             <div className="grid grid-cols-2">
-                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Nguyễn Văn A</p>
-                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Giới Tính: Nam</p>
-                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Ngày Sinh: 01/01/2992</p>
+                                <p className="ml-2 text-xm font-semibold text-textBoldColor">{spaceDetail?.ownerId?.name}</p>
+                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Giới Tính: {spaceDetail?.ownerId?.gender ? "Nam" : "Nữ"}</p>
+                                <p className="ml-2 text-xm font-semibold text-textBoldColor">Ngày Sinh: {spaceDetail?.ownerId?.dateOfBirth}</p>
                             </div>
-                            <p className="mx-2 text-xm font-semibold text-textBoldColor">Địa Chỉ: 129 Tô Hiệu, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng</p>
+                            <p className="mx-2 text-xm font-semibold text-textBoldColor">Địa Chỉ: {spaceDetail?.ownerId?.address}</p>
                         </div>
 
                     </div>
@@ -92,9 +115,9 @@ const SpaceDetail = () => {
                 <div className="col-span-12">
                     {/*Type of space*/}
                     <h2 className="text-xl font-bold text-primaryColor mb-2">
-                        Cho Thuê Phòng Trọ GIÁ RẺ- DÀNH CHO HSSV VÀ NGƯỜI ĐI LÀM ĐỂU ĐƯỢC</h2>
+                        {spaceDetail?.description}</h2>
 
-                    <h2 className="text-xl font-bold text-textBoldColor">Phòng Trọ</h2>
+                    <h2 className="text-xl font-bold text-textBoldColor">{spaceDetail?.categoryId?.categoryName}</h2>
 
                     {/**/}
                     <div className="mb-4">
@@ -102,19 +125,19 @@ const SpaceDetail = () => {
                         <div className="flex flex-wrap text-textBoldColor">
                             <div className="mr-10">
                                 <FontAwesomeIcon className="-rotate-45" icon={faArrowsLeftRight}/>
-                                <span className="ml-3">120 m^2</span>
+                                <span className="ml-3">{spaceDetail?.area} m^2</span>
                             </div>
                             <div className="mr-10 ">
                                 <FontAwesomeIcon icon={faBed}/>
-                                <span className="ml-3">02 Bedrooms</span>
+                                <span className="ml-3">{spaceDetail?.bedroomNumbers} Bedrooms</span>
                             </div>
                             <div className="mr-10">
                                 <FontAwesomeIcon icon={faUserGroup}/>
-                                <span className="ml-3">04 Guess</span>
+                                <span className="ml-3">{spaceDetail?.peopleNumbers} Guess</span>
                             </div>
                             <div className="mr-10 ">
                                 <FontAwesomeIcon icon={faBath}/>
-                                <span className="ml-3">01 Bathroom</span>
+                                <span className="ml-3">{spaceDetail?.bathroomNumbers}  Bathroom</span>
                             </div>
                         </div>
                     </div>
@@ -125,7 +148,7 @@ const SpaceDetail = () => {
                             <ul className="text-textBoldColor w-full">
                                 <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Mã Tin</p>
-                                    <p className="col-span-8">#638404</p>
+                                    <p className="col-span-8">#{spaceId}</p>
                                 </li>
                                 <li className="pl-2 py-2 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Đối tượng thuê:</p>
@@ -133,7 +156,7 @@ const SpaceDetail = () => {
                                 </li>
                                 <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Khu vực</p>
-                                    <p className="col-span-8">Cho thuê phòng trọ Đà Nẵng</p>
+                                    <p className="col-span-8">Cho thuê {`${spaceDetail?.categoryId?.categoryName} tại ${spaceDetail?.province}`}</p>
                                 </li>
 
                             </ul>
@@ -147,15 +170,15 @@ const SpaceDetail = () => {
                             <ul className="text-textBoldColor w-full">
                                 <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Liên hệ:</p>
-                                    <p className="col-span-8">Nguyễn Văn A</p>
+                                    <p className="col-span-8">{spaceDetail?.ownerId?.name}</p>
                                 </li>
                                 <li className="pl-2 py-2 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Điện thoại:</p>
-                                    <p className="col-span-8">0886448551</p>
+                                    <p className="col-span-8">{spaceDetail?.ownerId?.phone}</p>
                                 </li>
                                 <li className="pl-2 py-2  bg-gray-200 mr-4  grid grid-cols-12">
                                     <p className="col-span-4">Zalo</p>
-                                    <p className="col-span-8">0886448551</p>
+                                    <p className="col-span-8">{spaceDetail?.ownerId?.phone}</p>
                                 </li>
                             </ul>
                         </div>
@@ -164,16 +187,7 @@ const SpaceDetail = () => {
                     <div className="mb-4">
                         <p className="text-xm text-primaryColor font-bold mb-3">Mô Tả</p>
                         <div className="flex text-textBoldColor">
-                            <p className="">Căn phòng trọ này nằm tại tầng trệt của một tòa nhà chung cư mới xây,
-                                được
-                                thiết kế đặc
-                                biệt để đáp ứng nhu cầu của người thuê. Với diện tích khoảng 25 mét vuông, nó là một
-                                không gian tiện nghi và thoải mái. Một cửa sổ lớn mang đến ánh sáng tự nhiên cho căn
-                                phòng và cung cấp cảm giác thông thoáng. Phòng trọ được trang bị đầy đủ nội thất cơ
-                                bản,
-                                bao gồm giường ngủ, tủ quần áo, bàn làm việc, và một kệ sách. Bên cạnh giường, có
-                                một
-                                bàn đầu giường tiện lợi để đặt đồ cá nhân. </p>
+                            <p className="">{spaceDetail?.description}</p>
                         </div>
                     </div>
 
@@ -192,9 +206,9 @@ const SpaceDetail = () => {
 
                     <div className="mb-4">
                         <p className="text-xm text-primaryColor font-bold mb-3">Bản Đồ</p>
-                        <p className="mb-4">Địa chỉ: Đường Phạm Ngũ Lão, Phường 2, Thành Phố Đà Lạt, Lâm Đồng</p>
+                        <p className="mb-4">Địa chỉ: {spaceDetail?.address}</p>
                         <div className="w-full h-[500px] rounded overflow-hidden shadow-[0_0_10px_gray]">
-                            <MapBox></MapBox>
+                            <MapBox address={spaceDetail?.province}></MapBox>
                         </div>
                     </div>
                 </div>

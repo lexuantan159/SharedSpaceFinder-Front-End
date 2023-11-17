@@ -2,7 +2,7 @@ import SelectAddress from "./SelectAddress";
 import React, {useEffect, useState} from "react";
 import {getDistrict, getProvinces, getWard} from "../../services/address";
 
-const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setResetAddress = null}) => {
+const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setResetAddress}) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -26,7 +26,6 @@ const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setRese
 
 
     useEffect(() => {
-        console.log(1)
         const fetchProvince = async () => {
             const provincesResponse = await getProvinces();
             if (provincesResponse.status === 200)

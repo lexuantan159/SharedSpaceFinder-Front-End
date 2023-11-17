@@ -49,7 +49,7 @@ const Pagination = ({state, setState}) => {
     };
 
     return (
-        <div className="col-span-12 flex justify-between mb-9">
+        <div className="col-span-12 flex justify-between mb-9 ">
             <button
                 className="px-3 py-1 border-[0.5px] group border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg"
                 onClick={() => handlePageClick(state.page - 1)}>

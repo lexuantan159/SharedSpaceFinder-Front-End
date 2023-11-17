@@ -17,7 +17,6 @@ const MultiRangeSlider = ({ min, max,onRangeChange }) => {
     const getPercent = useCallback(
         value => Math.round(((value - min) / (max - min)) * 100),
         [min, max]
-
     );
 
     // Set width of the range to decrease from the left side

@@ -19,6 +19,7 @@ const Register = () => {
     const [province, setProvince] = useState("")
     const [district, setDistrict] = useState("")
     const [ward, setWard] = useState("")
+    const [resetAddress,setResetAddress] = useState(false)
     const location = useLocation();
     const navigate = useNavigate();
     const notify = (message, type) => {
@@ -58,7 +59,8 @@ const Register = () => {
         validAddress();
         // fetch register
         const registerResponse = await authService.register(name, email, password, province, district, ward, address)
-
+        console.log(registerResponse)
+        console.log({name, email, password, province, district, ward, address})
         // check output and display error if has error
         if (registerResponse?.status === 200) {
             setAuth({name, email, password, province, district, ward, address})
@@ -68,6 +70,7 @@ const Register = () => {
             if (registerResponse?.response?.status === 409) {
                 notify("Email đã tồn tại, vui lòng đăng ký bằng email khác!", "error")
             } else {
+                console.log(registerResponse?.response)
                 notify("Đăng ký thất bại!", "error")
             }
         }
@@ -96,7 +99,6 @@ const Register = () => {
                                        placeholder="email@gmail.com"
                                        pattern=".+@gmail\.com"
                                        title="Vui lòng nhập đúng địa chỉ email với đuôi @gmail.com"
-                                       autoComplete
                                        required
                                        value={email}
                                        onChange={(e) => setEmail(e.target.value)}/>
@@ -166,7 +168,7 @@ const Register = () => {
                         </div>
                         <div className="w-full md:w-[45%] ">
                             {/* Address */}
-                            <Address setAddress={setAddress}/>
+                            <Address setAddress={setAddress} setResetAddress={setResetAddress} />
 
                             <div className="w-full mb-4">
                                 <label className="block text-[18px] font-bold text-textBoldColor mb-2"

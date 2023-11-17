@@ -1,9 +1,23 @@
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import MultiRangeSlider from "../rangeSlider/MultipleRangeSlider";
+import * as spaceServices from "../../services/spaces";
+import {toast} from "react-toastify";
 
 
 const SidebarFilter = ({setState}) => {
+
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    const formatNumber = (number) => {
+        if (typeof number === 'number' && !isNaN(number)) {
+            const formattedString = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return formattedString.replace(/\.00$/, '');
+        }
+    }
 
     const areaValue = [
         {
@@ -28,16 +42,16 @@ const SidebarFilter = ({setState}) => {
     const handleSetArea = (e) => {
         const selectedAreaId = Number(e.target.value);
         const selectedArea = areaValue.find((item) => item.id === selectedAreaId);
-       setState((prevState) => ({
-           ...prevState,
-           areaFrom: selectedArea.areaFrom,
-           areaTo: selectedArea.areaTo
-       }))
+        setState((prevState) => ({
+            ...prevState,
+            areaFrom: selectedArea.areaFrom,
+            areaTo: selectedArea.areaTo
+        }))
     }
 
-    const handleRangeChange = ({ min, max }) => {
+    const handleRangeChange = ({min, max}) => {
         // Update the state or perform any other necessary actions
-        console.log("API call with range:", { min, max });
+        console.log("API call with range:", {min, max});
         setState((prevState) => ({
             ...prevState,
             priceFrom: min,
@@ -45,7 +59,23 @@ const SidebarFilter = ({setState}) => {
         }))
     };
 
+    const [topSpaces, setTopSpaces] = useState([])
 
+    useEffect(() => {
+        const fetchTopSpaces = async () => {
+            const spaceParam = {
+                status: 4
+            };
+            const topSpaces = await spaceServices.getSpace(spaceParam);
+            if (topSpaces?.status === 200) {
+                const spaces = topSpaces?.data?.listSpaces;
+                console.log(spaces)
+                setTopSpaces(spaces)
+            } else
+                notify("Không tìm thấy phòng nào!");
+        }
+        fetchTopSpaces();
+    }, [])
 
 
     return (
@@ -91,7 +121,7 @@ const SidebarFilter = ({setState}) => {
                 <div className="pb-4 h-[120px]">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Giá: </p>
 
-                    <MultiRangeSlider min={100000} max={12000000}  onRangeChange={handleRangeChange}/>
+                    <MultiRangeSlider min={100000} max={12000000} onRangeChange={handleRangeChange}/>
 
                 </div>
             </div>
@@ -102,59 +132,22 @@ const SidebarFilter = ({setState}) => {
                 </div>
 
                 {/*Space hight rate*/}
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
+                {topSpaces.length > 0 ? topSpaces.map(space => {
+                    return ( <Link key={space?.id} to={`${space?.id}`}>
+                        <div
+                            className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
+                            <img className="w-full h-[60px] object-cover col-span-1 rounded-lg"
+                                 src={space?.images[0].imageUrl}
+                                 alt={space?.images[0].imageId}/>
+                            <div className="col-span-3 flex flex-col justify-between">
+                                <p className="text-sm text-primaryColor font-semibold">{space?.categoryId?.categoryName}</p>
+                                <p className="text-xm font-bold text-textBoldColor">{formatNumber(space?.price) + 'đ'}<span
+                                    className="text-[#d4d4d4] font-thin">/ tháng</span></p>
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>)
+                }) : <p className="text-lg font-bold text-primaryColor text-center">Không Có Phòng Nào</p>}
 
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://cafefcdn.com/thumb_w/640/pr/2022/photo1661937906060-1661937906180659152859-63797578230425.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Văn Phòng</p>
-                            <p className="text-xm font-bold text-textBoldColor">2.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://danviet.mediacdn.vn/296231569849192448/2021/5/10/nha-cho-thue-nguyen-can-16206399961522129160390.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Nhà Ở</p>
-                            <p className="text-xm font-bold text-textBoldColor">5.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
             </div>
         </>
 

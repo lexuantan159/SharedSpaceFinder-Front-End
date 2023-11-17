@@ -21,7 +21,7 @@ const LogIn = () => {
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
-            notify(location.state?.toastMessage, 'success');
+            notify(location.state?.toastMessage, 'error');
             navigate(location.pathname, {replace: true, state: {}});
         }
     }, []);
@@ -38,6 +38,7 @@ const LogIn = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         // fetch api login
+        console.log({email, password})
         const loginResponse = await authService.login(email, password)
         console.log(loginResponse)
         if (loginResponse?.status === 200) {
@@ -76,7 +77,6 @@ const LogIn = () => {
                                type="email" placeholder="email@gmail.com"
                                pattern=".+@gmail\.com" size="30"
                                title="Vui lòng nhập đúng địa chỉ email với đuôi @gmail.com"
-                               autoComplete
                                required
                                value={email}
                                onChange={(e) => setEmail(e.target.value)}/>

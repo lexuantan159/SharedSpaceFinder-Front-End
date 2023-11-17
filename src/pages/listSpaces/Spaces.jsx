@@ -7,7 +7,7 @@ import LayoutListSpaces from "../../layouts/LayoutListSpaces";
 import * as serviceSpaces from '../../services/spaces'
 import {toast} from "react-toastify";
 
-const Spaces = () => {
+const Spaces = ({type = "None"}) => {
 
     const initialState = {
         categoryId: null,
@@ -74,7 +74,6 @@ const Spaces = () => {
                 Object.entries(state).filter(([_, value]) => value !== null && value !== undefined)
             );
             // Kết quả là một object chỉ chứa các tham số không phải là null hoặc undefined
-            console.log(filteredParams);
             const response = await serviceSpaces.getSpace(filteredParams)
             if (response?.status === 200)
                 setSpaces(response?.data?.listSpaces)
@@ -112,7 +111,7 @@ const Spaces = () => {
                 </div>
             </div>
             {/*Layout display item */}
-            <LayoutListSpaces initialState={initialState} setCategory={setCategoryID} setResetAddress={setResetAddress}
+            <LayoutListSpaces type={type} initialState={initialState} setCategory={setCategoryID} setResetAddress={setResetAddress}
                               state={state} setState={setState} spacesList={spaces}/>
         </div>
     )

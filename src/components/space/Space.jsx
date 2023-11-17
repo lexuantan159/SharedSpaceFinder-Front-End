@@ -8,11 +8,16 @@ import {
     faStar,
     faUserGroup
 } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import AuthContext from "../../context/authProvider";
+import {toast} from "react-toastify";
+import * as favouritesService from "../../services/favourite"
 
 const Space = ({typeSpace = "none", spaceValue}) => {
-
+    const {auth} = useContext(AuthContext);
+    const [saved, setSaved] = useState(false)
+    const navigate = useNavigate();
     const cutOverLetter = (string, limit) => {
         const dots = "...";
         if (string.length > limit) {
@@ -22,12 +27,75 @@ const Space = ({typeSpace = "none", spaceValue}) => {
         return string;
     }
 
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
-            const formattedString = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const formattedString = number.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
             return formattedString.replace(/\.00$/, '');
         }
     }
+
+
+    useEffect(() => {
+        if(auth.hasOwnProperty("accessToken")) {
+            const fetchSetIsSaved = async () => {
+                const accessToken = auth.accessToken
+                const params = {
+                    spaceId: spaceValue?.id
+                }
+                const responseFavourite = await favouritesService.getFavourite(params,accessToken)
+                if(responseFavourite?.data?.status === 200) {
+                    const isSaved = responseFavourite?.data?.saved;
+                    isSaved && setSaved(true)
+                }else {
+                    console.log(responseFavourite?.response)
+                }
+            }
+            fetchSetIsSaved();
+
+        }
+    }, [])
+
+
+    const handleSaveSpace = async (e) => {
+        // Prevent the click event from propagating to the parent link
+        e.preventDefault();
+        e.stopPropagation();
+        // Call api
+        if(auth.hasOwnProperty("accessToken")) {
+            const params = {
+                spaceId: spaceValue?.id
+            }
+            const accessToken = auth.accessToken
+            if(saved) {
+                const updateSaved = await favouritesService.updateFavourite(params,accessToken)
+                if(updateSaved?.data?.status === 200) {
+                    setSaved(prevSaved => !prevSaved)
+                }else {
+                    setSaved(prevSaved => !prevSaved)
+                }
+            }else{
+                const createFavourite = await favouritesService.createFavourite(params,accessToken)
+                // create successful
+                if(createFavourite?.data?.status === 200) {
+                    setSaved(prevSaved => !prevSaved)
+                }else {
+                    setSaved(prevSaved => !prevSaved)
+                }
+            }
+
+        }else {
+            navigate('/login', {state: {toastMessage: "Bạn cần phải đăng nhập mới có thể lưu bài viết!"}});
+        }
+    }
+
 
     return (
 
@@ -52,17 +120,19 @@ const Space = ({typeSpace = "none", spaceValue}) => {
                             </div>
                             <div className="font-bold">
                                 <span className="pr-3">Saved</span>
-                                <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
+                                <FontAwesomeIcon onClick={(e) => handleSaveSpace(e)} icon={faHeart}
+                                                 className={`${saved && "text-[#ff0000]" }`}/>
                             </div>
                         </div>
                     </div>
                     <div className="rounded-b-xl border-gray-400 border-[1px]">
                         <div className="px-3 py-3 ">
                             <p className="text-sm font-semibold text-primaryColor ">{spaceValue?.categoryId?.categoryName || "Null"}</p>
-                        <h4 className="text-xm font-bold text-textBoldColor ">{spaceValue?.ownerId?.name || "Tên Owner"}</h4>
+                            <h4 className="text-xm font-bold text-textBoldColor ">{spaceValue?.ownerId?.name || "Tên Owner"}</h4>
                             <div className="flex justify-between items-center mb-2">
-                                <p className="text-xm font-bold text-textBoldColor">{ formatNumber(spaceValue?.price) + "đ" || "Null"} <span
-                                    className="text-[#d4d4d4] font-thin">/ tháng</span></p>
+                                <p className="text-xm font-bold text-textBoldColor">{formatNumber(spaceValue?.price) + "đ" || "Null"}
+                                    <span
+                                        className="text-[#d4d4d4] font-thin">/ tháng</span></p>
                                 <img className="w-[40px] h-[40px] rounded-full mx-3"
                                      src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"
                                      alt="customer"></img>
