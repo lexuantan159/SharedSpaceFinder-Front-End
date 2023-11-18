@@ -18,7 +18,7 @@ const ItemFavoriteSpace = () => {
   const [isHoverHeart, setIsHoverHeart] = useState(false);
   return (
     <Link to="/spaces/:spaceId">
-      <div className="gap-4 py-8 border-t border-orange-600 ">
+      <div className="gap-4 py-8 border-b border-orange-600 ">
         <div className="w-full flex h-full flex-center hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2">
           <div className="w-2/5 h-[228px] relative ">
             <img

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import  ReactMapLG, {Marker,GeolocateControl ,FullscreenControl,NavigationControl } from 'react-map-gl';
+import ReactMapLG, {Marker, GeolocateControl, FullscreenControl, NavigationControl} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLocationDot} from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +16,7 @@ const MapBox = ({address = null}) => {
     })
 
     useEffect(() => {
-        if(address !== null){
+        if (address !== null) {
             // Construct the Mapbox Geocoding API URL
             const geocodingApiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
 
@@ -30,7 +30,7 @@ const MapBox = ({address = null}) => {
                     const longitude = coordinates[0];
 
                     setMarker({
-                        longitude:longitude,
+                        longitude: longitude,
                         latitude: latitude
                     });
                     setViewPort({
@@ -42,7 +42,7 @@ const MapBox = ({address = null}) => {
                 .catch(error => {
                     console.error('Error fetching data from Mapbox Geocoding API:', error);
                 });
-        }else {
+        } else {
             navigator.geolocation.getCurrentPosition((pos) => {
                 setViewPort({
                     latitude: pos.coords.latitude,
@@ -60,22 +60,22 @@ const MapBox = ({address = null}) => {
 
     return (
         <div className="">
-
-             <ReactMapLG
-                 import={'reactMap-gl'}
+            <ReactMapLG
+                import={'reactMap-gl'}
                 {...viewPort}
                 style={{width: "100%", height: 500}}
+
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 mapboxAccessToken={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-                transitionDuration = '200'
+                transitionDuration='200'
                 onMove={(evt => setViewPort(evt.viewState))}
             >
                 <Marker longitude={marker.longitude} latitude={marker.latitude}>
-                    <FontAwesomeIcon icon={faLocationDot} style={{color: "#ff0000",fontSize:'30px'}} />
+                    <FontAwesomeIcon icon={faLocationDot} style={{color: "#ff0000", fontSize: '30px'}}/>
                 </Marker>
-                 <GeolocateControl/>
-                 <FullscreenControl/>
-                 <NavigationControl/>
+                <GeolocateControl/>
+                <FullscreenControl/>
+                <NavigationControl/>
             </ReactMapLG>
         </div>
 

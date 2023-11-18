@@ -1,6 +1,6 @@
 import icons from "./icons"
 
-const  {HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineBookmark ,HiOutlineClipboardList,HiOutlinePencilAlt} = icons
+const  {HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineClipboardList,HiOutlinePencilAlt} = icons
 export const sidebarMenu = [
     {
         path: '/profile',
@@ -29,12 +29,6 @@ export const sidebarMenu = [
         text: 'Messenge',
         icons: <HiOutlineChatAlt size={23}/>
     },
-    {
-        
-        path: '/contact',
-        text: 'Liên hệ',
-        icons: <HiOutlineBookmark size={23}/>
-    },
-   
+
 ]
 export default sidebarMenu

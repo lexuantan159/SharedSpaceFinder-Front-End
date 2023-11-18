@@ -1,87 +1,153 @@
-import React, { useState} from "react";
-import InputFormV2 from "../../components/inputform/InputFormV2";
-import anonAvatar from '../../assets/images/avatar.jpg'
-import Button from "../../components/button/Button";
+import React from "react";
+import anonAvatar from "../../assets/images/avatar.jpg";
+import validate from "../../components/inputform/ValidateFields";
+import InputReadOnly from "../../components/inputform/InputReadOnly1"
+import InputFormV3 from "../../components/inputform/InputFormV3";
+
+import * as userService from "../../services/user"
+import AuthContext from "../../context/authProvider";
+import {useEffect, useContext,useState} from "react";
 
 
 const Editprofile = () => {
-    const [invalidFields, setinvalidFields] = useState([])
-    const [payload, setpayload] = useState({
-        name: '',
-        email:'',
-        phone:'',
-        date_of_birth:'',
-        address:'',
-        avatar:'',
-    })
-    // const handleUploadFile = (e) => { 
-    //     const image = e.target.files[0]
-    //  }
-    return  (
-        <div className="flex flex-col h-full items-center">
-            <h1 className='text-3x1 w-full text-start text-primaryColor font-medium py-4 border-b border-gray-200'> Chỉnh sửa Thông Tin Cá Nhân</h1>
-            <div className='w-3/5 flex items-center justify-center flex-auto'>
-            <div className="py-6 flex flex-col gap-4 w-full">
-                <InputFormV2
-                    name='name'
-                    setValue={setpayload} 
-                    setInvalidFields={setinvalidFields} 
-                    invaLidFields={invalidFields} 
-                    direction='flew-row'
-                    value={payload.name}
-                    label='Tên Hiển Thị'/>
-                <InputFormV2
-                    name='email'
-                    setValue={setpayload}
-                    setInvalidFields={setinvalidFields}
-                    invaLidFields={invalidFields}
-                    direction='flew-row'
-                    value={payload.email}
-                    label='Email'/>
-                <InputFormV2
-                    name='phone'
-                    setValue={setpayload}
-                    setInvalidFields={setinvalidFields}
-                    invaLidFields={invalidFields}
-                    direction='flew-row'
-                    value={payload.phone}
-                    label='Số Điện Thoại'/>
+  
+  const {auth} = useContext(AuthContext);
+  // const [name, setName] = useState(auth?.name || "");
+  // const {phone,setPhone} = useState("");
+  // const {dateOfBirth,setDateOfBirth} = useState("");
+  // const {address,setAddress} = useState("");
+  // const {avatar,setAvatar} = useState("");
+  const [invalidFields, setInvalidFields] = useState([]);
 
-                <InputFormV2
-                    name='date'
-                    setValue={setpayload}
-                    setInvalidFields={setinvalidFields}
-                    invaLidFields={invalidFields}
-                    direction='flew-row'
-                    value={payload.date_of_birth}
-                    label='Ngày Sinh'/>
-                <InputFormV2
-                    name='address'
-                    setValue={setpayload}
-                    setInvalidFields={setinvalidFields}
-                    invaLidFields={invalidFields}
-                    direction='flew-row mb-5'
-                    value={payload.address}
-                    label='Địa Chỉ'/>
-                <div className='flex mb-6'>
+  const [payload,setpayload] = useState({
+    name: auth?.name || '',
+    phone: '',
+    dateOfBirth: '',
+    address: auth?.address || '',
+    avatar: auth?.avatar,
+  });
+  
 
-                    <label className='w-48 flex-none' htmlFor='avatar'>Ảnh đại diện</label>
-                    <div>
-                        <img src={payload.avatar || anonAvatar} alt="avatar" className='w-28 h-28 rounded-full object-cover' />
-                        <input type="file" className="appearance-none my-4" id="avatar" />
-                        
+  const [user, setUser] = useState("");
+  useEffect(() => {
+      const getuser = async () => {
+          try {
+              const user = await userService.getcurrentuser(auth.accessToken);
+              setUser(user.data)
+              // console.log(user);
 
-                    </div>
-                </div>
-                <Button 
-                text='Cập Nhật'
-                bgColor='bg-blue-600'
-                textColor='text-white'
+          } catch (error) {
+              console.log("Error ", error);
+          }
+      }
+      getuser();
+  }, [])
+
+  const handleSubmit = async () => {
+    console.log(payload)
+  const result = validate(payload,setInvalidFields)
+  console.log(result)
+   }
+
+  
+  return (
+    <div className="flex h-full flex-col items-center">
+      <h1 className="text-3x1 w-full border-b border-gray-200 py-4 text-start font-medium text-primaryColor">
+        {" "}
+        Chỉnh sửa Thông Tin Cá Nhân
+      </h1>
+      <div className="flex w-3/5 flex-auto items-center justify-center">
+        <div className="flex w-full flex-col gap-4 py-6">
+          <InputReadOnly 
+            value={`#${user?.id}` || ""} 
+            direction="flex-row" 
+            label="Mã Thành Viên"
+            />
+          <InputFormV3
+            name="name"
+            setInvalidFields={setInvalidFields}
+            invaLidFields={invalidFields}
+            direction="flew-row"
+            value={payload.name}
+            setValue={setpayload}
+            label="Tên Hiển Thị"
+          />
+          <InputReadOnly 
+            value={user?.email || ""} 
+            direction="flex-row" 
+            label="Email"
+            />
+            <InputFormV3
+            name="phone"
+            setInvalidFields={setInvalidFields}
+            invaLidFields={invalidFields}
+            direction="flew-row"
+            value={payload.phone || user?.phone}
+            setValue={setpayload}
+            label="Số điện Thoại"
+          />
+          <InputFormV3
+            name="dateOfBirth"
+            setValue={setpayload}
+            setInvalidFields={setInvalidFields}
+            invaLidFields={invalidFields}
+            direction="flew-row"
+            value={payload.dateOfBirth || user?.dateOfBirth}
+            label="Ngày sinh"
+          /> 
+           <InputFormV3
+            name="address"
+            setValue={setpayload}
+            setInvalidFields={setInvalidFields}
+            invaLidFields={invalidFields}
+            direction="flew-row"
+            value={payload.address}
+            label="Địa chỉ"
+          />  
+
+
+
+          {/* <div className="flex" >
+                <label className='font-medium w-[192px] flex-none' htmlFor="fullname">Tên Hiển Thị</label>
+                <input
+                type='name'
+                id='fullname'
+                className='outline-none border border-gray-300 rounded-md p-2 flex-auto'
+                
+                value={name} 
+                onChange={(e) => setName(e.target.value)}
+
                 />
+            </div> */}
+           
+          <div className="mb-6 flex">
+            <label className="w-48 flex-none font-medium" htmlFor="avatar">
+              Ảnh đại diện
+            </label>
+            <div>
+              <img
+                src={user?.avatar || anonAvatar}
+                alt="avatar"
+                className="h-28 w-28 rounded-full object-cover"
+              />
+              <input type="file" className="my-4 appearance-none" id="avatar" />
             </div>
-            </div>
-        </div>
-    )
-}
+          </div>
+           
+              
 
-export  default Editprofile;
+
+          <button className="w-full rounded-md bg-green-600 px-2 py-2 text-white hover:underline" 
+           onClick={handleSubmit}
+         
+          >
+            Tiếp Tục
+            
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Editprofile;

@@ -12,13 +12,15 @@ const ManagePostHome = () => {
             className="px-2 py-1 mx-4 border border-gray-200 outline-none rounded-md bg-gray-100 "
             placeholder="Tìm Kiếm"
           />
-          <Link to="/postspaces" >
+          <Link to="/post-spaces" >
           <button className="px-3 py-2 text-white bg-red-600 rounded-md hover:underline">
                 Đăng tin mới
               </button>
           </Link>
         </div>
       </div>
+
+
       <table class="w-full table-auto">
         <thead>
           <tr className="flex w-full bg-gray-100">
@@ -92,6 +94,9 @@ const ManagePostHome = () => {
           </tr> */}
         </tbody>
       </table>
+
+
+      
     </div>
   );
 };

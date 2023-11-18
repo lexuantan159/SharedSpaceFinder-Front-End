@@ -18,8 +18,8 @@ const HeaderManage = () => {
         SharedSpaceFinder
       </div>
       <div className="flex-auto">
-        <div className="w-screen flex h-[60px] bg-primaryColor text-white">
-          <div className="w-1100 flex h-full text-sm font-medium">
+        <div className="flex h-[60px] bg-primaryColor text-white">
+          <div className="flex h-full text-sm font-medium">
             {nav?.length > 0 &&
               nav.map((item, index) => {
                 return (
