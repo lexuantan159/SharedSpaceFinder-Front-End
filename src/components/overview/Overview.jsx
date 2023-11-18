@@ -1,8 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import SelectAddress from "../../components/selectAddress/SelectAddress";
 import InputFormV1 from "../../components/inputform/InputFormV1";
-
+import * as userService from "../../services/user"
+import AuthContext from "../../context/authProvider";
+import {useEffect, useContext,useState} from "react";
 const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
+
+
+  const {auth} = useContext(AuthContext);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+      const getuser = async () => {
+          try {
+              const user = await userService.getcurrentuser(auth.accessToken);
+              setUser(user.data)
+              // console.log(user);
+
+          } catch (error) {
+              console.log("Error ", error);
+          }
+      }
+      getuser();
+  }, [])
+
   const categories = [
     { id: 1, name: "Phòng Trọ" },
     { id: 2, name: "Văn Phòng" },
@@ -62,12 +82,14 @@ const Overview = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
               type="text"
               readOnly
               className="rounded-md border border-gray-200 bg-gray-100 p-2 outline-none"
+              value={user?.name} 
             />
             <label className="font-medium">Số Điện Thoại</label>
             <input
               type="text"
               readOnly
               className="rounded-md border border-gray-200 bg-gray-100 p-2 outline-none"
+              value={user?.phone}
             />
             <InputFormV1
               value={payload.price}
