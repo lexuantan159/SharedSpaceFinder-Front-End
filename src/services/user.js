@@ -1,50 +1,39 @@
-// import * as request from '../ultis/request';
+import * as request from '../ultils/request';
 
-// const USERS_ENDPOINT = "/users/current-user"
+const USERS_ENDPOINT = "/api/users/current-user"
 
-// export const getcurrentuser = async (accessToken) => {
-//     try {
-//         const response = await request.get(USERS_ENDPOINT, {
-//             headers: { Authorization: `Bearer ${accessToken}` },
-//         });
-//         return {    
-//             fullname: response.data.userData.fullname,
-//             email: response.data.userData.email,
-//             address: response.data.userData.address,
-//             phone: response.data.userData.phone,
-//             date_of_birth: response.data.userData.date_of_birth,
-//             avatar: response.data.userData.avatar,
-//         };
-//     } catch (error) {
-//         return error
-//     }
-// };
+export const getcurrentuser = async (accessToken) => {
+    try {
+        const response = await request.getWithHeader(USERS_ENDPOINT, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        return response
+    } catch (error) {
+        return error
+    }
+};
 
-// const EDID_USERS = '/users/edit-profile/';
-// export const EditProfile = async (accessToken, email, fullname,phone,address,date_of_birth,avatar) => {
-//     try {
-//         const response = await request.put(
-//             EDID_USERS,
-//             {
-//                 headers: { Authorization: `Bearer ${accessToken}` },
-//             },
-//             {
-//                 fullname: fullname,
-//                 email: email,
-//                 address: address,
-//                 phone: phone,
-//                 date_of_birth: date_of_birth,
-//                 avatar: avatar,
 
-//             },
-            
-//         );
+const EDIDIT_USERS = "/api/users/edit-profile/"
 
-//         return {
-//             message: response.data.message,
-//             statusCode: response.status,
-//         };
-//     } catch (error) {
-//         return error
-//     }
-// };
+export const EditUser = async (accessToken,name, address,dateOfBirth, phone,avatar) => {
+    try {
+         
+        const response = await request.postWithoutHeader(EDIDIT_USERS,
+            {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            },
+            {
+                name:name,
+                phone: phone,
+                dateOfBirth: dateOfBirth,
+                address: address,
+                avatar:avatar
+            },
+
+            );
+        return response;
+    } catch (error) {
+        return error
+    }
+};

@@ -83,8 +83,8 @@ const Register = () => {
                     <h1 className="pt-12 text-4xl text-primaryColor font-bold text-center">Đăng Ký</h1>
                     <div className="w-[400px] h-[200px] mb-9 overflow-hidden mx-auto">
                         <img className="w-full h-full object-cover"
-                             src={require('../../assets/images/logoTransparent.png')} alt=""/><
-                    /div>
+                             src={require('../../assets/images/logoTransparent.png')} alt=""/>
+                             </div>
                     <div className="block md:flex md:justify-between">
                         <div className="w-full md:w-[45%] ">
                             <div className="w-full mb-4">

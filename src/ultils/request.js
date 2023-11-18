@@ -66,13 +66,3 @@ export const deleteWithHeader = async (endPoints, option = {}, header = {}) => {
     const response = await request.delete(endPoints, option, header);
     return response;
 };
-//put user
-// export const getUser = async (endPoints, option = {}) => {
-//     const response = await request.get(endPoints, option);
-//     return response;
-// };
-
-// export const put = async (endPoints, body = {}, header = {} ) => {
-//     const response = await request.put(endPoints, body, header);
-//     return response;
-// };

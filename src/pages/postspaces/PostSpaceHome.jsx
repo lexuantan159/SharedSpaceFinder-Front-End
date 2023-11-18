@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState}from "react";
 
 import { HiOutlineCamera } from "react-icons/hi";
 import MapBox from "../../components/map/MapBox";
@@ -9,6 +9,12 @@ import validate from "../../components/inputform/ValidateFields";
 
 
 const PostSpaceHome = () => {
+
+
+
+
+
+
   const [payload, setPayload] = useState({
     category_id: "",
     title: "",
@@ -23,6 +29,8 @@ const PostSpaceHome = () => {
   });
 
   const [invalidFields, setInvalidFields] = useState([])
+
+  
   
   const handleSubmit = async () => {
 
