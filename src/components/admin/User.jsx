@@ -1,27 +1,73 @@
-import {React, useState, useEffect} from "react";
+import {React, useState, useEffect,useContext} from "react";
 import axios from "axios";
+import * as adminsService from "../../services/admin"
+import AuthContext from "../../context/authProvider";
+import Modal from "../admin/ModalUser"
 
+//show list
 const User = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [rowToEdit, setRowToEdit] = useState(null);
   const [users, setUsers] = useState([]);
-  const baseURL = "http://localhost:8080/api/users/users";
+  const {auth,setAuth} = useContext(AuthContext)
+
   useEffect(() => {
-    axios({
-      url: baseURL,
-      method: "get",
-      withCredentials: false,
-      headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxdXkxQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl0sImlhdCI6MTcwMDA2NzUyMSwiZXhwIjoxNzAwMjQwMzIxfQ.gOtjwa6PWQQxzZPCWOzLTVwqMTZBBTI5krhoBpH6lHHvuY6dPYTdtpfUMiAFMIgjbVXpWAc0woAoOvXfvJZ-wA',
-        "Content-Type": "application/json"
+ 
+    const fetchUser = async () => {
+      const accessToken = auth.accessToken
+      const param = {
+
       }
-    }).then((response) => {
-      setUsers(response.data.listUsers);
-    });
-  }, []);
+
+      const responseUser = await adminsService.getUser(param,accessToken)
+
+      if(responseUser?.status === 200) {
+        setUsers(responseUser.data.listUsers);
+      }else {
+        console.log(responseUser);
+      }
+
+    }
+    fetchUser()
+
+  }, [auth]);
+
+    useEffect(() => {
+      const myDataString = localStorage.getItem('auth');
+      if ( myDataString !== null ) {
+          const myDataObject = JSON.parse(myDataString);
+          setAuth(myDataObject);
+      }else {
+          setAuth({});
+      }
+  },[]);
 
 //edit user
 const [editingUser, setEditingUser] = useState(null);
-const handleEdit = (user) => {
-  setEditingUser(user);
+
+const handleSubmit = (newRow) => {
+  rowToEdit === null
+    ? setUsers([...users, newRow])
+    : setUsers(
+        users.map((currRow, idx) => {
+          if (idx !== rowToEdit) return currRow;
+
+          return newRow;
+        })
+      );
+};
+
+const handleEdit = async (user) => {
+  setModalOpen(true);
+  setRowToEdit(user.id);
+  console.log(user.id);
+  const accessToken = auth.accessToken
+      const param = {
+          userId: user,
+          role: "R2"
+      }
+      const responseUpdate = await adminsService.updateUser(param,accessToken);
+          console.log(responseUpdate);
 };
 
 const handleSave = (editedUser) => {
@@ -29,7 +75,7 @@ const handleSave = (editedUser) => {
     user.id === editedUser.id ? editedUser : user
   );
   setUsers(updatedUsers);
-  setEditingUser(null); // Close the editing window/modal after saving
+  setEditingUser(null); 
 };
 
   //delete user
@@ -40,7 +86,7 @@ const handleSave = (editedUser) => {
         withCredentials: false,
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxdXkxQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl0sImlhdCI6MTcwMDA2NzUyMSwiZXhwIjoxNzAwMjQwMzIxfQ.gOtjwa6PWQQxzZPCWOzLTVwqMTZBBTI5krhoBpH6lHHvuY6dPYTdtpfUMiAFMIgjbVXpWAc0woAoOvXfvJZ-wA",
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxdXkxQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFkbWluIl0sImlhdCI6MTcwMDM2MTUyOSwiZXhwIjoxNzAwNTM0MzI5fQ.846lz8sUyYMKdM42EbPqAG9J3emByqpg7oQUxNQfxg8wlHJW-DKcQbwIN7zZJ01vDwm1xE4lnGfw4_U5XGfhAg",
           "Content-Type": "application/json",
         },
       },
@@ -61,7 +107,7 @@ const handleSave = (editedUser) => {
       </div>
         
    
-          <table class="w-full table-auto bg-white">
+          <table className="w-full table-auto bg-white">
             <thead>
               <tr className="flex w-full bg-gray-100">
                 <th className="border flex-1 p-2 text-black ">ID</th>
@@ -69,17 +115,19 @@ const handleSave = (editedUser) => {
                 <th className="border flex-1 p-2 text-black ">Email</th>
                 <th className="border flex-1 p-2 text-black ">Phone</th>
                 <th className="border flex-1 p-2 text-black ">Address</th>
+                <th className="border flex-1 p-2 text-black ">Role</th>
                 <th className="border flex-1 p-2 text-black ">Tùy Chọn</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr className="flex items-center h-16" data-index={index}>
+                <tr key= {index} className="flex items-center h-16" data-index={index}>
                   <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.id}</td>
                   <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.name}</td>
                   <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.email}</td>
                   <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.phone}</td>
                   <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.address}</td>
+                  <td className="border px-2 flex-1 h-full flex justify-center items-center">{user.role}</td>
                   <td className="border px-2 flex-1 h-full flex items-center justify-center gap-4">
               <button className="px-2 py-1 text-white bg-green-600 rounded-md hover:underline" onClick={()=>handleEdit(user.id)} >
                 Sửa
@@ -93,22 +141,26 @@ const handleSave = (editedUser) => {
             </tbody>
           </table>
 
-          {editingUser && (
-        <div>
-          <h2>Edit User</h2>
-          <label>Role:</label>
-          <input
-            type="text"
-            value={editingUser.role}
-            onChange={(e) =>
-              setEditingUser({ ...editingUser, name: e.target.value })
-            }
-          />
-          <button className=" border px-3 bg-green-600 rounded-md hover:underline" onClick={() => handleSave(editingUser)}>Save</button>
-        </div>
-      )}
+          
+        
+     
+      {modalOpen }
+      <div>
+      {modalOpen && (
+            <Modal
+              closeModal={() => {
+                setModalOpen(false);
+                setRowToEdit(null);
+                
+              }}
+              onSubmit={handleSubmit}
+              defaultValue={rowToEdit !== null && users[rowToEdit]}
+            />
+          )}
+      </div>
           
     </div>
+    
         
     )
 }

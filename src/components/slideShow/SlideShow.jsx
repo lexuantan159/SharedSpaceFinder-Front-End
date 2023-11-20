@@ -7,7 +7,7 @@ import Feedback from "../feedback/Feedback";
 import TitlePart from "../titlePart/TitlePart";
 
 
-const SlideShow = ({typeSlide = "space" , titlePart , background = false}) => {
+const SlideShow = ({typeSlide = "space" , typeSpace="none", titlePart , background = false}) => {
 
     const settings = {
         dots: true,
@@ -49,11 +49,11 @@ const SlideShow = ({typeSlide = "space" , titlePart , background = false}) => {
     const renderSlides = () => {
         if (typeSlide === "space") {
             return [
-                <Space key={1}/>,
-                <Space key={2}/>,
-                <Space key={3}/>,
-                <Space key={4}/>,
-                <Space key={5}/>
+                <Space key={1} typeSpace={typeSpace}/>,
+                <Space key={2} typeSpace={typeSpace}/>,
+                <Space key={3} typeSpace={typeSpace}/>,
+                <Space key={4} typeSpace={typeSpace}/>,
+                <Space key={5} typeSpace={typeSpace}/>
             ]
         } else if (typeSlide === "feedback") {
             return [
@@ -73,7 +73,7 @@ const SlideShow = ({typeSlide = "space" , titlePart , background = false}) => {
         <div className={`${background ? "py-12 bg-[#F7F8F9]" : ""}`}>
             <TitlePart title={titlePart} subTitle="Lựa Chọn Nhanh Chóng"
                        subDesc="Khám phá đa dạng vô tận: Danh mục định hình thế giới"/>
-            <div className="max-w-[1200px] mx-auto my-9 px-10">
+            <div className="max-w-[1200px] mx-auto my-24 px-10">
                 <Slider {...settings}>
                     {renderSlides()}
                 </Slider>

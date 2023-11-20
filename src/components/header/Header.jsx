@@ -1,28 +1,60 @@
 import React from 'react';
-import {Link} from "react-router-dom";
-import {useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useState, useEffect, useContext} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowRightFromBracket, faCommentDots, faHeart, faShare, faUser} from '@fortawesome/free-solid-svg-icons';
+import AuthContext from "../../context/authProvider";
+import * as authServices from "../../services/auth"
+import {toast} from "react-toastify";
 
 const Header = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isLogin, setIsLogin] = useState(false)
     const [isDropdown, setIsDropdown] = useState(true)
+    const [user, setUser] = useState({})
+    const {setAuth} = useContext(AuthContext)
+    const navigate = useNavigate();
 
+
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    useEffect(() => {
+        const myDataString = localStorage.getItem('auth');
+        if ( myDataString !== null ) {
+            const myDataObject = JSON.parse(myDataString);
+            setAuth(myDataObject);
+            setIsLogin(true)
+            setUser(myDataObject);
+        }else {
+            setIsLogin(false);
+        }
+    },[]);
+
+    const handleLogout = async (e) => {
+        const fetchLogout = await authServices.logOut();
+        if(fetchLogout?.status === 200) {
+            localStorage.removeItem("auth");
+            navigate('/login', {state: {toastMessage: "Đăng Xuất Thành Công!"}})
+        }else {
+            console.log(fetchLogout?.response)
+            notify("Đăng Xuất Thất Bại!", "error")
+        }
+
+    }
 
     return (
         <header className="shadow">
-            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6 py-2.5">
+            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6">
                 <div className="w-full flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                    <Link to="/" className="flex items-center">
-                        {/*<img*/}
-                        {/*    src="https://flowbite.com/docs/images/logo.svg"*/}
-                        {/*    className="mr-3 h-6 sm:h-9"*/}
-                        {/*    alt="Flowbite Logo"*/}
-                        {/*/>*/}
-                        <span className="text-primaryColor self-center text-xl font-semibold whitespace-nowrap ">
-                             SharedSpaceFinder
-                        </span>
+                    <Link to="/" className="flex items-center h-[80px] w-[200px] overflow-hidden">
+                        <img
+                            src={require('../../../src/assets/images/logoTransparent.png')}
+                            className=""
+                            alt="SharedSpaceFinder Logo"
+                        />
                     </Link>
                     <div className="flex items-center lg:order-2">
                         {/*not login*/}
@@ -34,50 +66,51 @@ const Header = () => {
                                     onClick={() => setIsDropdown(!isDropdown)}>
 
                                 <span className="text-sm font-medium">
-                                    Name User
+                                    {user?.name || "Name User"}
                                 </span>
-                                <img className="w-[40px] h-[40px] rounded-full mx-3"
-                                     src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                                <img className="w-[35px] h-[35px] rounded-full mx-3"
+                                     src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
                                      alt="customer"></img>
                                 <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                          stroke-width="2" d="m1 1 4 4 4-4"/>
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+                                          strokeWidth="2" d="m1 1 4 4 4-4"/>
                                 </svg>
                             </button>
 
                             {/*<!-- Dropdown menu -->*/}
                             <div id="dropdown"
-                                 className={`${isDropdown ? 'hidden' : 'block'} absolute top-18 left-0 right-0 z-10 bg-white divide-gray-100 rounded-lg shadow `}>
+                                 className={`${isDropdown ? 'hidden' : 'block'} absolute top-18 left-0 -right-5 z-10 bg-white divide-gray-100 rounded-lg shadow `}>
                                 <ul className="py-2 px-2 text-sm text-gray-700 font-semibold"
                                     aria-labelledby="dropdownDefaultButton">
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faUser}/>
-                                        <Link to="/"
-                                              className="block pr-4 py-2">Profile</Link>
+                                        <Link to="/profile"
+                                              className="block pr-4 py-2">Thông Tin Cá Nhân</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faHeart}/>
-                                        <Link to="/"
-                                              className="block pr-4 py-2">Favorite Spaces</Link>
+                                        <Link to="/favorite-space"
+                                              className="block pr-4 py-2">Không Gian Yêu Thích</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faShare}/>
-                                        <Link to="/"
-                                              className="block pr-4 py-2">Sharing</Link>
+                                        <Link to="/sharing"
+                                              className="block pr-4 py-2">Chia Sẻ Không Gian</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
-                                        <Link to="/"
+                                        <Link to="/messenger"
                                               className="block pr-4 py-2">Chat</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faArrowRightFromBracket}
                                                          rotation={180}/>
-                                        <Link to="/"
-                                              className="block pr-4 py-2">Sign
-                                            out</Link>
+                                        <button
+                                              className="block pr-4 py-2"
+                                              onClick={(e) => {handleLogout(e)}}
+                                        >Đăng Xuất</button>
                                     </li>
                                 </ul>
                             </div>
@@ -85,13 +118,13 @@ const Header = () => {
                             to="/login"
                             className="text-gray-800 hover:bg-gray-300 transition-all hover:text-primaryColor font-bold rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 "
                         >
-                            LogIn
+                            Đăng Nhập
                         </Link>
                             <Link
                                 to="/register"
-                                className="text-white bg-primaryColor transition-all font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hover:opacity-90"
+                                className="text-white bg-primaryColor transition-all font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 hover:bg-primaryColor/90"
                             >
-                                SignUp
+                                Đăng Ký
                             </Link></>}
 
 

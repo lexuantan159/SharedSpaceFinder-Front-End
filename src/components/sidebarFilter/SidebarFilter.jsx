@@ -1,8 +1,83 @@
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import MultiRangeSlider from "../rangeSlider/MultipleRangeSlider";
+import * as spaceServices from "../../services/spaces";
+import {toast} from "react-toastify";
 
 
-const SidebarFilter = () => {
+const SidebarFilter = ({setState}) => {
+
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    const formatNumber = (number) => {
+        if (typeof number === 'number' && !isNaN(number)) {
+            const formattedString = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return formattedString.replace(/\.00$/, '');
+        }
+    }
+
+    const areaValue = [
+        {
+            id: 1,
+            areaFrom: 0,
+            areaTo: 20
+        }, {
+            id: 2,
+            areaFrom: 20,
+            areaTo: 40
+        }, {
+            id: 3,
+            areaFrom: 40,
+            areaTo: 60
+        }, {
+            id: 4,
+            areaFrom: 60,
+            areaTo: 80
+        },
+    ]
+
+    const handleSetArea = (e) => {
+        const selectedAreaId = Number(e.target.value);
+        const selectedArea = areaValue.find((item) => item.id === selectedAreaId);
+        setState((prevState) => ({
+            ...prevState,
+            areaFrom: selectedArea.areaFrom,
+            areaTo: selectedArea.areaTo
+        }))
+    }
+
+    const handleRangeChange = ({min, max}) => {
+        // Update the state or perform any other necessary actions
+        console.log("API call with range:", {min, max});
+        setState((prevState) => ({
+            ...prevState,
+            priceFrom: min,
+            priceTo: max
+        }))
+    };
+
+    const [topSpaces, setTopSpaces] = useState([])
+
+    useEffect(() => {
+        const fetchTopSpaces = async () => {
+            const spaceParam = {
+                status: 4
+            };
+            const topSpaces = await spaceServices.getSpace(spaceParam);
+            if (topSpaces?.status === 200) {
+                const spaces = topSpaces?.data?.listSpaces;
+                console.log(spaces)
+                setTopSpaces(spaces)
+            } else
+                notify("Không tìm thấy phòng nào!");
+        }
+        fetchTopSpaces();
+    }, [])
+
+
     return (
         <>
             {/*Filter*/}
@@ -15,50 +90,39 @@ const SidebarFilter = () => {
                     <div className="grid grid-cols-2 gap-3 pl-4 ">
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={1}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">0m<sup>2</sup> - 20m<sup>2</sup></label>
+                        </div>
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={2}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">20m<sup>2</sup> - 40m<sup>2</sup></label>
                         </div>
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={3}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">40m<sup>2</sup> - 60m<sup>2</sup></label>
                         </div>
                         <div className="">
                             <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={4}
+                                   onClick={(e) => handleSetArea(e)}
                                    name="dientich"/>
                             <label className="pl-2" htmlFor="">60m<sup>2</sup> - 80m<sup>2</sup></label>
                         </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">80m<sup>2</sup> - 100m<sup>2</sup></label>
-                        </div>
                     </div>
                 </div>
-                <div className="pb-4">
+                <div className="pb-4 h-[120px]">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Giá: </p>
-                    <div className="grid grid-cols-2 gap-3 pl-4 ">
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">0 - 2.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">2.5tr - 4.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">4.5tr - 6.5tr</label>
-                        </div>
-                        <div className="">
-                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                   name="dientich"/>
-                            <label className="pl-2" htmlFor="">6.5tr - 8.5tr</label>
-                        </div>
-                    </div>
+
+                    <MultiRangeSlider min={100000} max={12000000} onRangeChange={handleRangeChange}/>
+
                 </div>
             </div>
             {/* Top Rate   */}
@@ -68,59 +132,22 @@ const SidebarFilter = () => {
                 </div>
 
                 {/*Space hight rate*/}
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
+                {topSpaces.length > 0 ? topSpaces.map(space => {
+                    return ( <Link key={space?.id} to={`${space?.id}`}>
+                        <div
+                            className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
+                            <img className="w-full h-[60px] object-cover col-span-1 rounded-lg"
+                                 src={space?.images[0].imageUrl}
+                                 alt={space?.images[0].imageId}/>
+                            <div className="col-span-3 flex flex-col justify-between">
+                                <p className="text-sm text-primaryColor font-semibold">{space?.categoryId?.categoryName}</p>
+                                <p className="text-xm font-bold text-textBoldColor">{formatNumber(space?.price) + 'đ'}<span
+                                    className="text-[#d4d4d4] font-thin">/ tháng</span></p>
+                            </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>)
+                }) : <p className="text-lg font-bold text-primaryColor text-center">Không Có Phòng Nào</p>}
 
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
-                <Link to="/">
-                    <div
-                        className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
-                        <img className="w-full h-auto object-cover col-span-1 rounded-lg"
-                             src="https://xaydungthuanphuoc.com/wp-content/uploads/2022/09/mau-phong-tro-co-gac-lung-dep2022-5.jpg"
-                             alt=""/>
-                        <div className="col-span-3 flex flex-col justify-between">
-                            <p className="text-sm text-primaryColor font-semibold">Phòng Trọ</p>
-                            <p className="text-xm font-bold text-textBoldColor">1.450.000 <span
-                                className="text-[#d4d4d4] font-thin">/ tháng</span></p>
-                        </div>
-                    </div>
-                </Link>
             </div>
         </>
 

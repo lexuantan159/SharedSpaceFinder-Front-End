@@ -36,6 +36,10 @@ const PostSpace = () => {
             </tbody>
             </div>
         
+
+        <div>
+            <h2>Post Space</h2>
+        </div>
         </>
         
     )

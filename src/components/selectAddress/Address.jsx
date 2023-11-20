@@ -2,7 +2,7 @@ import SelectAddress from "./SelectAddress";
 import React, {useEffect, useState} from "react";
 import {getDistrict, getProvinces, getWard} from "../../services/address";
 
-const Address = ( {setAddress , hiddenTitle = false}) => {
+const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setResetAddress}) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -13,13 +13,31 @@ const Address = ( {setAddress , hiddenTitle = false}) => {
     const [wardId, setWardId] = useState("")
 
     useEffect(() => {
+        if (resetAddress) {
+            setProvinces([])
+            setDistricts([])
+            setWards([])
+            setProvinceId("")
+            setDistrictId("")
+            setWardId("")
+        }
+
+    }, [resetAddress]);
+
+
+    useEffect(() => {
         const fetchProvince = async () => {
             const provincesResponse = await getProvinces();
-            if(provincesResponse.status === 200)
+            if (provincesResponse.status === 200)
                 setProvinces(provincesResponse?.data?.results)
+            setDistricts([])
+            setWards([])
+            setDistrictId("")
+            setWardId("")
+            setResetAddress(false)
         }
         fetchProvince()
-    }, [])
+    }, [resetAddress])
 
 
     useEffect(() => {
@@ -27,19 +45,19 @@ const Address = ( {setAddress , hiddenTitle = false}) => {
         const fetchDistricts = async () => {
 
             const districtResponse = await getDistrict(provinceId);
-            if(districtResponse.status === 200)
+            if (districtResponse.status === 200)
                 setDistricts(districtResponse?.data?.results)
+            setWards([])
+            setWardId("")
         }
         provinceId && fetchDistricts()
-
 
     }, [provinceId])
 
     useEffect(() => {
-
         const fetchWards = async () => {
             const wardResponse = await getWard(districtId);
-            if(wardResponse.status === 200)
+            if (wardResponse.status === 200)
                 setWards(wardResponse?.data?.results)
         }
         districtId && fetchWards()
@@ -50,17 +68,20 @@ const Address = ( {setAddress , hiddenTitle = false}) => {
     useEffect(() => {
         const fullAddress = `${wardId ? `${wards.find((item) => item.ward_id === wardId)?.ward_name},` : ''} ${districtId ? `${districts.find((item) => item.district_id === districtId)?.district_name},` : ''} ${provinceId ? `${provinces.find((item) => item.province_id === provinceId)?.province_name}` : ''}`
         setAddress(fullAddress)
-    }, [provinceId , districtId, wardId]);
+    }, [provinceId, districtId, wardId]);
 
 
     return (
-       <>
-           <SelectAddress hiddenTitle={hiddenTitle} type="province" value={provinceId} setValue={setProvinceId} label="Tỉnh / Thành Phố" options={provinces}/>
-           <SelectAddress hiddenTitle={hiddenTitle} type="district" value={districtId} setValue={setDistrictId} label="Quận / Huyện" options={districts} />
-           <SelectAddress hiddenTitle={hiddenTitle} type="ward" value={wardId} setValue={setWardId} label="Phường / Xã" options={wards} />
-       </>
+        <>
+            <SelectAddress hiddenTitle={hiddenTitle} type="province" value={provinceId} setValue={setProvinceId}
+                           label="Tỉnh / Thành Phố" options={provinces}/>
+            <SelectAddress hiddenTitle={hiddenTitle} type="district" value={districtId} setValue={setDistrictId}
+                           label="Quận / Huyện" options={districts}/>
+            <SelectAddress hiddenTitle={hiddenTitle} type="ward" value={wardId} setValue={setWardId} label="Phường / Xã"
+                           options={wards}/>
+        </>
     )
 }
 
 
-export  default Address
+export default Address

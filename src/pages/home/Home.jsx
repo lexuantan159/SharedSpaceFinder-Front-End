@@ -1,10 +1,25 @@
 
 import TitlePart from "../../components/titlePart/TitlePart";
 import Categories from "../../components/categories/Categories";
-import React from "react";
+import React, {useEffect} from "react";
 import SlideShow from "../../components/slideShow/SlideShow";
+import {useLocation, useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const Home = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
+    useEffect(() => {
+        if (location.state?.toastMessage !== '') {
+            notify(location.state?.toastMessage, 'success');
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+    }, []);
 
 
     return (
@@ -22,8 +37,12 @@ const Home = () => {
             {/*    */}
 
 
-            <SlideShow typeSlide='space' titlePart="Không Gian Nổi Trội"/>
+            <SlideShow typeSlide='space' typeSpace="Top Rate" titlePart="Không Gian Nổi Trội"/>
 
+            {/**/}
+            {/*<div className="h-[300px] w-full mb-100 bg-cover bg-fixed bg-center bg-[url('https://e.khoahoc.tv/photos/image/2016/02/25/thien-nhien-650.jpg')]" >*/}
+            {/*    /!*<img className="w-full h-full " src="" alt="" />*!/*/}
+            {/*</div>*/}
             {/*feedback*/}
 
             <SlideShow typeSlide='feedback' titlePart="Phản Hồi Của Khách Hàng" background={true}/>
