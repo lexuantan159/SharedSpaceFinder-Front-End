@@ -50,7 +50,7 @@ const Modal = ({ closeModal, onSubmit, defaultValue }) => {
           if (e.target.className === "modal-container") closeModal();
         }}
       >
-        <div className="modal rounded p-8 bg-white w-96 " style={{border:" 1px solid #000"}} > 
+        <div className="modal rounded p-8 bg-white w-96">
           <h2 className="mb-2">Update Role</h2>
           <form>
             <div className="form-group flex flex-col mb-4">
