@@ -1,14 +1,9 @@
 import React, {useContext, useEffect, useState} from "react";
-import SidebarManage from "../../components/sidebarmanage/SidebarManage";
-// import Footer from "../../components/footer/Footer";
-
-// import HeaderManage from "../../components/header/HeaderManage";
 import ItemFavoriteSpace from "../../components/itemfavoritespace/ItemFavoriteSpace";
 import Pagination from "../../components/pagination/Pagination";
 import * as favouritesService from "../../services/favourite"
 import AuthContext from "../../context/authProvider";
 import {toast} from "react-toastify";
-import {accessToken} from "mapbox-gl";
 
 const FavoriteSpace = () => {
     const [favorites, setFavorites] = useState([])
