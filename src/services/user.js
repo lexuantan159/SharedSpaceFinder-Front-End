@@ -5,7 +5,11 @@ const USERS_ENDPOINT = "/api/users/current-user"
 export const getcurrentuser = async (accessToken) => {
     try {
         const response = await request.get(USERS_ENDPOINT, {
-            headers: {Authorization: `Bearer ${accessToken}`},
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${accessToken}`
+            },
+            withCredentials: true
         });
         return response
     } catch (error) {

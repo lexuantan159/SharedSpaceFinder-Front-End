@@ -42,7 +42,6 @@ const Space = ({typeSpace = "none", spaceValue}) => {
         }
     }
 
-
     useEffect(() => {
         if(auth.hasOwnProperty("accessToken")) {
             const fetchSetIsSaved = async () => {

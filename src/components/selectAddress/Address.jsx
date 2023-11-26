@@ -2,7 +2,13 @@ import SelectAddress from "./SelectAddress";
 import React, {useEffect, useState} from "react";
 import {getDistrict, getProvinces, getWard} from "../../services/address";
 
-const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setResetAddress}) => {
+const Address = ({
+                     setAddress, hiddenTitle = false, resetAddress = false, setResetAddress = () => {
+    }, setProvince = () => {
+    }, setDistrict = () => {
+    }, setWard = () => {
+    }
+                 }) => {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -67,6 +73,18 @@ const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setRese
 
     useEffect(() => {
         const fullAddress = `${wardId ? `${wards.find((item) => item.ward_id === wardId)?.ward_name},` : ''} ${districtId ? `${districts.find((item) => item.district_id === districtId)?.district_name},` : ''} ${provinceId ? `${provinces.find((item) => item.province_id === provinceId)?.province_name}` : ''}`
+        // Kiểm tra và gọi các hàm setProvince, setDistrict, setWard nếu chúng đã được định nghĩa
+        if (setWard && wardId) {
+            setWard(wards.find((item) => item.ward_id === wardId)?.ward_name);
+        }
+
+        if (setDistrict && districtId) {
+            setDistrict(districts.find((item) => item.district_id === districtId)?.district_name);
+        }
+
+        if (setProvince && provinceId) {
+            setProvince(provinces.find((item) => item.province_id === provinceId)?.province_name);
+        }
         setAddress(fullAddress)
     }, [provinceId, districtId, wardId]);
 
