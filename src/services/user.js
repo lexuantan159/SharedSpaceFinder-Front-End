@@ -18,22 +18,20 @@ export const getcurrentuser = async (accessToken) => {
 };
 
 
-const EDIDIT_USERS = "/api/users/edit-profile/"
+const EDIT_PROFILE_ENDPOINT = "/api/users/edit-profile"
 
-export const EditUser = async (accessToken, name, address, dateOfBirth, phone, avatar) => {
+export const editProfile = async (payload,accessToken) => {
     try {
-
-        const response = await request.post(EDIDIT_USERS,
-            {
-                name: name,
-                phone: phone,
-                dateOfBirth: dateOfBirth,
-                address: address,
-                avatar: avatar
-            },
-            {
-                headers: {Authorization: `Bearer ${accessToken}`},
+        const response = await request.put(EDIT_PROFILE_ENDPOINT, 
+            
+           payload,
+           {
+            
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${accessToken}`
             }
+           }
         );
         return response;
     } catch (error) {
