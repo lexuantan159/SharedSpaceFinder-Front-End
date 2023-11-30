@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import anonAvatar from "../../assets/images/avatar.jpg";
+import AuthContext from "../../context/authProvider";
 import {
   faArrowsLeftRight,
   faBath,
@@ -11,11 +12,12 @@ import {
   faStar,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import * as spaceService from "../../services/spaces";
 import { createPortal } from "react-dom";
 import useClickOutSide from "../../hooks/useClickOutSide";
+import axios from "axios";
 
 const PostSpace = () => {
   const [isHoverHeart, setIsHoverHeart] = useState(false);
@@ -32,7 +34,6 @@ const PostSpace = () => {
       };
       const data = await spaceService.getSpace(param);
       setSpaces(() => data?.data?.listSpaces || []);
-      console.log(spaces);
     };
     fetchingSpaces();
   }, [statusId]);
@@ -197,7 +198,10 @@ const PostSpace = () => {
                         ref={nodeRef}
                         className="iconUpdate px-4 py-1 hover:bg-blue-700 hover:text-white"
                       >
-                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                        <FontAwesomeIcon
+                          className="pointer-events-none"
+                          icon={faEllipsisVertical}
+                        />
                       </button>
                     </div>
                   </div>
@@ -207,27 +211,53 @@ const PostSpace = () => {
           );
         })}
       {statusId == 3 && show && (
-        <DropdownUpdate space={space} coord={coord}></DropdownUpdate>
+        <DropdownUpdate
+          setSpaces={setSpaces}
+          space={space}
+          coord={coord}
+        ></DropdownUpdate>
       )}
     </div>
   );
 };
 
-const allowedSpace = {
-  id: 1,
-  status: "Đã Thuê",
-};
+function DropdownUpdate({ setSpaces, space, coord }) {
+  const { auth } = useContext(AuthContext);
+  const accessToken = auth.accessToken;
+  console.log("🚀 ~ DropdownUpdate ~ accessToken:", accessToken);
+  var body = document.body;
+  var docEl = document.documentElement;
+  var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+  const handleAcceptSpace = async () => {
+    const param = {
+      spaceId: space.id,
+    };
+    const data = await spaceService.acceptSpace(param, accessToken);
+    console.log(data);
+    if (data?.status === 200) {
+      console.log("if else statement");
+      setSpaces((spaces) => spaces.filter((item) => item.id !== space.id));
+    }
+  };
 
-function DropdownUpdate({ space, coord }) {
-  console.log(space);
-  space = { ...space, status: allowedSpace };
-  console.log(JSON.stringify(space));
+  const handleDeniedSpace = async () => {
+    const param = {
+      spaceId: space.id,
+    };
+    const data = await spaceService.deniedSpace(param, accessToken);
+    console.log(data);
+    if (data?.status === 200) {
+      console.log("if else statement");
+      setSpaces((spaces) => spaces.filter((item) => item.id !== space.id));
+    }
+  };
   return createPortal(
     <div
       className="absolute z-50 -translate-x-full border bg-white px-5 py-2"
-      style={{ top: coord.bottom, left: coord.left + coord.width }}
+      style={{ top: coord.bottom + scrollTop, left: coord.left + coord.width }}
     >
-      <button>Allow</button>
+      <button onClick={handleAcceptSpace}>Allow</button>
+      <button onClick={handleDeniedSpace}>Denied</button>
     </div>,
     document.body,
   );

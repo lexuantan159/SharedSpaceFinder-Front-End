@@ -17,6 +17,7 @@ const User = () => {
       const param = {};
 
       const responseUser = await adminsService.getUser(param, accessToken);
+      console.log("🚀 ~ fetchUser ~ responseUser:", responseUser);
 
       if (responseUser?.status === 200) {
         setUsers(responseUser.data.listUsers);

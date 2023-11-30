@@ -194,7 +194,7 @@ const SidebarAdmin = ({ openSidebarToggle, OpenSidebar }) => {
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
-                    to="/admin/posts-space/1"
+                    to="/admin/posts-space/5"
                   >
                     <i
                       className={
@@ -205,7 +205,7 @@ const SidebarAdmin = ({ openSidebarToggle, OpenSidebar }) => {
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Approved Post
+                    Denied Post
                   </Link>
                 </div>
               </li>
