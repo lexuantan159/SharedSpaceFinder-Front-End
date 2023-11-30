@@ -6,6 +6,7 @@ import Address from "../../components/selectAddress/Address";
 import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 
 const Register = () => {
 
@@ -23,10 +24,8 @@ const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
+    const { notify } = useContext(MethodContext);
+
     // Set state for navigation register success
     useEffect(() => {
         if (location.state?.toastMessage !== '') {

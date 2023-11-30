@@ -13,3 +13,21 @@ export const getSpace = async (paramsObject) => {
         return error
     }
 };
+
+const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
+
+export const createSpace = async (accessToken, formData) => {
+    try {
+        return await request.post(POST_SPACES_ENDPOINT,
+          formData
+        , {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                "Authorization": `Bearer ${accessToken}`
+            },
+            withCredentials: true
+        });
+    } catch (error) {
+        return error
+    }
+};

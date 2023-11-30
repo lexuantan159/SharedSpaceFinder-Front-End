@@ -47,6 +47,7 @@ const Overview = ({payload, setPayload, invalidFields, setInvalidFields}) => {
         {id: 4, name: "Mặt Bằng"},
         {id: 5, name: "Căn Hộ"},
     ];
+
     const [categoryId, setCategoryID] = useState("");
     return (
         <div>

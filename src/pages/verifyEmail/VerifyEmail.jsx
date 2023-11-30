@@ -3,6 +3,7 @@ import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import {useLocation, useNavigate} from "react-router-dom";
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 
 const VerifyEmail = () => {
     const [numberOne, setNumberOne] = useState("")
@@ -11,17 +12,13 @@ const VerifyEmail = () => {
     const [numberFour, setNumberFour] = useState("")
     const [numberFive, setNumberFive] = useState("")
     const [numberSix, setNumberSix] = useState("")
-    const [otp, setOtp] = useState("")
     const [email, setEmail] = useState("email@gmail.com")
     const [user, setUser] = useState({})
     const {setAuth} = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
-
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
+    const { notify, toastLoadingId, toastUpdateLoadingId } = useContext(MethodContext);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         const userLocal = localStorage.getItem("register")
@@ -34,12 +31,10 @@ const VerifyEmail = () => {
         }
 
         if (location.state?.toastMessage !== '') {
-            toast.update(location.state?.id, {
-                render: location.state?.toastMessage,
-                type: location.state?.statusMessage,
-                isLoading: false,
-                autoClose: true
-            });
+            const message  = location.state?.toastMessage
+            const status = location.state?.statusMessage
+            const idLoading = location.state?.id
+            toastUpdateLoadingId(message,status ,idLoading);
             navigate(location.pathname, {replace: true, state: {}});
         }
 
@@ -55,26 +50,16 @@ const VerifyEmail = () => {
     const handleResendOTP = async (e) => {
         e.preventDefault();
         const {name, email, password, province, district, ward, address} = user
-        const id = toast.loading("Please wait...")
+        const id = toastLoadingId("Vui lòng chờ...")
+        setIsLoading(true)
         // fetch register
         const registerResponse = await authService.register(name, email, password, province, district, ward, address)
         // check output and display error if has error
-        if (registerResponse?.status === 200) {
-            toast.update(id, {
-                render: "Gửi OTP thành công!",
-                type: "success",
-                isLoading: false,
-                autoClose: true
-            });
-            localStorage.removeItem("register")
-        } else {
-            toast.update(id, {
-                render: "Gửi OTP thất bại!",
-                type: "error",
-                isLoading: false,
-                autoClose: true
-            });
-        }
+        if (registerResponse?.status === 200)
+            toastUpdateLoadingId("Gửi OTP thành công!", "success", id)
+        else
+            toastUpdateLoadingId("Gửi OTP thất bại!", "error", id)
+        setIsLoading(false)
 
     }
     const handleVerifyEmail = async (e) => {
@@ -84,12 +69,13 @@ const VerifyEmail = () => {
         const otpString = numberOne + numberTwo + numberThree + numberFour + numberFive + numberSix
         // fetch register
         const registerResponse = await authService.verifyEmail(name, email, password, province, district, ward, address, otpString)
-        console.log({name, email, password, province, district, ward, address, otpString})
         // check output and display error if has error
         if (registerResponse?.status === 201) {
+            // set info in context
             setAuth({name, email, password, province, district, ward, address})
             localStorage.setItem('auth', JSON.stringify({name, email, password, province, district, ward, address}));
             localStorage.removeItem("register")
+            // navigation to page login when register successful
             navigate('/login', {state: {toastMessage: "Đăng Ký Thành Công!", statusMessage: "success"}});
         } else {
             if (registerResponse?.response?.status === 400) {
@@ -188,7 +174,7 @@ const VerifyEmail = () => {
                                         className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
                                         <p>Không nhận được mã code?</p> <p
                                         className="flex flex-row items-center text-blue-600 hover:cursor-pointer"
-                                        onClick={(e) => handleResendOTP(e)}>Gửi lại</p>
+                                        onClick={(e) => handleResendOTP(e)}>  {isLoading ? "Đang gửi..." : "Gửi lại"}</p>
                                     </div>
                                 </div>
                             </div>
