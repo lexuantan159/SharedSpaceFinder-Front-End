@@ -185,16 +185,16 @@ const SidebarAdmin = ({ openSidebarToggle, OpenSidebar }) => {
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Pending Post
+                    Pending Space
                   </Link>
                   <Link
                     className={
-                      "block py-3 text-xs font-bold uppercase " +
+                      "block py-3 text-xs font-bold " +
                       (window.location.href.indexOf("/admin/postspace") !== -1
                         ? "text-lightBlue-500 hover:text-lightBlue-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
-                    to="/admin/posts-space/5"
+                    to="/admin/posts-space/0"
                   >
                     <i
                       className={
@@ -205,7 +205,7 @@ const SidebarAdmin = ({ openSidebarToggle, OpenSidebar }) => {
                           : "text-blueGray-300")
                       }
                     ></i>{" "}
-                    Denied Post
+                    Accepted Space
                   </Link>
                 </div>
               </li>
