@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import EditSpace from "../editspace/EditSpace";
 import * as spaceService from "../../services/spaces";
 import AuthContext from "../../context/authProvider";
@@ -47,22 +47,24 @@ const ManagePostHome = () => {
      ownerId: user?.id
   }
   useEffect(() => {
-    const fetchSpace = async () => {
-      const  param  = {
-        ownerId: user?.id
-      }
-     console.log(param)
-      const responseSpaces = await spaceService.getSpace(param);
-
-      if (responseSpaces?.status === 200) {
-        const listSpace = responseSpaces?.data?.listSpaces;
-        console.log(listSpace)
-        setSpaces(listSpace);
-      } else {
+    if(ownerId){
+      const fetchSpace = async () => {
+        const param = {
+          ownerId: ownerId,
+            
+        };
+        console.log(ownerId)
+        const responseSpaces = await spaceService.getSpace(param);
+        if ( responseSpaces?.status === 200) {
+          const listSpace = responseSpaces?.data?.listSpaces;
+          console.log(listSpace)
+          setSpaces(listSpace);
+        } else
         console.log(responseSpaces);
-      }
-    };
+    }
     fetchSpace();
+    
+    }
   }, [ownerId,deleteSpaces]);
 
 
@@ -70,6 +72,7 @@ const ManagePostHome = () => {
     
    const accessToken = auth.accessToken
     console.log(accessToken)
+    
     const responseDeleteSpace = await spaceService.deleteSpace(e,accessToken)
   //   if(responseDeleteSpace?.status === 200) {
   //     setDeleteSpaces(true)
@@ -178,7 +181,7 @@ const ManagePostHome = () => {
                                </button>
                                <button
                                  className="rounded-md bg-red-600 px-2 py-1 text-white hover:underline"
-                                 onClick={(e) => handleDeleteSpace(item?.id)}
+                                 onClick={(e) => handleDeleteSpace( item?.id)}
                                >
                                  Xóa
                                </button>
