@@ -126,7 +126,7 @@ const SpaceDetail = () => {
                 <div className="col-span-12">
                     {/*Type of space*/}
                     <h2 className="text-xl font-bold text-primaryColor mb-2">
-                        {spaceDetail?.description}</h2>
+                        {spaceDetail?.title}</h2>
 
                     <h2 className="text-xl font-bold text-textBoldColor">{spaceDetail?.categoryId?.categoryName}</h2>
 
@@ -159,8 +159,7 @@ const SpaceDetail = () => {
                                         <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
                                         <span className="ml-3 text-[#d4d4d4] ">12 reviews</span>
                                     </div>
-                                    <p className="ml-2 text-xm font-semibold text-textBoldColor mr-auto">Nguyễn Văn
-                                        A</p>
+                                    <p className="ml-2 text-xm font-semibold text-textBoldColor mr-auto">{spaceDetail?.ownerId?.name}</p>
 
                                 </div>
                             </div>

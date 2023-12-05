@@ -12,7 +12,7 @@ import {useEffect, useContext, useState} from "react";
 const Editprofile = () => {
 
     const {auth, setAuth} = useContext(AuthContext);
-    const [name, setName] = useState("");
+    const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [dateOfBirth, setdateOfBirth] = useState("");
   const [address, setAddress] = useState("");
@@ -43,7 +43,6 @@ const Editprofile = () => {
            
             try {
                 const user = await userService.getcurrentuser(accessToken);
-
                 if (user?.status === 200) {
                     setUser(user.data);
                 } else {
@@ -58,15 +57,23 @@ const Editprofile = () => {
 
     const handleSubmit = async () => {
         let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
+
+        console.log(accessToken)
         // const accessToken =
         //         auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
         // const accessToken = auth.accessToken;
+        
+        
+        
+        
          const payLoad = 
           {
-            fullname: name,
-            phone: phone,
-            dateOfBirth: dateOfBirth,
-            address: address
+            
+            fullName,
+            phone,
+           dateOfBirth,
+            address,
+            avatar
           }
          console.log(payLoad)
           const responseUpdateProfile = await userService.editProfile(payLoad,accessToken);
@@ -80,6 +87,8 @@ const Editprofile = () => {
                 {" "}
                 Chỉnh sửa Thông Tin Cá Nhân
             </h1>
+
+            
             <div className="flex w-3/5 flex-auto items-center justify-center">
                 <div className="flex w-full flex-col gap-4 py-6">
                 <InputReadOnly
@@ -98,8 +107,8 @@ const Editprofile = () => {
               type="name"
               id="fullname"
               className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
-              value={name || user?.name}
-              onChange={(e) => setName(e.target.value)}
+              value={fullName || user?.name}
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
           <InputReadOnly
@@ -143,6 +152,7 @@ const Editprofile = () => {
               Địa chỉ
             </label>
             <input
+            
               type="text"
               id="diachi"
               className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
@@ -161,7 +171,13 @@ const Editprofile = () => {
                 alt="avatar"
                 className="h-28 w-28 rounded-full object-cover"
               />
-              <input type="file" className="my-4 appearance-none" id="avatar" />
+              <input 
+                type="file" 
+                className="my-4 appearance-none" 
+                id="avatar" 
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+                />
             </div>
           </div>
                     {/* <InputReadOnly

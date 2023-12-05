@@ -13,3 +13,21 @@ export const getSpace = async (paramsObject) => {
         return error
     }
 };
+
+const DELETESPACE_ENDPOINT = "/api/spaces/delete-space"
+export const deleteSpace = async (spaceId, accessToken) => {
+    try {
+        const response = await request.deleteRe(DELETESPACE_ENDPOINT, {
+            params:{spaceId},
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        return response;
+
+    } catch (error) {
+        return error
+    }
+};
+

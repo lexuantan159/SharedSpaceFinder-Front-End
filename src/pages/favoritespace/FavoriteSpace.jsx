@@ -31,6 +31,7 @@ const FavoriteSpace = () => {
             const accessToken = auth.accessToken
             const fetchFavorites = async () => {
                 const responseFavorites = await favouritesService.getFavourite(filteredParams, accessToken)
+                console.log(responseFavorites)
                 if (responseFavorites?.data?.status === 200) {
                     const listFavorites = responseFavorites?.data?.listFavourites
                     setFavorites(listFavorites)

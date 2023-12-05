@@ -32,7 +32,7 @@ const SidebarManage = () => {
 
             try {
                 const user = await userService.getcurrentuser(accessToken);
-
+                
                 if (user?.status === 200) {
                     setUser(user.data);
                 } else {
