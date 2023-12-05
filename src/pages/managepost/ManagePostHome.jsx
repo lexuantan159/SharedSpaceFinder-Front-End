@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 // import EditSpace from "../editspace/EditSpace";
 import * as spaceService from "../../services/spaces";
 import AuthContext from "../../context/authProvider";
 import Swal from "sweetalert2";
+
+import * as userService from "../../services/user"
 
 
 const ManagePostHome = () => {
@@ -12,17 +14,44 @@ const ManagePostHome = () => {
   
   const [spaces, setSpaces] = useState([]);
   const [deleteSpaces, setDeleteSpaces] = useState(false)
-  
+  const [user, setUser] = useState("");
+    useEffect(() => {
+        const getUser = async () => {
+            if (auth.accessToken === undefined) {
+                const myDataString = localStorage.getItem("auth");
+                if (myDataString !== null) {
+                    const myDataObject = JSON.parse(myDataString);
+                    setAuth(myDataObject);
+                }
+            }
+            // Only retrieve the access token if it's not already defined in auth.
+            const accessToken =
+                auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
+           
+            try {
+                const user = await userService.getcurrentuser(accessToken);
+                if (user?.status === 200) {
+                    setUser(user.data);
+                } else {
+                    console.log(user);
+                }
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            }
+        };
+        getUser();
+    }, [auth.accessToken, setAuth]);
   
 
-  
-
+   const { ownerId } = {
+     ownerId: user?.id
+  }
   useEffect(() => {
     const fetchSpace = async () => {
-      const param = {
-        ownerId: 21,
-
-      };
+      const  param  = {
+        ownerId: user?.id
+      }
+     console.log(param)
       const responseSpaces = await spaceService.getSpace(param);
 
       if (responseSpaces?.status === 200) {
@@ -34,7 +63,7 @@ const ManagePostHome = () => {
       }
     };
     fetchSpace();
-  }, [deleteSpaces]);
+  }, [ownerId,deleteSpaces]);
 
 
   const handleDeleteSpace = async (e) => {
