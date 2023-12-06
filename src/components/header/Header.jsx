@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 const Header = () => {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isLogin, setIsLogin] = useState(false)
-    const [isDropdown, setIsDropdown] = useState(true)
+    const [isDropdown, setIsDropdown] = useState(false)
     const [user, setUser] = useState({})
     const {auth} = useContext(AuthContext)
     const navigate = useNavigate();
@@ -58,8 +58,8 @@ const Header = () => {
     }
 
     return (
-        <header className="shadow" >
-            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6">
+        <header className="shadow"  >
+            <nav className="max-w-[1200px] mx-auto bg-white border-gray-200 px-4 lg:px-6"  onMouseEnter={() => setIsDropdown(false)}>
                 <div className="w-full flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <Link to="/" className="flex items-center h-[80px] w-[200px] overflow-hidden">
                         <img
@@ -75,7 +75,8 @@ const Header = () => {
                                     data-dropdown-toggle="dropdown"
                                     className="text-black hover:bg-gray-100 focus:outline-none rounded-lg px-5 py-2.5 text-center inline-flex items-center"
                                     type="button"
-                                    onMouseEnter={() => setIsDropdown(!isDropdown)}>
+                                    onMouseEnter={() => setIsDropdown(!isDropdown)}
+                            >
 
                                 <span className="text-sm font-medium">
                                     {user?.name || "Name User"}
@@ -93,7 +94,7 @@ const Header = () => {
 
                             {/*<!-- Dropdown menu -->*/}
                             <div id="dropdown"
-                                 className={`${isDropdown ? 'hidden' : 'block'} absolute top-19 left-0 -right-5 z-10 mt-3 bg-white divide-gray-100 rounded-lg shadow transition-all`}
+                                 className={`${!isDropdown ? 'hidden' : 'block'} absolute top-19 -left-8 -right-8 z-10 mt-3 bg-white divide-gray-100 rounded-lg shadow transition-all`}
                                     onMouseLeave={() => setIsDropdown(!isDropdown)}
                             >
                                 <ul className="py-2 px-2 text-sm text-gray-700 font-semibold"
