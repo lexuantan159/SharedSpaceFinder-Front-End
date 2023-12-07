@@ -1,11 +1,29 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import MethodContext from "../context/methodProvider";
 import * as sharingServices from "../services/sharing"
 
 
 const SharingModal = ({closeModal, spaceId}) => {
-    const {notify} = useContext(MethodContext)
+    const {notify, toastLoadingId , toastUpdateLoadingId} = useContext(MethodContext)
     const [content, setContent] = useState("")
+    const [hasSharing, setHasSharing] = useState(false)
+
+    useEffect(() => {
+
+        const params = {
+            userSharingId: JSON.parse(localStorage.getItem("auth")).userInfo.id,
+            spaceId
+        }
+        const fetchSharing = async () => {
+            const responseSharing = await sharingServices.getSharing(params)
+            if (responseSharing?.data?.sharingQuantity > 0) {
+                const sharingContent = responseSharing?.data?.listSharing[0]?.infoSharing;
+                setContent(sharingContent)
+                setHasSharing(true)
+            }
+        }
+        fetchSharing()
+    }, []);
     const handleSubmitSharing = async (e) => {
         if (content === "") {
             notify("Nội dụng không được bỏ trống!", "error",);
@@ -32,13 +50,31 @@ const SharingModal = ({closeModal, spaceId}) => {
         closeModal(false)
     }
 
+    const  handleDeleteSharing = async () => {
+
+    }
+    const  handleUpdateSharing = async () => {
+        // get token
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
+        // call api
+        const id = toastLoadingId("Đang chờ...")
+        const responseUpdate = await sharingServices.updateSharing(spaceId,content,accessToken)
+        // handle response update
+        if(responseUpdate?.status === 200)
+            toastUpdateLoadingId("Thay đổi nội dung thành công!", "success", id)
+        else {
+            console.log(responseUpdate?.response)
+            toastUpdateLoadingId("Thay đổi nội dung thất bại!", "error", id)
+        }
+    }
+
     return (
         <div tabIndex="-1" aria-hidden="true"
-             className="block overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-40 justify-center items-center w-full md:inset-0 h-full bg-black/50 hover:cursor-pointer"
+             className="block overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-10 justify-center items-center w-full md:inset-0 h-full bg-black/50 hover:cursor-pointer"
              onClick={() => closeModal(false)}
         >
             <div
-                className="relative top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 p-4 w-full max-w-2xl max-h-full"
+                className="relative top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 p-4 w-full max-w-2xl max-h-full"
                 onClick={(e) => e.stopPropagation()}
             >
 
@@ -81,7 +117,18 @@ const SharingModal = ({closeModal, spaceId}) => {
                         </div>
                     </div>
 
-                    <div
+                    {hasSharing ? <div
+                        className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button data-modal-hide="default-modal" type="button"
+                                onClick={handleUpdateSharing}
+                                className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cập Nhập
+                        </button>
+                        <button data-modal-hide="default-modal" type="button"
+                                onClick={handleDeleteSharing}
+                                className="ms-3 text-white bg-red-600 hover:bg-red-700 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10">Xóa
+                        </button>
+
+                    </div> : <div
                         className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                         <button data-modal-hide="default-modal" type="button"
                                 onClick={(e) => handleSubmitSharing(e)}
@@ -92,7 +139,9 @@ const SharingModal = ({closeModal, spaceId}) => {
                                 onClick={() => closeModal(false)}
                                 className="ms-3 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Hủy
                         </button>
-                    </div>
+
+                    </div>}
+
                 </div>
             </div>
         </div>

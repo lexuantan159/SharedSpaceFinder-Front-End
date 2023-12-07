@@ -11,7 +11,7 @@ export const createSharing = async (spaceId, content, accessToken) => {
                     spaceId
                 },
                 headers: {
-                    "Content-Type": "Application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
                     "Authorization": `Bearer ${accessToken}`
                 },
                 withCredentials: true
@@ -21,15 +21,51 @@ export const createSharing = async (spaceId, content, accessToken) => {
     }
 };
 
-const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
+const SHARING_ENDPOINT = "/api/spaces/list-sharing"
 
-export const createSpace = async (accessToken, formData) => {
+export const getSharing = async (paramsObject) => {
     try {
-        return await request.post(POST_SPACES_ENDPOINT,
-            formData
+        return await request.get(SHARING_ENDPOINT, {
+            params: paramsObject
+        });
+    } catch (error) {
+        return error
+    }
+};
+
+const PUT_SHARING_ENDPOINT = "/api/spaces/update-sharing"
+
+export const updateSharing = async (spaceId, content, accessToken) => {
+    console.log({spaceId, content, accessToken})
+    try {
+        return await request.put(PUT_SHARING_ENDPOINT,
+            {content}
             , {
+                params: {
+                    spaceId
+                },
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
+    } catch (error) {
+        return error
+    }
+};
+
+const DELETE_SHARING_ENDPOINT = "/api/spaces/delete-sharing"
+
+export const deleteSharing = async (spaceId, content, accessToken) => {
+    try {
+        return await request.deleteRe(DELETE_SHARING_ENDPOINT
+            , {
+                params: {
+                    spaceId
+                },
+                headers: {
+                    "Content-Type": "Application/json",
                     "Authorization": `Bearer ${accessToken}`
                 },
                 withCredentials: true
