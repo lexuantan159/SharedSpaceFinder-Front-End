@@ -62,8 +62,11 @@ const OtpResetPass = () => {
     }
 
     const validationOTP = () => {
-        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "")
+        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "") {
             notify("OTP phải đủ 6 số!", "error");
+            return false;
+        }
+        return true;
     }
 
     const handleResendOTP = async (e) => {
@@ -82,8 +85,7 @@ const OtpResetPass = () => {
     const handleResetPass = async (e) => {
         e.preventDefault();
         // validate input
-        validationOTP()
-        if (validationPassword(password, rePassword)) {
+        if (validationPassword(password, rePassword) && validationOTP()) {
             // handle call api
             const otpString = numberOne + numberTwo + numberThree + numberFour + numberFive + numberSix
             const responseResetPass = await authService.resetPass(password, otpString, email)
