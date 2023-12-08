@@ -57,7 +57,7 @@ export const updateSharing = async (spaceId, content, accessToken) => {
 
 const DELETE_SHARING_ENDPOINT = "/api/spaces/delete-sharing"
 
-export const deleteSharing = async (spaceId, content, accessToken) => {
+export const deleteSharing = async (spaceId,accessToken) => {
     try {
         return await request.deleteRe(DELETE_SHARING_ENDPOINT
             , {

@@ -111,13 +111,13 @@ const Header = () => {
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faShare}/>
-                                        <Link to="/sharing"
-                                              className="block pr-4 py-2">Chia Sẻ Không Gian</Link>
+                                        <Link to="/my-sharing"
+                                              className="block pr-4 py-2">Chia Sẻ Của Tôi</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
                                         <Link to="/messenger"
-                                              className="block pr-4 py-2">Chat</Link>
+                                              className="block pr-4 py-2">Tin Nhắn</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faArrowRightFromBracket}

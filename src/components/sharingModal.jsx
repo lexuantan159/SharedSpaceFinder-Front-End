@@ -24,6 +24,9 @@ const SharingModal = ({closeModal, spaceId}) => {
         }
         fetchSharing()
     }, []);
+
+
+
     const handleSubmitSharing = async (e) => {
         if (content === "") {
             notify("Nội dụng không được bỏ trống!", "error",);
@@ -50,9 +53,7 @@ const SharingModal = ({closeModal, spaceId}) => {
         closeModal(false)
     }
 
-    const  handleDeleteSharing = async () => {
 
-    }
     const  handleUpdateSharing = async () => {
         // get token
         const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
@@ -60,8 +61,10 @@ const SharingModal = ({closeModal, spaceId}) => {
         const id = toastLoadingId("Đang chờ...")
         const responseUpdate = await sharingServices.updateSharing(spaceId,content,accessToken)
         // handle response update
-        if(responseUpdate?.status === 200)
+        if(responseUpdate?.status === 200){
             toastUpdateLoadingId("Thay đổi nội dung thành công!", "success", id)
+            closeModal(false)
+        }
         else {
             console.log(responseUpdate?.response)
             toastUpdateLoadingId("Thay đổi nội dung thất bại!", "error", id)
@@ -79,7 +82,6 @@ const SharingModal = ({closeModal, spaceId}) => {
             >
 
                 <div className="relative bg-white rounded-lg shadow">
-
                     <div
                         className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
                         <h3 className="text-xl font-semibold text-gray-900 d">
@@ -122,10 +124,6 @@ const SharingModal = ({closeModal, spaceId}) => {
                         <button data-modal-hide="default-modal" type="button"
                                 onClick={handleUpdateSharing}
                                 className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cập Nhập
-                        </button>
-                        <button data-modal-hide="default-modal" type="button"
-                                onClick={handleDeleteSharing}
-                                className="ms-3 text-white bg-red-600 hover:bg-red-700 rounded-lg border text-sm font-medium px-5 py-2.5 focus:z-10">Xóa
                         </button>
 
                     </div> : <div
