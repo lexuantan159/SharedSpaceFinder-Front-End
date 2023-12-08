@@ -46,7 +46,20 @@ const Editprofile = () => {
                 const user = await userService.getcurrentuser(accessToken);
 
                 if (user?.status === 200) {
-                    setUser(user.data);
+                    const  userInfo = user?.data
+                    setUser(userInfo);
+                    // Retrieve the current auth object from localStorage
+                    const storedAuth = JSON.parse(localStorage.getItem('auth'));
+                    // Modify the properties as needed
+                    const updatedAuth = {
+                        ...storedAuth,
+                        // Update specific properties
+                        userInfo
+                        // Other properties you want to update
+                    };
+                    // Store the updated auth object back to localStorage
+                    localStorage.setItem('auth', JSON.stringify(updatedAuth));
+
                 } else {
                     console.log(user);
                 }

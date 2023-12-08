@@ -1,22 +1,23 @@
 import icons from "./icons"
-
+import {HiOutlineShare} from "react-icons/hi";
+import { FaShare } from "react-icons/fa";
 const  {HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineClipboardList,HiOutlinePencilAlt} = icons
 export const sidebarMenu = [
     {
         path: '/profile',
-        text: 'Thông Tin ',
+        text: 'Thông Tin Cá Nhân',
         icons: <HiOutlineUsers size={23}/>
     },
     {
         role: "owner",
         path: '/post-spaces',
-        text: 'Đăng Tin Cho Thuê',
+        text: 'Đăng Bài Cho Thuê',
         icons: <HiOutlinePencilAlt size={23}/>
     },
     {
 
         path: '/manage-post',
-        text: 'Quản Lý Tin Đăng',
+        text: 'Quản Lý Bài Đăng',
         icons: <HiOutlineClipboardList size={23}/>
     },
     {
@@ -26,8 +27,13 @@ export const sidebarMenu = [
     },
     {
         path: '/messenger',
-        text: 'Messenge',
+        text: 'Tin Nhắn',
         icons: <HiOutlineChatAlt size={23}/>
+    },
+    {
+        path: '/my-sharing',
+        text: 'Chia Sẻ Của Tôi',
+        icons: <FaShare  size={23}/>
     },
 
 ]

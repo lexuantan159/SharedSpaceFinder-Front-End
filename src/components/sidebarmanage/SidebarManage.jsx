@@ -8,8 +8,8 @@ import * as userService from "../../services/user"
 import {useEffect, useContext, useState} from "react";
 import AuthContext from "../../context/authProvider";
 
-const activeStyle = 'hover:bg-gray-200 flex rounded-md items-center gap-4 py-3 font-bold bg-gray-200 mb-2'
-const notActiveStyle = 'hover:bg-gray-200 flex rounded-md items-center gap-4 py-3 mb-2'
+const activeStyle = 'hover:bg-primaryColor hover:text-white flex rounded-md items-center gap-4 py-3 font-bold bg-primaryColor text-white mb-2'
+const notActiveStyle = 'hover:bg-primaryColor hover:text-white flex rounded-md font-medium items-center gap-4 py-3 mb-2'
 
 const SidebarManage = () => {
 

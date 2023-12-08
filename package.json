@@ -16,6 +16,7 @@
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
     "dotenv": "^16.3.1",
+    "form-data": "^4.0.0",
     "lodash.debounce": "^4.0.8",
     "mapbox-gl": "^2.15.0",
     "query-string": "^8.1.0",

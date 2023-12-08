@@ -11,9 +11,6 @@ instance.interceptors.response.use(
     (res) => res,
     async (error) => {
         const originalRequest = error.config;
-        console.log(error.response);
-        console.log(error.response.data.message)
-        console.log(isRefreshing)
         if (error.response.status === 401 && !isRefreshing && error.response.data.message === "Expired JWT token" ) {
             console.log("Access token expired");
             isRefreshing = true;
@@ -21,7 +18,6 @@ instance.interceptors.response.use(
                 console.log("Call api refresh token");
                 const auth = localStorage.getItem("auth");
                 const refreshToken = JSON.parse(auth).refreshToken;
-                console.log(refreshToken)
 
                 const result = await instance.post(
                     `/api/auth/refresh-token`,
@@ -32,7 +28,6 @@ instance.interceptors.response.use(
                         }
                     }
                 );
-                console.log(result)
                 const accessToken = result.data.newAccessToken;
                 localStorage.setItem("access-token", accessToken);
                 originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
