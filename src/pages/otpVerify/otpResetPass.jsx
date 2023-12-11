@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import {toast} from "react-toastify";
 import {useLocation, useNavigate} from "react-router-dom";
 import * as authService from "../../services/auth";
+import MethodContext from "../../context/methodProvider";
 
 const OtpResetPass = () => {
     const [hiddenPassword, setHiddenPassword] = useState(true)
@@ -19,12 +20,9 @@ const OtpResetPass = () => {
     const [email, setEmail] = useState("email@gmail.com")
     const location = useLocation();
     const navigate = useNavigate();
+    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
+    const [isLoading, setIsLoading] = useState(false)
 
-
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
@@ -64,38 +62,30 @@ const OtpResetPass = () => {
     }
 
     const validationOTP = () => {
-        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "")
+        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "") {
             notify("OTP phải đủ 6 số!", "error");
+            return false;
+        }
+        return true;
     }
 
     const handleResendOTP = async (e) => {
         e.preventDefault();
-        const id = toast.loading("Please wait...")
+        const id = toastLoadingId("Vui lòng chờ...")
+        setIsLoading(true)
         // fetch register
         const registerResponse = await authService.forgotPassword(email)
         // check output and display error if has error
-        if (registerResponse?.status === 200) {
-            toast.update(id, {
-                render: "Gửi OTP thành công!",
-                type: "success",
-                isLoading: false,
-                autoClose: true
-            });
-
-        } else {
-            toast.update(id, {
-                render: "Gửi OTP thất bại!",
-                type: "error",
-                isLoading: false,
-                autoClose: true
-            });
-        }
+        if (registerResponse?.status === 200)
+            toastUpdateLoadingId("Gửi OTP thành công!", "success", id)
+        else
+            toastUpdateLoadingId("Gửi OTP thất bại!", "error", id)
+        setIsLoading(false)
     }
     const handleResetPass = async (e) => {
         e.preventDefault();
         // validate input
-        validationOTP()
-        if (validationPassword(password, rePassword)) {
+        if (validationPassword(password, rePassword) && validationOTP()) {
             // handle call api
             const otpString = numberOne + numberTwo + numberThree + numberFour + numberFive + numberSix
             const responseResetPass = await authService.resetPass(password, otpString, email)
@@ -243,7 +233,7 @@ const OtpResetPass = () => {
                                         <button
                                             onClick={(e) => handleResetPass(e)}
                                             className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-lg shadow-sm font-bold">
-                                            Xác nhận
+                                            {isLoading ? "Đang xác nhận..." : "Xác nhận"}
                                         </button>
                                     </div>
 

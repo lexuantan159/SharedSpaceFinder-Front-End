@@ -22,7 +22,7 @@ const Spaces = ({type = "None"}) => {
         priceTo: null,
         areaFrom: null,
         areaTo: null,
-        status: 3,
+        status: 0,
     }
 
     const categories = [
@@ -69,11 +69,12 @@ const Spaces = ({type = "None"}) => {
     useEffect(() => {
         const fetchSpaces = async () => {
 
-            // Lọc bỏ các giá trị null hoặc undefined khỏi object
+            // Filters out null or undefined values from the object
             const filteredParams = Object.fromEntries(
                 Object.entries(state).filter(([_, value]) => value !== null && value !== undefined)
             );
-            // Kết quả là một object chỉ chứa các tham số không phải là null hoặc undefined
+            console.log(filteredParams)
+            // The result is an object that contains only parameters that are not null or undefined
             const response = await serviceSpaces.getSpace(filteredParams)
             if (response?.status === 200)
                 setSpaces(response?.data?.listSpaces)

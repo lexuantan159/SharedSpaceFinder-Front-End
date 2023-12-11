@@ -6,6 +6,7 @@ import Address from "../../components/selectAddress/Address";
 import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 
 const Register = () => {
 
@@ -23,10 +24,8 @@ const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
+    const { notify } = useContext(MethodContext);
+
     // Set state for navigation register success
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
@@ -39,21 +38,30 @@ const Register = () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         // Use a regular expression to enforce password strength rules
         const isStrong = passwordRegex.test(password)
-        !isStrong && notify("Mật khẩu ít nhất 6 ký tự và báo gồm chữ in hoa, chữ thường, và số!", "error")
-        if (oldPass !== newPass) notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+        if (!isStrong) {
+            notify("Mật khẩu ít nhất 6 ký tự và bao gồm chữ in hoa, chữ thường, và số!", "error")
+            return false;
+        }
+        if (oldPass !== newPass) {
+            notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+            return false;
+        }
+        return true;
+
     }
 
 
     // handle call api register
     const handleSubmit = async (e) => {
         e.preventDefault();
-        validationPassword(password, rePassword);
-        setIsLoading(true);
+        // verify password before start another way
+        if( !validationPassword(password, rePassword) )
+            return;
 
+        setIsLoading(true);
         const id = toast.loading("Please wait...")
         // fetch register
         const registerResponse = await authService.register(name, email, password, province, district, ward, address)
-
         // check output and display error if has error
         if (registerResponse?.status === 200) {
             localStorage.setItem('register', JSON.stringify({
