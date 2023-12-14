@@ -2,7 +2,7 @@ import SelectAddress from "./SelectAddress";
 import React, {useEffect, useState} from "react";
 import {getDistrict, getProvinces, getWard} from "../../services/address";
 
-const Address = ({
+const Address = ({ space,
                      setAddress, hiddenTitle = false, resetAddress = false, setResetAddress = () => {
     }, setProvince = () => {
     }, setDistrict = () => {
@@ -10,13 +10,31 @@ const Address = ({
     }
                  }) => {
 
+
+
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
-
     const [provinceId, setProvinceId] = useState("")
     const [districtId, setDistrictId] = useState("")
     const [wardId, setWardId] = useState("")
+    
+    
+    // useEffect(() => {
+    //     let addressArr = space?.address?.split(',')
+    //     let foundProvince = provinces.length > 0 && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
+    //     setProvinceId(foundProvince ? foundProvince.province_id : '')
+    //  }, [provinces]);
+    //  useEffect(() => {
+    //      let addressArr = space?.address?.split(',')
+    //      let foundDistrict = districts.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
+    //      setDistrictId(foundDistrict ? foundDistrict.district_id : '')
+    //   }, [districts]);
+    //   useEffect(() => {
+    //      let addressArr = space?.address?.split(',')
+    //      let foundWards = wards.length > 0 && wards?.find(item => item.ward_name === addressArr[addressArr.length - 3]?.trim())
+    //      setWardId(foundWards ? foundWards.ward_id : '')
+    //   }, [wards]);
 
     useEffect(() => {
         if (resetAddress) {
@@ -51,12 +69,14 @@ const Address = ({
         const fetchDistricts = async () => {
 
             const districtResponse = await getDistrict(provinceId);
+
             if (districtResponse.status === 200)
                 setDistricts(districtResponse?.data?.results)
             setWards([])
             setWardId("")
         }
         provinceId && fetchDistricts()
+
 
     }, [provinceId])
 
@@ -102,4 +122,4 @@ const Address = ({
 }
 
 
-export default Address
+export default Address;

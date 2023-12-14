@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import * as spaceService from "../../services/spaces";
 import AuthContext from "../../context/authProvider";
 import Swal from "sweetalert2";
+import EditSpace from "../editspace/EditSpace";
 
 import * as userService from "../../services/user"
 
@@ -11,7 +12,8 @@ import * as userService from "../../services/user"
 const ManagePostHome = () => {
   const [IsEdit, setIsEdit] = useState(false) 
   const {auth, setAuth} = useContext(AuthContext);
-  
+  const [dataEdit, setDataEdit] = useState({}) 
+
   const [spaces, setSpaces] = useState([]);
   const [deleteSpaces, setDeleteSpaces] = useState(false)
   const [user, setUser] = useState("");
@@ -43,9 +45,9 @@ const ManagePostHome = () => {
     }, [auth.accessToken, setAuth]);
   
 
-   const { ownerId } = {
-     ownerId: user?.id
-  }
+    const { ownerId } = {
+      ownerId: user?.id
+    }
   useEffect(() => {
     if(ownerId){
       const fetchSpace = async () => {
@@ -53,11 +55,11 @@ const ManagePostHome = () => {
           ownerId: ownerId,
             
         };
-        console.log(ownerId)
+        
         const responseSpaces = await spaceService.getSpace(param);
         if ( responseSpaces?.status === 200) {
           const listSpace = responseSpaces?.data?.listSpaces;
-          console.log(listSpace)
+          
           setSpaces(listSpace);
         } else
         console.log(responseSpaces);
@@ -70,29 +72,22 @@ const ManagePostHome = () => {
 
   const handleDeleteSpace = async (e) => {
     
-   const accessToken = auth.accessToken
-    console.log(accessToken)
-    
-    const responseDeleteSpace = await spaceService.deleteSpace(e,accessToken)
-  //   if(responseDeleteSpace?.status === 200) {
-  //     setDeleteSpaces(true)
-  //     notify("Xóa bài viết thành công!", "error")
-  //   }
-  //   else {
-  //     console.log(responseDeleteSpace)
-  //     notify("Xóa bài viết thất bại!", "error")
-  // }
-  if(responseDeleteSpace?.status === 200) {
-        
-        Swal.fire("Xóa bài viết thành công!").then(() =>{
-          setDeleteSpaces(true)
-        })
-      }
-      else {
-        console.log(responseDeleteSpace)
-        Swal.fire("Xóa bài viết không thành công!", "error")
-    }
-  }
+    const accessToken = auth.accessToken
+     
+     const responseDeleteSpace = await spaceService.deleteSpace(e,accessToken)
+   
+   if(responseDeleteSpace?.status === 200) {
+         
+         Swal.fire("Xóa bài viết thành công!").then(() =>{
+           setDeleteSpaces(true)
+         })
+       }
+       else {
+         console.log(responseDeleteSpace)
+         Swal.fire("Xóa bài viết không thành công!", "error")
+     }
+   }
+ 
 
 
   const formatNumber = (number) => {
@@ -138,36 +133,17 @@ const ManagePostHome = () => {
           </tr>                             
         </thead>
         <tbody>
-        {/* {spaces.map((item, index) => (
-            <tr className="flex items-center h-16" key={index.id} >
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.id}</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">Hình ảnh</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.title.slice(0,20)}...`}</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.categoryId?.categoryName}</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.address.slice(0,20)}...`}</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.price}</td>
-               <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.status?.status}</td>
-              <td className="flex h-full flex-1 items-center justify-center gap-4 border px-2">
-                <button
-                  className="rounded-md bg-green-600 px-2 py-1 text-white hover:underline"
-                >
-                  Sửa
-                </button>
-                <button
-                  className="rounded-md bg-red-600 px-2 py-1 text-white hover:underline"
-                  
-                >
-                  Xóa
-                </button>
-              </td>
-            </tr>
-          ))} */}
         {
                     spaces.length > 0 ? spaces.map(item => {
                             return (
                               <tr className="flex items-center h-16" key={item.id} >
                               <td className="border px-2 flex-1 h-full flex justify-center items-center">{`#${item?.id}`}</td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">Hình ảnh</td>
+                              <td className="border px-2 flex-1 h-full flex justify-center items-center">
+                              <img className="w-[100px] h-[50px] "
+                                src={item?.images[0]?.imageUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
+                                alt="anh phong"/>
+
+                              </td>
                               <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.title.slice(0,20)}...`}</td>
                               <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.categoryId?.categoryName}</td>
                               <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.address.slice(0,20)}...`}</td>
@@ -176,12 +152,17 @@ const ManagePostHome = () => {
                              <td className="flex h-full flex-1 items-center justify-center gap-4 border px-2">
                                <button
                                  className="rounded-md bg-green-600 px-2 py-1 text-white hover:underline"
+                                 onClick={(e) => {
+                                  setDataEdit(item)
+                                  setIsEdit(true)
+                                 } 
+                                }                 
                                >
                                  Sửa
                                </button>
                                <button
                                  className="rounded-md bg-red-600 px-2 py-1 text-white hover:underline"
-                                 onClick={(e) => handleDeleteSpace( item?.id)}
+                                 onClick={(e) => handleDeleteSpace(item?.id)}
                                >
                                  Xóa
                                </button>
@@ -196,7 +177,9 @@ const ManagePostHome = () => {
         </tbody>
       </table>
 
-      {/* {IsEdit && <EditSpace setIsEdit={setIsEdit} /> } */}
+      {/* hiển thị page EditSpace lên */}
+      {IsEdit && <EditSpace  setIsEdit={setIsEdit} dataEdit={dataEdit}/>}
+     
       
     </div>
   );
