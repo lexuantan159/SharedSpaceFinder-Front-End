@@ -12,6 +12,31 @@ export const getSpace = async (paramsObject) => {
     }
 };
 
+const UPDATE_SPACES_ENDPOINT = "/api/spaces/update-space"
+
+export const updateSpace = async (spaceId,accessToken, formData) => {
+    try {
+        return await request.put(UPDATE_SPACES_ENDPOINT,
+            {
+                params: spaceId,
+            },
+            {
+                formData
+            }, 
+            
+            {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                "Authorization": `Bearer ${accessToken}`
+            },
+            withCredentials: true
+        });
+    } catch (error) {
+        return error
+    }
+};
+
+
 const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
 
 export const createSpace = async (accessToken, formData) => {

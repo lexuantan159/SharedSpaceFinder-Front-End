@@ -1,5 +1,5 @@
 
-import { Home, MySharing,Spaces, LogIn, OtpResetPass, VerifyEmail,Register ,SpaceDetail,PostSpaceHome,FavoriteSpace,ManagePostHome,Editprofile,MessengeHome, Contact,Booking, Sharing } from '../pages/index';
+import { Home, EditSpace,MySharing,Spaces, LogIn, OtpResetPass, VerifyEmail,Register ,SpaceDetail,PostSpaceHome,FavoriteSpace,ManagePostHome,Editprofile,MessengeHome, Contact,Booking, Sharing } from '../pages/index';
 
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
@@ -27,6 +27,7 @@ const router = [
     { path: '/admin/dashboard', layout: LayoutAdmin, component: Dashboard},
     { path: '/admin/user', layout: LayoutAdmin, component: User},
     { path: '/admin/owner', layout: LayoutAdmin, component: Owner},
+    { path: '/editspace',layout: LayoutAuth ,component: EditSpace },
     // { path: '/admin/posts-pace', layout: LayoutAdmin, component: PostSpace}
 ];
 
