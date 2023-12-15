@@ -144,11 +144,11 @@ const ManagePostHome = () => {
                                 alt="anh phong"/>
 
                               </td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.title.slice(0,20)}...`}</td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.categoryId?.categoryName}</td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">{`${item?.address.slice(0,20)}...`}</td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">{formatNumber(item?.price) + " VND"}</td>
-                              <td className="border px-2 flex-1 h-full flex justify-center items-center">{item?.status?.status}</td>
+                              <td className="border px-2 flex-1 h-full justify-center items-center">{`${item?.title.slice(0,20)}...`}</td>
+                              <td className="border px-2 flex-1 h-full justify-center items-center">{item?.categoryId?.categoryName}</td>
+                              <td className="border px-2 flex-1 h-full justify-center items-center">{`${item?.address.slice(0,20)}...`}</td>
+                              <td className="border px-2 flex-1 h-full  justify-center items-center">{formatNumber(item?.price) + " VND"}</td>
+                              <td className="border px-2 flex-1 h-full  justify-center items-center">{item?.status?.status}</td>
                              <td className="flex h-full flex-1 items-center justify-center gap-4 border px-2">
                                <button
                                  className="rounded-md bg-green-600 px-2 py-1 text-white hover:underline"

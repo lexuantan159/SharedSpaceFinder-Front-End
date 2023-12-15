@@ -1,208 +1,277 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import SelectAddress from "../../components/selectAddress/SelectAddress";
 import Address from "../../components/selectAddress/Address";
+import Swal from "sweetalert2";
 
-import * as spaceService from "../../services/spaces"
-import MethodContext from "../../context/methodProvider"
+import * as spaceService from "../../services/spaces";
+import MethodContext from "../../context/methodProvider";
 import AddressEdit from "../../components/selectAddress/AddressEdit";
 
+const EditSpace = ({ setIsEdit, dataEdit }) => {
+  const [categoryId, setCategoryID] = useState(
+    dataEdit?.categoryId?.categoryName || "none",
+  );
+  
+  const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
 
-
-
-const EditSpace = ({setIsEdit,dataEdit}) => {
-  console.log(dataEdit)
-  const [categoryId, setCategoryID] = useState(dataEdit?.categoryId?.categoryName || "")
-  console.log(categoryId)
-  const [address, setAddress] = useState(" , , ")
-  const [province, setProvince] = useState(dataEdit?.province || "")
-  const [district, setDistrict] = useState(dataEdit?.district || "")
-  const [ward, setWard] = useState(dataEdit?.ward || "")
-  const [area, setArea] = useState(dataEdit?.area || "")
-  const [numBed, setNumBed] = useState(dataEdit?.bedroomNumbers || "")
-  const [numBath, setNumBath] = useState(dataEdit?.bathroomNumbers || "")
-  const [numPeo, setNumPeo] = useState(dataEdit?.peopleNumbers || "")
-  const [price, setPrice] = useState(dataEdit?.price || "")
-  const [title, setTitle] = useState(dataEdit?.title || "")
-  const [description, setDescription] = useState(dataEdit?.description || "")
-  const [files, setFiles] = useState([])
+  const [address, setAddress] = useState(" , , ");
+  const [province, setProvince] = useState(dataEdit?.province || "");
+  const [district, setDistrict] = useState(dataEdit?.district || "");
+  const [ward, setWard] = useState(dataEdit?.ward || "");
+  const [area, setArea] = useState(dataEdit?.area || "");
+  const [numBed, setNumBed] = useState(dataEdit?.bedroomNumbers || "");
+  const [numBath, setNumBath] = useState(dataEdit?.bathroomNumbers || "");
+  const [numPeo, setNumPeo] = useState(dataEdit?.peopleNumbers || "");
+  const [price, setPrice] = useState(dataEdit?.price || "");
+  const [title, setTitle] = useState(dataEdit?.title || "");
+  const [description, setDescription] = useState(dataEdit?.description || "");
+  const [files, setFiles] = useState([]);
   const formData = new FormData();
+  const [updateSpaces, setUpdateSpaces] = useState(false)
 
   const categories = [
-      {id: 1, name: 'Phòng Trọ'},
-      {id: 2, name: 'Căn Hộ'},
-      {id: 3, name: 'Nhà Nguyên Căn'},
-      {id: 4, name: 'Văn Phòng'},
-      {id: 5, name: 'Mặt Bằng'},
-      {id: 6, name: 'Chung Cư'},
-  ]
-//   const handleSubmit = async (e) => {
-//     // e.preventDefault();
-    
+    { id: 1, name: "Phòng Trọ" },
+    { id: 2, name: "Căn Hộ" },
+    { id: 3, name: "Nhà Nguyên Căn" },
+    { id: 4, name: "Văn Phòng" },
+    { id: 5, name: "Mặt Bằng" },
+    { id: 6, name: "Chung Cư" },
+  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const params = {
+      spaceId: dataEdit?.id,
+    };
+    console.log(params);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("bedroomsNumber", numBed);
+    formData.append("bathroomsNumber", numBath);
+    formData.append("peopleNumber", numPeo);
+    formData.append("province", province);
+    formData.append("district", district);
+    formData.append("ward", ward);
+    formData.append("address", address);
+    formData.append("categoryId", categoryId);
 
-//     // // Append each state variable to the FormData
-//     // const formData = 
-//     // {
-//     //   title: title
-//     // }
-
-//     // console.log(formData)
-//     // const params = 
-//     // {
-//     //   spaceId: dataEdit?.id
-//     // }
-//     // console.log(params)
-//     // const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-//     // console.log(accessToken)
-//     // const responseUpdateSpace = await spaceService.updateSpace(params,accessToken, formData);
-//     // console.log(responseUpdateSpace)
-// }
-  
-  return (
-   
-     <div className='h-[700px] absolute top-0 left-0 right-0 bottom-0 backdrop-brightness-75 flex justify-center'
-     onClick={e => {
-      e.stopPropagation()
-      setIsEdit(false)
-  }}
-    
-    > 
-        <div className='bg-white h-full w-[950px] overflow-y-auto'
-        onClick={e => {
-          e.stopPropagation()
+    let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
+    console.log(accessToken);
+    const responseUpdateSpace = await spaceService.updateSpace(
+      params,
+      formData,
+      accessToken,
+    );
+    if(responseUpdateSpace?.status === 200) {
          
+        Swal.fire("chỉnh sửa bài viết thành công!").then(() =>{
+            
+            setUpdateSpaces(true)
+        })
+      }
+      else {
+        console.log(responseUpdateSpace)
+        Swal.fire("Xóa bài viết không thành công!", "error")
+    }
+  };
+
+  return (
+    <div
+      className="absolute bottom-0 left-0 right-0 top-0 flex h-[700px] justify-center backdrop-brightness-75"
+      onClick={(e) => {
+        e.stopPropagation();
+        setIsEdit(false);
       }}
-        >
-          <div className="px-6">
-            <h1 className="text-3x1 border-b border-gray-200 py-4 text-xl font-medium text-primaryColor">
-                Chỉnh Sửa Tin Đăng
-            </h1>
-            <form className="w-full p-5 border-primaryColor border-2 rounded" onSubmit={(e) => handleSubmit(e)}>
-                
-                
-                <div
-                    className="md:grid md:grid-cols-2 md:gap-5 md:items-center lg:flex lg:items-center lg:justify-around">
-                    <SelectAddress type="category" 
-                    value={categoryId}
-                   
-                    setValue={setCategoryID}
-                    options={categories} label="Danh Mục"
-                    />
-                    <AddressEdit 
-                        space={dataEdit}
-                        setAddress={setAddress} 
-                        setProvince={setProvince} 
-                        setDistrict={setDistrict}
-                         setWard={setWard}
-                    />
-                    
-                    {/* <Address
+    >
+      <div
+        className="h-full w-[950px] overflow-y-auto bg-white"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div className="px-6">
+          <h1 className="text-3x1 border-b border-gray-200 py-4 text-xl font-medium text-primaryColor">
+            Chỉnh Sửa Tin Đăng
+          </h1>
+          <form
+            className="w-full rounded border-2 border-primaryColor p-5"
+            onSubmit={(e) => handleSubmit(e)}
+          >
+            <div className="md:grid md:grid-cols-2 md:items-center md:gap-5 lg:flex lg:items-center lg:justify-around">
+              <SelectAddress
+                type="category"
+                value={categoryId}
+                setValue={setCategoryID}
+                options={categories}
+                label="Danh Mục"
+              />
+              <AddressEdit
+                space={dataEdit}
+                setAddress={setAddress}
+                setProvince={setProvince}
+                setDistrict={setDistrict}
+                setWard={setWard}
+              />
+
+              {/* <Address
                             space={dataEdit}
                             setAddress={setAddress} 
                             setProvince={setProvince}   
                             setDistrict={setDistrict}
-                             setWard={setWard}/> */}
-                </div>
-                <div className="w-full mb-4">
-                    <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                           htmlFor="inputAdress">Địa Chỉ</label>
-                    <textarea
-                        className="block w-full h-[50px] pl-4 pr-10 py-3 shadow rounded-xl outline-none"
-                        id="inputAdress"
-                        placeholder="Địa chỉ..."
-                        required
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
-                </div>
-                <div
-                    className="md:grid md:grid-cols-2 md:gap-5 md:items-center lg:flex lg:items-center lg:justify-between">
-                    <div className="mb-4">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputEmail">Diện tích (m²)</label>
-                        <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
-                               type="number"
-                               placeholder="Diện tích..."
-                               min={1}
-                               value={area}
-                               onChange={(e) => setArea(e.target.value)}
-                               required/>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputEmail">Phòng ngủ</label>
-                        <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
-                               type="number"
-                               placeholder="Phòng ngủ..."
-                               min={1}
-                               value={numBed}
-                               onChange={(e) => setNumBed(e.target.value)}
-                               required/>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputEmail">Phòng tắm</label>
-                        <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
-                               type="number"
-                               placeholder="WC..."
-                               min={1}
-                               value={numBath}
-                               onChange={(e) => setNumBath(e.target.value)}
-                               required/>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputEmail">Số người</label>
-                        <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
-                               type="number"
-                               placeholder="Số người..."
-                               min={1}
-                               value={numPeo}
-                               onChange={(e) => setNumPeo(e.target.value)}
-                               required/>
-                    </div>
-                </div>
+                             setWard={setWard}/>  */}
+            </div>
+            <div className="mb-4 w-full">
+              <label
+                className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                htmlFor="inputAdress"
+              >
+                Địa Chỉ
+              </label>
+              <textarea
+                className="block h-[50px] w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                id="inputAdress"
+                placeholder="Địa chỉ..."
+                required
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div className="md:grid md:grid-cols-2 md:items-center md:gap-5 lg:flex lg:items-center lg:justify-between">
+              <div className="mb-4">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputEmail"
+                >
+                  Diện tích (m²)
+                </label>
+                <input
+                  className="block w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputEmail"
+                  type="number"
+                  placeholder="Diện tích..."
+                  min={1}
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputEmail"
+                >
+                  Phòng ngủ
+                </label>
+                <input
+                  className="block w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputEmail"
+                  type="number"
+                  placeholder="Phòng ngủ..."
+                  min={1}
+                  value={numBed}
+                  onChange={(e) => setNumBed(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputEmail"
+                >
+                  Phòng tắm
+                </label>
+                <input
+                  className="block w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputEmail"
+                  type="number"
+                  placeholder="WC..."
+                  min={1}
+                  value={numBath}
+                  onChange={(e) => setNumBath(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputEmail"
+                >
+                  Số người
+                </label>
+                <input
+                  className="block w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputEmail"
+                  type="number"
+                  placeholder="Số người..."
+                  min={1}
+                  value={numPeo}
+                  onChange={(e) => setNumPeo(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-                <div className="flex sm:flex-wrap md:flex-nowrap lg:justify-between gap-4 mb-4">
-                    <div className="w-full mb-4">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputAdress">Tiêu Đề</label>
-                        <textarea
-                            className="block w-full h-[50px] pl-4 pr-10 py-3 shadow rounded-xl outline-none"
-                            id="inputAdress"
-                            placeholder="Tiêu đề..."
-                            required
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div className="">
-                        <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                               htmlFor="inputEmail">Giá</label>
-                        <input className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none" id="inputEmail"
-                               type="number"
-                               placeholder="Giá..."
-                               min={1}
-                               value={price}
-                               onChange={(e) => setPrice(e.target.value)}
-                               required/>
-                    </div>
-                </div>
-                <div className="w-full mb-4">
-                    <label className="block text-[18px] font-semibold text-textBoldColor mb-2"
-                           htmlFor="inputAdress">Mô tả</label>
-                    <textarea
-                        className="block w-full h-[100px] pl-4 pr-10 py-3 shadow rounded-xl outline-none"
-                        id="inputAdress"
-                        placeholder="Mô tả..."
-                        required
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                <img className="w-full h-[500px] "
-                                src={dataEdit?.images[0]?.imageUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
-                                alt="anh phong"/>               
-                <div className="mb-3">
+            <div className="mb-4 flex gap-4 sm:flex-wrap md:flex-nowrap lg:justify-between">
+              <div className="mb-4 w-full">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputAdress"
+                >
+                  Tiêu Đề
+                </label>
+                <textarea
+                  className="block h-[50px] w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputAdress"
+                  placeholder="Tiêu đề..."
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="">
+                <label
+                  className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                  htmlFor="inputEmail"
+                >
+                  Giá
+                </label>
+                <input
+                  className="block w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                  id="inputEmail"
+                  type="number"
+                  placeholder="Giá..."
+                  min={1}
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-4 w-full">
+              <label
+                className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                htmlFor="inputAdress"
+              >
+                Mô tả
+              </label>
+              <textarea
+                className="block h-[100px] w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
+                id="inputAdress"
+                placeholder="Mô tả..."
+                required
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <img
+              className="h-[500px] w-full "
+              src={
+                dataEdit?.images[0]?.imageUrl ||
+                "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"
+              }
+              alt="anh phong"
+            />
+            {/* <div className="mb-3">
                     <label
                         htmlFor="formFileMultiple"
                         className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
@@ -216,23 +285,16 @@ const EditSpace = ({setIsEdit,dataEdit}) => {
                         onChange={(e) => handleFileChange(e)}
                         required
                         multiple/>
-                </div>
-                <button
-                    className="block bg-primaryColor text-white text-lg font-bold w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none">
-                      Chỉnh Sửa
-                </button>
-                <div className="h-[20px]">
-                </div>
-
-
-
-            </form>
-
-          </div>
+                </div> */}
+            <button className="block w-full rounded-xl bg-primaryColor py-3 pl-4 pr-10 text-lg font-bold text-white shadow outline-none">
+            Chỉnh Sửa
+            </button>
+            <div className="h-[20px]"></div>
+          </form>
         </div>
-        
-   </div>
-   );
+      </div>
+    </div>
+  );
 };
 
 export default EditSpace;

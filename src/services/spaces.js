@@ -12,30 +12,49 @@ export const getSpace = async (paramsObject) => {
     }
 };
 
-const UPDATE_SPACES_ENDPOINT = "/api/spaces/update-space"
+// const UPDATE_SPACES_ENDPOINT = "/api/spaces/update-space"
 
-export const updateSpace = async (spaceId,accessToken, formData) => {
-    try {
-        return await request.put(UPDATE_SPACES_ENDPOINT,
-            {
-                params: spaceId,
-            },
-            {
-                formData
-            }, 
+// export const updateSpace = async (spaceId,accessToken, formData) => {
+//     try {
+//         return await request.put(UPDATE_SPACES_ENDPOINT,
+//             {
+//                 params: spaceId,
+//             },
+//             {
+//                 formData
+//             }, 
             
+//             {
+//             headers: {
+//                 'Content-Type': 'multipart/json',
+//                 "Authorization": `Bearer ${accessToken}`
+//             },
+//             withCredentials: true
+//         });
+//     } catch (error) {
+//         return error
+//     }
+// };
+const UPDATE_SPACE_ENDPOINT = "/api/spaces/update-space"
+
+export const updateSpace = async (spaceId,formData, accessToken) => {
+    try {
+        return await request.put(UPDATE_SPACE_ENDPOINT,
+            formData, 
+
             {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                "Authorization": `Bearer ${accessToken}`
-            },
-            withCredentials: true
-        });
+                params:spaceId,
+
+                headers: {
+                    "Content-Type": "application/form-data",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
     } catch (error) {
         return error
     }
 };
-
 
 const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
 

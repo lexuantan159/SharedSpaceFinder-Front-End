@@ -9,9 +9,6 @@ const Address = ({ space,
     }, setWard = () => {
     }
                  }) => {
-
-
-
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
@@ -21,20 +18,26 @@ const Address = ({ space,
     
     
     // useEffect(() => {
-    //     let addressArr = space?.address?.split(',')
-    //     let foundProvince = provinces.length > 0 && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
+    //     if(space){
+    //         let addressArr = space?.address?.split(',')
+    //     let foundProvince = provinces.length && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
     //     setProvinceId(foundProvince ? foundProvince.province_id : '')
-    //  }, [provinces]);
+    //     }
+    //  }, [provinces, space]);
     //  useEffect(() => {
-    //      let addressArr = space?.address?.split(',')
-    //      let foundDistrict = districts.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
-    //      setDistrictId(foundDistrict ? foundDistrict.district_id : '')
-    //   }, [districts]);
+    //     if(space){
+    //         let addressArr = space?.address?.split(',')
+    //         let foundDistrict = districts.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
+    //         setDistrictId(foundDistrict ? foundDistrict.district_id : '')
+    //     }
+    //   }, [districts, space]);
     //   useEffect(() => {
-    //      let addressArr = space?.address?.split(',')
+    //      if(space){
+    //         let addressArr = space?.address?.split(',')
     //      let foundWards = wards.length > 0 && wards?.find(item => item.ward_name === addressArr[addressArr.length - 3]?.trim())
     //      setWardId(foundWards ? foundWards.ward_id : '')
-    //   }, [wards]);
+    //      }
+    //   }, [wards,space]);
 
     useEffect(() => {
         if (resetAddress) {
