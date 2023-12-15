@@ -13,11 +13,17 @@ import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
 import * as spaceServices from "../../services/spaces";
 import MethodContext from "../../context/methodProvider";
+import FormReview from "../../components/review/FormReview";
+import ItemSharing from "../../components/share/ItemSharing";
+import ListSharing from "../../components/share/ListSharing";
+import TitlePart from "../../components/titlePart/TitlePart";
 
 const SpaceDetail = () => {
     const {spaceId} = useParams();
     const [spaceDetail, setSpaceDetail] = useState({})
-    console.log(spaceId)
+    const [isOpenFormReview, setIsOpenFormReview] = useState(false)
+    const [isOpenShares, setIsOpenShares] = useState(false)
+    const [shares, setShares] = useState([1, 2, 3])
     const {notify} = useContext(MethodContext)
 
     const formatNumber = (number) => {
@@ -86,7 +92,8 @@ const SpaceDetail = () => {
                     </div>
 
                     {/* info owner */}
-                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6">
+                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6"
+                         onClick={() => setIsOpenFormReview(true)}>
                         <div className="p-4 bg-[#f4f4f4] rounded-t-lg">
                             <h4 className="text-textBoldColor text-xm font-bold">Thông Tin Chủ</h4>
                         </div>
@@ -113,7 +120,7 @@ const SpaceDetail = () => {
                             <p className="mx-2 text-xm font-semibold text-textBoldColor">Địa
                                 Chỉ: {spaceDetail?.ownerId?.address}</p>
                         </div>
-
+                        {isOpenFormReview && <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId}/>}
                     </div>
 
                 </div>
@@ -121,13 +128,12 @@ const SpaceDetail = () => {
                     {/*Type of space*/}
                     <h2 className="text-xl font-bold text-primaryColor mb-2">
                         {spaceDetail?.description}</h2>
-
                     <h2 className="text-xl font-bold text-textBoldColor">{spaceDetail?.categoryId?.categoryName}</h2>
 
                     {/**/}
                     <div className="mb-4">
                         <p className="text-xm text-primaryColor font-bold mb-3">Tiện Ích</p>
-                        <div className="flex flex-wrap text-textBoldColor">
+                        <div className="flex flex-wrap text-textBoldColor mb-3">
                             <div className="mr-10">
                                 <FontAwesomeIcon className="-rotate-45" icon={faArrowsLeftRight}/>
                                 <span className="ml-3">{spaceDetail?.area} m^2</span>
@@ -143,20 +149,6 @@ const SpaceDetail = () => {
                             <div className="mr-10 ">
                                 <FontAwesomeIcon icon={faBath}/>
                                 <span className="ml-3">{spaceDetail?.bathroomNumbers} Bathroom</span>
-
-                                <div>
-                                    <div className="mb-2 ml-2 ">
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
-                                        <span className="ml-3 text-[#d4d4d4] ">12 reviews</span>
-                                    </div>
-                                    <p className="ml-2 text-xm font-semibold text-textBoldColor mr-auto">Nguyễn Văn
-                                        A</p>
-
-                                </div>
                             </div>
                         </div>
                         {/* price detail*/}
@@ -230,12 +222,33 @@ const SpaceDetail = () => {
                                 <MapBox address={spaceDetail?.address}></MapBox>
                             </div>
                         </div>
+
+                        {/*list Sharing*/}
+                        {shares.length > 0 &&
+                            <div className="mt-5">
+                                <TitlePart title="Danh sách chia sẽ" subTitle="Chia sẽ tạo thuận lợi cho việc booking"
+                                           subDesc="hỗ trọ nhiệt tình"/>
+                                <div className="">
+                                    {
+                                        (shares.length > 2 ? <><ItemSharing/>
+                                            <ItemSharing/>
+                                            <p className="text-lg text-white text-center font-semibold bg-primaryColor rounded py-1 hover:cursor-pointer hover:opacity-90 mt-4"
+                                               onClick={() => setIsOpenShares(true)}
+                                            > Xem Thêm...
+                                            </p></> : <> <ItemSharing/>
+                                            <ItemSharing/></>)
+                                    }
+                                </div>
+                            </div>
+                        }
+                        {isOpenShares && <ListSharing closeModal={setIsOpenShares}/>}
                     </div>
 
                 </div>
 
             </div>
-            {/*slide show*/}
+            {/*slide show*/
+            }
 
             <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
         </>

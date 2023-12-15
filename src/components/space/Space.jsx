@@ -11,11 +11,13 @@ import {
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 import * as favouritesService from "../../services/favourite"
 import SharingModal from "../sharingModal";
 
 const Space = ({typeSpace = "none", spaceValue}) => {
     const {auth} = useContext(AuthContext);
+    const {notify} = useContext(MethodContext);
     const [saved, setSaved] = useState(false)
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false)
@@ -95,6 +97,10 @@ const Space = ({typeSpace = "none", spaceValue}) => {
         // Prevent the click event from propagating to the parent link
         e.preventDefault();
         e.stopPropagation();
+        if(localStorage.getItem("auth") === null) {
+            notify("Bạn cần đăng nhập mới được chia sẻ!", "error");
+            return;
+        }
         setIsOpen(true)
     }
 

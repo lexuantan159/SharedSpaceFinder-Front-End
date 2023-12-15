@@ -9,7 +9,6 @@ const SharingModal = ({closeModal, spaceId}) => {
     const [hasSharing, setHasSharing] = useState(false)
 
     useEffect(() => {
-
         const params = {
             userSharingId: JSON.parse(localStorage.getItem("auth")).userInfo.id,
             spaceId
