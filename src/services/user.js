@@ -20,20 +20,20 @@ export const getcurrentuser = async (accessToken) => {
 
 const EDIT_PROFILE_ENDPOINT = "/api/users/edit-profile"
 
-export const editProfile = async (payload,accessToken) => {
+
+export const editProfile = async (formData, accessToken) => {
     try {
-        const response = await request.put(EDIT_PROFILE_ENDPOINT, 
-            
-           payload,
-           {
-            
-            headers: {
-                "Content-Type": "Application/json",
-                "Authorization": `Bearer ${accessToken}`
-            }
-           }
-        );
-        return response;
+        return await request.put(EDIT_PROFILE_ENDPOINT,
+            formData, 
+
+            {
+
+                headers: {
+                    "Content-Type": "application/form-data",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
     } catch (error) {
         return error
     }

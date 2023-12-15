@@ -13,18 +13,12 @@ const Editprofile = () => {
 
     const {auth, setAuth} = useContext(AuthContext);
     const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dateOfBirth, setdateOfBirth] = useState("");
-  const [address, setAddress] = useState("");
-  const [avatar, setAvatar] = useState(auth?.avatar);
-
-    // const [payload, setpayload] = useState({
-    //     name: auth?.name || '',
-    //     phone: '',
-    //     dateOfBirth: '',
-    //     address: auth?.address || '',
-    //     avatar: auth?.avatar,
-    // });
+    const [phone, setPhone] = useState("");
+    const [dateOfBirth, setdateOfBirth] = useState("");
+    const [address, setAddress] = useState("");
+    const [avatar, setAvatar] = useState("");
+    const formData = new FormData();
+    
 
 
     const [user, setUser] = useState("");
@@ -43,21 +37,9 @@ const Editprofile = () => {
            
             try {
                 const user = await userService.getcurrentuser(accessToken);
+                console.log(user)
                 if (user?.status === 200) {
-                    const  userInfo = user?.data
-                    setUser(userInfo);
-                    // Retrieve the current auth object from localStorage
-                    const storedAuth = JSON.parse(localStorage.getItem('auth'));
-                    // Modify the properties as needed
-                    const updatedAuth = {
-                        ...storedAuth,
-                        // Update specific properties
-                        userInfo
-                        // Other properties you want to update
-                    };
-                    // Store the updated auth object back to localStorage
-                    localStorage.setItem('auth', JSON.stringify(updatedAuth));
-
+                    setUser(user.data);
                 } else {
                     console.log(user);
                 }
@@ -68,28 +50,17 @@ const Editprofile = () => {
         getUser();
     }, [auth.accessToken, setAuth]);
 
-    const handleSubmit = async () => {
-        let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
+    const handleSubmit = async (e) => {
 
-        console.log(accessToken)
-        // const accessToken =
-        //         auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-        // const accessToken = auth.accessToken;
-        
-        
-        
-        
-         const payLoad = 
-          {
-            
-            fullName,
-            phone,
-           dateOfBirth,
-            address,
-            avatar
-          }
-         console.log(payLoad)
-          const responseUpdateProfile = await userService.editProfile(payLoad,accessToken);
+
+      e.preventDefault();
+        let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
+        formData.append("fullName", fullName);
+        formData.append("phone", phone);
+
+         
+         
+          const responseUpdateProfile = await userService.editProfile(formData,accessToken);
           console.log(responseUpdateProfile);
     }
 
@@ -100,9 +71,114 @@ const Editprofile = () => {
                 {" "}
                 Chỉnh sửa Thông Tin Cá Nhân
             </h1>
-
+            <form action=""  onSubmit={(e) => {
+                    handleSubmit(e)
+                }}
+                className="flex w-3/5 flex-auto items-center justify-center"
             
-            <div className="flex w-3/5 flex-auto items-center justify-center">
+            >
+              <div className="flex w-full flex-col gap-4 py-6">
+              <InputReadOnly
+            value={`#${user?.id}` || ""}
+            direction="flex-row"
+            label="Mã Thành Viên"
+          />
+          <div className="flex">
+            <label
+              className="w-[192px] flex-none font-medium"
+              htmlFor="fullname"
+            >
+              Tên Hiển Thị
+            </label>
+            <input
+              type="name"
+              id="fullname"
+              className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
+              value={fullName || user?.name}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </div>
+          <InputReadOnly
+            value={user?.email || ""}
+            direction="flex-row"
+            label="Email"
+          />
+          <div className="flex">
+            <label
+              className="w-[192px] flex-none font-medium"
+              htmlFor="inputPhone"
+            >
+              Số Điện Thoại
+            </label>
+            <input
+              type="text"
+              id="inputPhone"
+              className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
+              value={phone || user?.phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+
+          <div className="flex">
+            <label
+              className="w-[192px] flex-none font-medium"
+              htmlFor="inputdate"
+            >
+              Ngày Sinh
+            </label>
+            <input
+              type="text"
+              id="inputdate"
+              className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
+              value={dateOfBirth || user?.dateOfBirth}
+              onChange={(e) => setdateOfBirth(e.target.value)}
+            />
+          </div>
+          <div className="flex">
+            <label className="w-[192px] flex-none font-medium" htmlFor="diachi">
+              Địa chỉ
+            </label>
+            <input
+            
+              type="text"
+              id="diachi"
+              className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
+              value={address || user?.address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-6 flex">
+            <label className="w-48 flex-none font-medium" htmlFor="avatar">
+              Ảnh đại diện
+            </label>
+            <div>
+              <img
+                src={user?.avatar || anonAvatar}
+                alt="avatar"
+                className="h-28 w-28 rounded-full object-cover"
+              />
+              <input 
+                type="file" 
+                className="my-4 appearance-none" 
+                id="avatar" 
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+                />
+            </div>
+          </div>
+                    <button className="w-full rounded-md bg-green-600 px-2 py-2 text-white hover:underline"
+
+                    >
+                        Cập Nhật
+                    </button>
+              </div>
+
+
+
+            </form>
+            
+            {/* <div className="flex w-3/5 flex-auto items-center justify-center">
                 <div className="flex w-full flex-col gap-4 py-6">
                 <InputReadOnly
             value={`#${user?.id}` || ""}
@@ -193,63 +269,7 @@ const Editprofile = () => {
                 />
             </div>
           </div>
-                    {/* <InputReadOnly
-                        value={`#${user?.id}` || ""}
-                        direction="flex-row"
-                        label="Mã Thành Viên"
-                    />
-                    
-                    <InputReadOnly
-                        value={user?.email || ""}
-                        direction="flex-row"
-                        label="Email"
-                    />
-                    <InputFormV3
-                        name="dateOfBirth"
-                        setValue={setpayload}
-                        setInvalidFields={setInvalidFields}
-                        invaLidFields={invalidFields}
-                        direction="flew-row"
-                        value={payload.dateOfBirth || user?.dateOfBirth}
-                        label="Ngày sinh"
-                    />
-                    <InputFormV3
-                        name="address"
-                        setValue={setpayload}
-                        setInvalidFields={setInvalidFields}
-                        invaLidFields={invalidFields}
-                        direction="flew-row"
-                        value={payload.address}
-                        label="Địa chỉ"
-                    />
- */}
 
-                    {/* <div className="flex" >
-                <label className='font-medium w-[192px] flex-none' htmlFor="fullname">Tên Hiển Thị</label>
-                <input
-                type='name'
-                id='fullname'
-                className='outline-none border border-gray-300 rounded-md p-2 flex-auto'
-                
-                value={name} 
-                onChange={(e) => setName(e.target.value)}
-
-                />
-            </div> */}
-
-                    {/* <div className="mb-6 flex">
-                        <label className="w-48 flex-none font-medium" htmlFor="avatar">
-                            Ảnh đại diện
-                        </label>
-                        <div>
-                            <img
-                                src={user?.avatar || anonAvatar}
-                                alt="avatar"
-                                className="h-28 w-28 rounded-full object-cover"
-                            />
-                            <input type="file" className="my-4 appearance-none" id="avatar"/>
-                        </div>
-                    </div> */}
 
 
                     <button className="w-full rounded-md bg-green-600 px-2 py-2 text-white hover:underline"
@@ -260,7 +280,7 @@ const Editprofile = () => {
 
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
