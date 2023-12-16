@@ -34,7 +34,6 @@ const SelectAddress = ({type,label,options, value,setValue,hiddenTitle = false,}
                        htmlFor="address">{label}</label>
             }
             <select value={value} onChange={(e) => setValue(e.target.value)} name="address"
-                    id="address"
                     className="block w-full pl-4 pr-10 py-3 shadow rounded-xl outline-none">
                 <option className='pl-4 pr-10 py-3 shadow'
                         value="None">{hiddenTitle ? label : `--Chọn: ${label}--`}</option>

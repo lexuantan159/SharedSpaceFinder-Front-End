@@ -21,7 +21,7 @@ const ManagePostHome = () => {
       </div>
 
 
-      <table class="w-full table-auto">
+      <table className="w-full table-auto">
         <thead>
           <tr className="flex w-full bg-gray-100">
             <th className="border flex-1 p-2 text-primaryColor ">ID</th>

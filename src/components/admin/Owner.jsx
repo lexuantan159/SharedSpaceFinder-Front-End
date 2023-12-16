@@ -1,29 +1,33 @@
 import { React, useState, useEffect, Fragment, useContext } from "react";
 import * as adminsService from "../../services/admin";
 import AuthContext from "../../context/authProvider";
+import Pagination from "../pagination/Pagination";
 
 const Owner = () => {
   const [owners, setOwners] = useState([]);
   const { auth, setAuth } = useContext(AuthContext);
+  const [state , setState] = useState({
+    searchByRole: "Owner",
+    limit:5
+  })
 
   useEffect(() => {
     const fetchUser = async () => {
       const accessToken = auth.accessToken;
-      const param = {
-        searchByRole: "Owner",
-      };
+     
 
-      const responseUser = await adminsService.getUser(param, accessToken);
+      const responseUser = await adminsService.getUser(state, accessToken);
       console.log("🚀 ~ fetchUser ~ responseUser:", responseUser);
 
       if (responseUser?.status === 200) {
         setOwners(responseUser.data.listUsers);
       } else {
+        setOwners([])
         console.log(responseUser);
       }
     };
     fetchUser();
-  }, [auth]);
+  }, [auth,state]);
 
   useEffect(() => {
     const myDataString = localStorage.getItem("auth");
@@ -76,7 +80,7 @@ const Owner = () => {
           </tr>
         </thead>
         <tbody className="w-full">
-          {owners.map((user, index) => {
+          { owners.length > 0 ? owners.map((user, index) => {
             return (
               <tr key={index} className=" bg-[#FFF]">
                 <td className="rounded-l-xl py-3 pl-3">
@@ -122,9 +126,10 @@ const Owner = () => {
                 </td>
               </tr>
             );
-          })}
+          }) : <p>Không có user nào</p> }
         </tbody>
       </table>
+      <Pagination state = {state} setState= {setState}/>
       {/* {modalOpen && (
         <div
           class="relative z-10"
