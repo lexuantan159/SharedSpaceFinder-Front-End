@@ -11,87 +11,71 @@ import Rating from "./Rating";
 const FormReview = ({closeModal, ownerData}) => {
     const {notify, toastLoadingId, toastUpdateLoadingId, filteredKeyNull} = useContext(MethodContext)
     const [feedbacks, setFeedbacks] = useState([])
-    const [hadFeedback, setHadFeedback] = useState(false)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState("")
-    const [isOpenFormFeedback, setIsOpenFeedback] = useState(false)
 
-    const fetchHadFeedback = async () => {
-        if (localStorage.getItem("auth") !== null) {
-            const params = {
-                ownerId: ownerData?.id,
-                userId: JSON.parse(localStorage.getItem("auth"))?.userInfo?.id
-            }
-            const getHadFeedback = await feedbackService.getListFeedback(filteredKeyNull(params));
-            if(getHadFeedback.data?.listFeedbacks?.length > 0) {
-                setHadFeedback(true);
-            }
-        }
-    }
+    // const fetchHadFeedback = async () => {
+    //     if (localStorage.getItem("auth") !== null) {
+    //         const params = {
+    //             ownerId: ownerData?.id,
+    //             userId: JSON.parse(localStorage.getItem("auth"))?.userInfo?.id
+    //         }
+    //         const getHadFeedback = await feedbackService.getListFeedback(filteredKeyNull(params));
+    //         if (getHadFeedback.data?.listFeedbacks?.length > 0) {
+    //             setHasCreateFeedback(true);
+    //             setIsOpenFeedback(false);
+    //         }
+    //     }
+    // }
+
+    // const fetchCreateFeedback = async () => {
+    //     if (localStorage.getItem("auth") !== null) {
+    //         const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
+    //         const params = { ownerId: ownerData?.id }
+    //         const getHadFeedback = await feedbackService.checkFeedback(filteredKeyNull(params), accessToken);
+    //         if (getHadFeedback.data?.listFeedbacks?.length > 0) {
+    //             setIsUpdateFeedback(true);
+    //         }
+    //     }
+    // }
 
     useEffect(() => {
-        const params = {
-            ownerId: ownerData?.id
-        }
         const fetchFeedback = async () => {
-            const paramsFiltered = filteredKeyNull(params)
+            const paramsFiltered = filteredKeyNull({
+                ownerId: ownerData?.id
+            })
             // call API to get feedback
             const responseFeedback = await feedbackService.getListFeedback(paramsFiltered);
             if (responseFeedback?.status === 200) {
                 const listFeedback = responseFeedback?.data?.listFeedbacks;
                 setFeedbacks(listFeedback)
-                setRating(listFeedback[0]?.rate)
-                setComment(listFeedback[0]?.comment)
-            }
+            }else
+                setFeedbacks([])
         }
+        // call list feedback
         fetchFeedback()
-        fetchHadFeedback()
-    }, [isOpenFormFeedback]);
+
+    }, []);
 
 
-    // const handleSubmitSharing = async (e) => {
-    //     if (content === "") {
-    //         notify("Nội dụng không được bỏ trống!", "error",);
-    //         return;
-    //     }
-    //     // get token from localstorage
+
+
+
+    // const handleUpdateFeedback = async (e) => {
+    //     // get token
     //     const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-    //     // handle call API
-    //     const responseSharing = await sharingServices.createSharing(spaceId, content, accessToken);
-    //     if (responseSharing?.status === 201) {
-    //         notify("Chia sẻ thành công!", "success")
-    //     } else if (responseSharing?.response?.status === 400 && responseSharing?.response?.data?.message ===
-    //         "You have shared this space!") {
-    //         console.log(responseSharing?.response)
-    //         notify("Bạn đã chia sẻ không gian này!", "error")
-    //     } else if (responseSharing?.response?.status === 400 && responseSharing?.response?.data?.message ===
-    //         "You can only share once!") {
-    //         console.log(responseSharing?.response)
-    //         notify("Bạn chỉ có thể chia sẽ 1 lần!", "error")
+    //     // call api
+    //     const id = toastLoadingId("Đang chờ...")
+    //     const responseUpdate = await feedbackService.updateFeedback(ownerData?.id, accessToken, rating, comment)
+    //     // handle response update
+    //     if (responseUpdate?.status === 200) {
+    //         toastUpdateLoadingId("Thay đổi phản hồi thành công!", "success", id)
+    //         setIsOpenFeedback(true)
     //     } else {
-    //         console.log(responseSharing?.response)
-    //         notify("Chia sẻ thất bại!", "error")
+    //         console.log(responseUpdate?.response)
+    //         toastUpdateLoadingId("Thay đổi phải hồi thất bại!", "error", id)
     //     }
-    //     closeModal(false)
     // }
-
-
-    const  handleUpdateFeedback = async (e) => {
-        // get token
-        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-        // call api
-        const id = toastLoadingId("Đang chờ...")
-        const responseUpdate = await feedbackService.updateFeedback(ownerData?.id,accessToken,rating,comment)
-        // handle response update
-        if(responseUpdate?.status === 200){
-            toastUpdateLoadingId("Thay đổi phản hồi thành công!", "success", id)
-            setIsOpenFeedback(true)
-        }
-        else {
-            console.log(responseUpdate?.response)
-            toastUpdateLoadingId("Thay đổi phải hồi thất bại!", "error", id)
-        }
-    }
 
     return (
         <div tabIndex="-1" aria-hidden="true"
@@ -158,21 +142,13 @@ const FormReview = ({closeModal, ownerData}) => {
                                     })) : <p className="py-4 text-lg text-center font-medium ">Chưa có phản hồi nào</p>}
                                 </div>
                                 {/*form feedback*/}
-                                {
-                                    hadFeedback && <Review rating={rating} setRating={setRating} comment={comment} setComment={setComment}/>
-                                }
+
                             </div>
                         </div>
                     </div>
 
                     <div
                         className="flex justify-end items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                        {hadFeedback &&
-                            <button type="button"
-                                 onClick={(e) => handleUpdateFeedback(e)}
-                                    className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Chỉnh sửa
-                            </button>
-                        }
                         <button data-modal-hide="default-modal" type="button"
                                 onClick={() => closeModal(false)}
                                 className="ms-3 text-gray-500 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Hủy

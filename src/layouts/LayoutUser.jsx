@@ -2,7 +2,6 @@ import React from "react";
 import SidebarManage from "../components/sidebarmanage/SidebarManage";
 import HeaderManage from "../components/header/HeaderManage";
 
-
 const LayoutUser = ({children}) => {
   return (
     <div className="min-h-screen w-full flex flex-col">
@@ -13,7 +12,6 @@ const LayoutUser = ({children}) => {
                 {children}
         </div>
       </div>
-     
     </div>
   );
 };

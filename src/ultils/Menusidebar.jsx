@@ -1,6 +1,5 @@
 import icons from "./icons"
-import {HiOutlineShare} from "react-icons/hi";
-import { FaShare } from "react-icons/fa";
+import {FaHistory, FaShare} from "react-icons/fa";
 const  {HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineClipboardList,HiOutlinePencilAlt} = icons
 export const sidebarMenu = [
     {
@@ -35,6 +34,10 @@ export const sidebarMenu = [
         text: 'Chia Sẻ Của Tôi',
         icons: <FaShare  size={23}/>
     },
+    {
+        path: '/booking-history',
+        text: 'Lịch Sử Thuê Phòng',
+        icons: <FaHistory size={23}/>
+    },
 
 ]
-export default sidebarMenu

@@ -1,4 +1,5 @@
 import * as request from '../ultils/request'
+import {getHasBody} from "../ultils/request";
 
 const POST_FEEDBACK_ENDPOINT = "/api/feedback/create-feedback"
 
@@ -79,4 +80,23 @@ export const getListFeedback = async (paramsObject) => {
         return error
     }
 };
+
+
+const CHECK_FEEDBACK_ENDPOINT = "/api/feedback/check-feedback"
+
+export const checkFeedback = async (ownerId, accessToken) => {
+    try {
+        return await request.get(CHECK_FEEDBACK_ENDPOINT, {
+            params: {ownerId},
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`
+            },
+            withCredentials: true
+        });
+    } catch (error) {
+        return error
+    }
+};
+
 

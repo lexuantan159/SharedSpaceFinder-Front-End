@@ -12,11 +12,13 @@ import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
 import * as spaceServices from "../../services/spaces";
+import * as sharingServices from "../../services/sharing";
 import MethodContext from "../../context/methodProvider";
 import FormReview from "../../components/review/FormReview";
 import ItemSharing from "../../components/share/ItemSharing";
 import ListSharing from "../../components/share/ListSharing";
 import TitlePart from "../../components/titlePart/TitlePart";
+
 
 const SpaceDetail = () => {
     const {spaceId} = useParams();
@@ -24,7 +26,7 @@ const SpaceDetail = () => {
     const [isOpenFormReview, setIsOpenFormReview] = useState(false)
     const [isOpenShares, setIsOpenShares] = useState(false)
     const [shares, setShares] = useState([1, 2, 3])
-    const {notify} = useContext(MethodContext)
+    const {notify, filteredKeyNull} = useContext(MethodContext)
 
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
@@ -36,6 +38,15 @@ const SpaceDetail = () => {
         }
     }
 
+    const fetchShared = async ({spaceId}) => {
+        const responseShared = await sharingServices.getSharing(filteredKeyNull({spaceId}))
+        console.log(responseShared)
+        if (responseShared?.status === 200) {
+            const listShares = responseShared?.data?.listSharing
+            setShares(listShares)
+        } else
+            setShares([])
+    }
 
     useEffect(() => {
         if (spaceId) {
@@ -53,6 +64,7 @@ const SpaceDetail = () => {
                     notify("Không tìm thấy phòng nào!");
             }
             fetchSpaceDetails();
+            fetchShared(spaceId);
         }
     }, [])
 
@@ -120,7 +132,8 @@ const SpaceDetail = () => {
                             <p className="mx-2 text-xm font-semibold text-textBoldColor">Địa
                                 Chỉ: {spaceDetail?.ownerId?.address}</p>
                         </div>
-                        {isOpenFormReview && <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId}/>}
+                        {isOpenFormReview &&
+                            <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId}/>}
                     </div>
 
                 </div>
@@ -230,18 +243,20 @@ const SpaceDetail = () => {
                                            subDesc="hỗ trọ nhiệt tình"/>
                                 <div className="">
                                     {
-                                        (shares.length > 2 ? <><ItemSharing/>
-                                            <ItemSharing/>
+                                        (shares.length > 2 ? <> {shares.slice(0, 2).map(item => (
+                                            <ItemSharing itemSharing={item} key={item?.id}/>
+                                        ))}
                                             <p className="text-lg text-white text-center font-semibold bg-primaryColor rounded py-1 hover:cursor-pointer hover:opacity-90 mt-4"
                                                onClick={() => setIsOpenShares(true)}
                                             > Xem Thêm...
-                                            </p></> : <> <ItemSharing/>
-                                            <ItemSharing/></>)
+                                            </p></> : shares.map(item => {
+                                            return (<ItemSharing itemSharing={item} key={item?.id}/>)
+                                        }))
                                     }
                                 </div>
                             </div>
                         }
-                        {isOpenShares && <ListSharing closeModal={setIsOpenShares}/>}
+                        {isOpenShares && <ListSharing closeModal={setIsOpenShares} listShares={shares}/>}
                     </div>
 
                 </div>

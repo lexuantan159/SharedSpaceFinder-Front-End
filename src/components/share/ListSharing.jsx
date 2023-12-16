@@ -3,71 +3,7 @@ import MethodContext from "../../context/methodProvider";
 import ItemSharing from "./ItemSharing";
 
 
-const ListSharing = ({closeModal}) => {
-    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext)
-    const [content, setContent] = useState("")
-    const [hasSharing, setHasSharing] = useState(false)
-
-    // useEffect(() => {
-    //
-    //     const params = {
-    //         userSharingId: JSON.parse(localStorage.getItem("auth")).userInfo.id  spaceId
-    //     }
-    //     const fetchSharing = async () => {
-    //         const responseSharing = await sharingServices.getSharing(params)
-    //         if (responseSharing?.data?.sharingQuantity > 0) {
-    //             const sharingContent = responseSharing?.data?.listSharing[0]?.infoSharing;
-    //             setContent(sharingContent)
-    //             setHasSharing(true)
-    //         }
-    //     }
-    //     fetchSharing()
-    // }, []);
-
-
-    // const handleSubmitSharing = async (e) => {
-    //     if (content === "") {
-    //         notify("Nội dụng không được bỏ trống!", "error",);
-    //         return;
-    //     }
-    //     // get token from localstorage
-    //     const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-    //     // handle call API
-    //     const responseSharing = await sharingServices.createSharing(spaceId, content, accessToken);
-    //     if (responseSharing?.status === 201) {
-    //         notify("Chia sẻ thành công!", "success")
-    //     } else if (responseSharing?.response?.status === 400 && responseSharing?.response?.data?.message ===
-    //         "You have shared this space!") {
-    //         console.log(responseSharing?.response)
-    //         notify("Bạn đã chia sẻ không gian này!", "error")
-    //     } else if (responseSharing?.response?.status === 400 && responseSharing?.response?.data?.message ===
-    //         "You can only share once!") {
-    //         console.log(responseSharing?.response)
-    //         notify("Bạn chỉ có thể chia sẽ 1 lần!", "error")
-    //     } else {
-    //         console.log(responseSharing?.response)
-    //         notify("Chia sẻ thất bại!", "error")
-    //     }
-    //     closeModal(false)
-    // }
-
-
-    // const  handleUpdateSharing = async () => {
-    //     // get token
-    //     const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-    //     // call api
-    //     const id = toastLoadingId("Đang chờ...")
-    //     const responseUpdate = await sharingServices.updateSharing(spaceId,content,accessToken)
-    //     // handle response update
-    //     if(responseUpdate?.status === 200){
-    //         toastUpdateLoadingId("Thay đổi nội dung thành công!", "success", id)
-    //         closeModal(false)
-    //     }
-    //     else {
-    //         console.log(responseUpdate?.response)
-    //         toastUpdateLoadingId("Thay đổi nội dung thất bại!", "error", id)
-    //     }
-    // }
+const ListSharing = ({closeModal, listShares}) => {
 
     return (
         <div tabIndex="-1" aria-hidden="true"
@@ -101,16 +37,7 @@ const ListSharing = ({closeModal}) => {
 
 
                     <div className="px-4 md:px-5 space-y-4 overflow-y-scroll max-h-[400px]">
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
-                        <ItemSharing/>
+                        {listShares.length > 0 && listShares.map(item => { return (<ItemSharing key={item?.id} itemSharing={item}/>)})}
                     </div>
 
                     <div

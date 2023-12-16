@@ -82,19 +82,5 @@ export const deleteRe = async (endPoints, option = {}) => {
 };
 
 
-export const getSpaces = async (endPoints, option = {}) => {
-    const response = await instance.get(endPoints, option);
-    return response;
-};
 
-
-// Method system
-export const postWithoutHeader = async (endPoints, data = {}) => {
-    const response = await instance.post(endPoints, data, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    });
-    return response;
-};
 
