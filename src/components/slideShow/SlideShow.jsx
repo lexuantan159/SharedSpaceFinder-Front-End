@@ -1,14 +1,17 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Space from "../space/Space";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Feedback from "../feedback/Feedback";
 import TitlePart from "../titlePart/TitlePart";
+import * as feedbackServices from "../../services/review"
+import * as spaceServices from "../../services/spaces"
 
 
-const SlideShow = ({typeSlide = "space" , typeSpace="none", titlePart , background = false}) => {
+const SlideShow = ({typeSlide = "space", titlePart, background = false}) => {
 
+    const [items, setItems] = useState([])
     const settings = {
         dots: true,
         infinite: true,
@@ -46,27 +49,39 @@ const SlideShow = ({typeSlide = "space" , typeSpace="none", titlePart , backgrou
         ],
     };
 
-    const renderSlides = () => {
-        if (typeSlide === "space") {
-            return [
-                <Space key={1} typeSpace={typeSpace}/>,
-                <Space key={2} typeSpace={typeSpace}/>,
-                <Space key={3} typeSpace={typeSpace}/>,
-                <Space key={4} typeSpace={typeSpace}/>,
-                <Space key={5} typeSpace={typeSpace}/>
-            ]
-        } else if (typeSlide === "feedback") {
-            return [
-                <Feedback key={6}/>,
-                <Feedback key={7}/>,
-                <Feedback key={8}/>,
-                <Feedback key={9}/>
-            ];
-        } else {
-            // Một xử lý mặc định nếu typeSlide không phải là "space" hoặc "feedback"
-            return [];
+    const fetchTopRated = async () => {
+        const responseTopRated = await spaceServices.getSpace({topRate: 4, limit:5})
+        if(responseTopRated?.status === 200){
+            const listSpace =  responseTopRated?.data?.listSpaces
+            setItems(listSpace)
         }
     }
+
+    const fetchFeedback = async () => {
+        const responseFeedback = await feedbackServices.getListFeedback({rateFrom:4})
+        if(responseFeedback?.status === 200){
+            const listSpace =  responseFeedback?.data?.listFeedbacks
+            setItems(listSpace)
+        }
+    }
+
+    const fetchRelated = async () => {
+        const responseRelated = await spaceServices.getSpace({categoryId: 1})
+        if(responseRelated?.status === 200){
+            const listSpace =  responseRelated?.data?.listSpaces
+            setItems(listSpace)
+        }
+    }
+    useEffect(() => {
+        if (typeSlide === "top rate")
+            fetchTopRated()
+        else if (typeSlide === "feedback")
+            fetchFeedback()
+        else
+            fetchRelated()
+
+    }, []);
+
 
 
     return (
@@ -75,7 +90,12 @@ const SlideShow = ({typeSlide = "space" , typeSpace="none", titlePart , backgrou
                        subDesc="Khám phá đa dạng vô tận: Danh mục định hình thế giới"/>
             <div className="max-w-[1200px] mx-auto my-24 px-10">
                 <Slider {...settings}>
-                    {renderSlides()}
+                    {items.map(item => {
+                        if(typeSlide === 'top rate' || typeSlide === 'related')
+                            return (<Space key={item?.id} spaceValue={item}/>)
+                        else
+                            return ( <Feedback key={item?.id} feedbackValue={item} />)
+                    })}
                 </Slider>
             </div>
         </div>
