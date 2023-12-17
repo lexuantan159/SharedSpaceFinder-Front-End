@@ -1,43 +1,53 @@
 import icons from "./icons"
 import {FaHistory, FaShare} from "react-icons/fa";
+import {FaPenToSquare} from "react-icons/fa6";
+import {IoMdNotificationsOutline} from "react-icons/io";
+import {PiShareFat} from "react-icons/pi";
+import {MdHistory} from "react-icons/md";
 const  {HiOutlineUsers,HiOutlineChatAlt,HiOutlineHeart,HiOutlineClipboardList,HiOutlinePencilAlt} = icons
 export const sidebarMenu = [
     {
         path: '/profile',
         text: 'Thông Tin Cá Nhân',
-        icons: <HiOutlineUsers size={23}/>
+        icons: <HiOutlineUsers size={19}/>
     },
     {
         role: "owner",
         path: '/post-spaces',
         text: 'Đăng Bài Cho Thuê',
-        icons: <HiOutlinePencilAlt size={23}/>
+        icons: <HiOutlinePencilAlt size={19}/>
     },
     {
 
         path: '/manage-post',
         text: 'Quản Lý Bài Đăng',
-        icons: <HiOutlineClipboardList size={23}/>
+        icons: <HiOutlineClipboardList size={19}/>
     },
     {
         path: '/favorite-space',
         text: 'Yêu thích',
-        icons: <HiOutlineHeart size={23} />
-    },
-    {
-        path: '/messenger',
-        text: 'Tin Nhắn',
-        icons: <HiOutlineChatAlt size={23}/>
+        icons: <HiOutlineHeart size={19} />
     },
     {
         path: '/my-sharing',
         text: 'Chia Sẻ Của Tôi',
-        icons: <FaShare  size={23}/>
+        icons:<PiShareFat size={19} />
     },
     {
         path: '/booking-history',
         text: 'Lịch Sử Thuê Phòng',
-        icons: <FaHistory size={23}/>
+        icons: <MdHistory size={19}/>
+    },
+    {
+        path: '/feedback',
+        text: 'Đánh giá của bạn',
+        icons: <HiOutlinePencilAlt  size={19}/>
+
+    },
+    {
+        path: '/notifications',
+        text: 'Đánh giá của bạn',
+        icons: <IoMdNotificationsOutline size={19} />
     },
 
 ]

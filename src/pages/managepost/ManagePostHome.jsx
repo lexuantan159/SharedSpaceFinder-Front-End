@@ -4,8 +4,10 @@ import {Link} from "react-router-dom";
 const ManagePostHome = () => {
   return (
     <div className="flex flex-col gap-6">
+        <div className="py-4 border-b border-gray-200">
+          <h1 className="text-2xl text-primaryColor font-semibold text-center">Quản lý bài đăng</h1>
+        </div>
       <div className="py-4 border-b border-gray-200 flex items-center justify-between">
-        <h1 className="text-3x1 text-primaryColor font-semibold">Quản Lý Tin Đăng</h1>
         <div className="">
         <input
             type="text"

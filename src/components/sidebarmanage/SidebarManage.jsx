@@ -8,8 +8,8 @@ import * as userService from "../../services/user"
 import {useEffect, useContext, useState} from "react";
 import AuthContext from "../../context/authProvider";
 
-const activeStyle = 'hover:bg-primaryColor hover:text-white flex rounded-md items-center gap-4 py-3 font-bold bg-primaryColor text-white mb-2'
-const notActiveStyle = 'hover:bg-primaryColor hover:text-white flex rounded-md font-medium items-center gap-4 py-3 mb-2'
+const activeStyle = 'hover:bg-primaryColor hover:text-white text-[14px] flex rounded-md items-center gap-4 py-3 font-medium bg-primaryColor text-white mb-2'
+const notActiveStyle = 'hover:bg-primaryColor hover:text-white text-[14px] flex rounded-md font-medium items-center gap-4 py-3 mb-2'
 
 const SidebarManage = () => {
 
@@ -18,8 +18,6 @@ const SidebarManage = () => {
 
     useEffect(() => {
         const getuser = async () => {
-            console.log("loading");
-
             if (auth.accessToken === undefined) {
                 const myDataString = localStorage.getItem("auth");
                 if (myDataString !== null) {
@@ -31,12 +29,8 @@ const SidebarManage = () => {
             // Only retrieve the access token if it's not already defined in auth.
             const accessToken =
                 auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-
-            console.log(accessToken);
-
             try {
                 const user = await userService.getcurrentuser(accessToken);
-
                 if (user?.status === 200) {
                     setUser(user.data);
                 } else {
@@ -62,9 +56,10 @@ const SidebarManage = () => {
                     <small>{user?.phone || "Phone"}</small>
                 </div>
             </div>
-            <div className="py-20">
-                {sidebarMenu.map(item => (
+            <div className="mt-5">
+                {sidebarMenu.map((item, index) => (
                     <NavLink
+                        key={index}
                         to={item.path}
                         className={({isActive}) => isActive ? activeStyle : notActiveStyle}
                     >

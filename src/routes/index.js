@@ -1,5 +1,5 @@
 
-import { Home, MySharing, BooingHistory,Spaces, LogIn, OtpResetPass, VerifyEmail,Register ,SpaceDetail,PostSpaceHome,FavoriteSpace,ManagePostHome,Editprofile,MessengeHome, Contact,Booking, Sharing } from '../pages/index';
+import { Home, MySharing,Notifications,Feedback, BooingHistory,Spaces, LogIn, OtpResetPass, VerifyEmail,Register ,SpaceDetail,PostSpaceHome,FavoriteSpace,ManagePostHome,Editprofile,MessengeHome, Contact,Booking, Sharing } from '../pages/index';
 
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
@@ -24,6 +24,9 @@ const router = [
     { path: '/manage-post', layout: LayoutUser,component: ManagePostHome },
     { path: '/favorite-space', layout: LayoutUser,component: FavoriteSpace },
     { path: '/booking-history', layout: LayoutUser,component: BooingHistory },
+    { path: '/booking-history', layout: LayoutUser,component: BooingHistory },
+    { path: '/notifications', layout: LayoutUser,component: Notifications },
+    { path: '/feedback', layout: LayoutUser,component: Feedback },
     { path: '/spaces/:spaceId', component: SpaceDetail },
     { path: '/admin/dashboard', layout: LayoutAdmin, component: Dashboard},
     { path: '/admin/user', layout: LayoutAdmin, component: User},

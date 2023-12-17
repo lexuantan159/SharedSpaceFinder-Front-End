@@ -41,7 +41,6 @@ const Editprofile = () => {
             // Only retrieve the access token if it's not already defined in auth.
             const accessToken =
                 auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-            console.log(accessToken);
             try {
                 const user = await userService.getcurrentuser(accessToken);
 

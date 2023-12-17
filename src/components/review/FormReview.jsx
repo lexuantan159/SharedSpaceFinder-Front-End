@@ -1,43 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react';
 import MethodContext from "../../context/methodProvider";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faStar} from "@fortawesome/free-solid-svg-icons";
-import Review from "./Review";
 import ItemFeedback from "./ItemFeedback";
 import * as feedbackService from "../../services/review"
 import Rating from "./Rating";
 
 
 const FormReview = ({closeModal, ownerData}) => {
-    const {notify, toastLoadingId, toastUpdateLoadingId, filteredKeyNull} = useContext(MethodContext)
+    const {filteredKeyNull} = useContext(MethodContext)
     const [feedbacks, setFeedbacks] = useState([])
-    const [rating, setRating] = useState(0)
-    const [comment, setComment] = useState("")
-
-    // const fetchHadFeedback = async () => {
-    //     if (localStorage.getItem("auth") !== null) {
-    //         const params = {
-    //             ownerId: ownerData?.id,
-    //             userId: JSON.parse(localStorage.getItem("auth"))?.userInfo?.id
-    //         }
-    //         const getHadFeedback = await feedbackService.getListFeedback(filteredKeyNull(params));
-    //         if (getHadFeedback.data?.listFeedbacks?.length > 0) {
-    //             setHasCreateFeedback(true);
-    //             setIsOpenFeedback(false);
-    //         }
-    //     }
-    // }
-
-    // const fetchCreateFeedback = async () => {
-    //     if (localStorage.getItem("auth") !== null) {
-    //         const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-    //         const params = { ownerId: ownerData?.id }
-    //         const getHadFeedback = await feedbackService.checkFeedback(filteredKeyNull(params), accessToken);
-    //         if (getHadFeedback.data?.listFeedbacks?.length > 0) {
-    //             setIsUpdateFeedback(true);
-    //         }
-    //     }
-    // }
 
     useEffect(() => {
         const fetchFeedback = async () => {
@@ -61,21 +31,7 @@ const FormReview = ({closeModal, ownerData}) => {
 
 
 
-    // const handleUpdateFeedback = async (e) => {
-    //     // get token
-    //     const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-    //     // call api
-    //     const id = toastLoadingId("Đang chờ...")
-    //     const responseUpdate = await feedbackService.updateFeedback(ownerData?.id, accessToken, rating, comment)
-    //     // handle response update
-    //     if (responseUpdate?.status === 200) {
-    //         toastUpdateLoadingId("Thay đổi phản hồi thành công!", "success", id)
-    //         setIsOpenFeedback(true)
-    //     } else {
-    //         console.log(responseUpdate?.response)
-    //         toastUpdateLoadingId("Thay đổi phải hồi thất bại!", "error", id)
-    //     }
-    // }
+
 
     return (
         <div tabIndex="-1" aria-hidden="true"

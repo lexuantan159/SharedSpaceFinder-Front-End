@@ -8,7 +8,7 @@ const LayoutUser = ({children}) => {
         <HeaderManage />
       <div className="flex w-full flex-auto">
         <SidebarManage />
-        <div className="flex-auto p-4 ">
+        <div className="relative flex-auto p-4 ">
                 {children}
         </div>
       </div>
