@@ -18,6 +18,8 @@ import FormReview from "../../components/review/FormReview";
 import ItemSharing from "../../components/share/ItemSharing";
 import ListSharing from "../../components/share/ListSharing";
 import TitlePart from "../../components/titlePart/TitlePart";
+import Rating from "../../components/review/Rating";
+import * as feedbackService from "../../services/review";
 
 
 const SpaceDetail = () => {
@@ -27,7 +29,8 @@ const SpaceDetail = () => {
     const [isOpenShares, setIsOpenShares] = useState(false)
     const [shares, setShares] = useState([1, 2, 3])
     const {notify, filteredKeyNull} = useContext(MethodContext)
-
+    const [averageRate, setAverageRate] = useState(0)
+    const [feedbacks, setFeedbacks] = useState([])
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
             const formattedString = number.toLocaleString('en-US', {
@@ -40,7 +43,6 @@ const SpaceDetail = () => {
 
     const fetchShared = async ({spaceId}) => {
         const responseShared = await sharingServices.getSharing(filteredKeyNull({spaceId}))
-        console.log(responseShared)
         if (responseShared?.status === 200) {
             const listShares = responseShared?.data?.listSharing
             setShares(listShares)
@@ -58,7 +60,6 @@ const SpaceDetail = () => {
                 const listSpaces = await spaceServices.getSpace(spaceParam);
                 if (listSpaces?.status === 200) {
                     const spaceDetail = listSpaces?.data?.listSpaces[0];
-                    console.log(spaceDetail)
                     setSpaceDetail(spaceDetail)
                 } else
                     notify("Không tìm thấy phòng nào!");
@@ -67,6 +68,28 @@ const SpaceDetail = () => {
             fetchShared(spaceId);
         }
     }, [])
+
+
+
+
+    useEffect(() => {
+        const fetchFeedback = async () => {
+            const paramsFiltered = filteredKeyNull({
+                ownerId: spaceDetail?.ownerId?.id
+            })
+            // call API to get feedback
+            const responseFeedback = await feedbackService.getListFeedback(paramsFiltered);
+            if (responseFeedback?.status === 200) {
+                setAverageRate(responseFeedback?.data?.averageRate)
+                const listFeedback = responseFeedback?.data?.listFeedbacks;
+                setFeedbacks(listFeedback)
+            }else
+                setFeedbacks([])
+        }
+        // call list feedback
+        fetchFeedback()
+
+    }, []);
 
 
     return (
@@ -104,7 +127,7 @@ const SpaceDetail = () => {
                     </div>
 
                     {/* info owner */}
-                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6"
+                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6 hover:cursor-pointer"
                          onClick={() => setIsOpenFormReview(true)}>
                         <div className="p-4 bg-[#f4f4f4] rounded-t-lg">
                             <h4 className="text-textBoldColor text-xm font-bold">Thông Tin Chủ</h4>
@@ -115,12 +138,8 @@ const SpaceDetail = () => {
                                  alt="customer"></img>
 
                             <div className="mb-2 ml-2 mt-5">
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
-                                <span className="ml-3 text-[#d4d4d4] ">0 reviews</span>
+                                <Rating valueRating={averageRate}/>
+                                <span className="ml-3 text-[#d4d4d4] ">{averageRate} reviews</span>
                             </div>
                             <div className="grid grid-cols-2">
                                 <p className="ml-2 text-xm font-semibold text-textBoldColor">{spaceDetail?.ownerId?.name}</p>
@@ -133,7 +152,7 @@ const SpaceDetail = () => {
                                 Chỉ: {spaceDetail?.ownerId?.address}</p>
                         </div>
                         {isOpenFormReview &&
-                            <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId}/>}
+                            <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId} averageRate={averageRate} feedbacks={feedbacks}/>}
                     </div>
 
                 </div>
@@ -265,7 +284,7 @@ const SpaceDetail = () => {
             {/*slide show*/
             }
 
-            <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
+            <SlideShow typeSlide="relate" titlePart="Không Gian Liên Quan" id={spaceDetail?.categoryId?.id} background={true}/>
         </>
     )
 }

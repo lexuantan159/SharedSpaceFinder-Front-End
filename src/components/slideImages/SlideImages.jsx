@@ -51,9 +51,7 @@ const SlideImages = ({images}) => {
 
     const [thisImage, setThisImage] = useState({})
     useEffect(() => {
-        console.log(images)
         if (images.length > 0) {
-            console.log(images)
             setThisImage(images[0])
         }
     }, [images])

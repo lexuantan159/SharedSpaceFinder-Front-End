@@ -9,7 +9,7 @@ import * as feedbackServices from "../../services/review"
 import * as spaceServices from "../../services/spaces"
 
 
-const SlideShow = ({typeSlide = "space", titlePart, background = false}) => {
+const SlideShow = ({typeSlide = "space", id = null,titlePart, background = false}) => {
 
     const [items, setItems] = useState([])
     const settings = {
@@ -66,19 +66,25 @@ const SlideShow = ({typeSlide = "space", titlePart, background = false}) => {
     }
 
     const fetchRelated = async () => {
-        const responseRelated = await spaceServices.getSpace({categoryId: 1})
+        const responseRelated = await spaceServices.getSpace({categoryId: id})
         if(responseRelated?.status === 200){
             const listSpace =  responseRelated?.data?.listSpaces
             setItems(listSpace)
         }
     }
+    console.log(typeSlide)
+
     useEffect(() => {
-        if (typeSlide === "top rate")
+        if (typeSlide === "top rate"){
             fetchTopRated()
-        else if (typeSlide === "feedback")
+        }
+        else if (typeSlide === "feedback") {
+            console.log(typeSlide)
             fetchFeedback()
-        else
+        }
+        else{
             fetchRelated()
+        }
 
     }, []);
 
@@ -91,7 +97,7 @@ const SlideShow = ({typeSlide = "space", titlePart, background = false}) => {
             <div className="max-w-[1200px] mx-auto my-24 px-10">
                 <Slider {...settings}>
                     {items.map(item => {
-                        if(typeSlide === 'top rate' || typeSlide === 'related')
+                        if(typeSlide === 'top rate' || typeSlide === 'relate')
                             return (<Space key={item?.id} spaceValue={item}/>)
                         else
                             return ( <Feedback key={item?.id} feedbackValue={item} />)

@@ -5,31 +5,7 @@ import * as feedbackService from "../../services/review"
 import Rating from "./Rating";
 
 
-const FormReview = ({closeModal, ownerData}) => {
-    const {filteredKeyNull} = useContext(MethodContext)
-    const [feedbacks, setFeedbacks] = useState([])
-
-    useEffect(() => {
-        const fetchFeedback = async () => {
-            const paramsFiltered = filteredKeyNull({
-                ownerId: ownerData?.id
-            })
-            // call API to get feedback
-            const responseFeedback = await feedbackService.getListFeedback(paramsFiltered);
-            if (responseFeedback?.status === 200) {
-                const listFeedback = responseFeedback?.data?.listFeedbacks;
-                setFeedbacks(listFeedback)
-            }else
-                setFeedbacks([])
-        }
-        // call list feedback
-        fetchFeedback()
-
-    }, []);
-
-
-
-
+const FormReview = ({closeModal, ownerData, averageRate, feedbacks}) => {
 
 
 
@@ -73,7 +49,7 @@ const FormReview = ({closeModal, ownerData}) => {
                                          alt="customer"></img>
                                     <p className="mt-3 ml-2 text-lg font-semibold text-textBoldColor">{ownerData?.name}</p>
                                     <div className="mb-2 ml-2 mt-3">
-                                        <Rating valueRating={3}/>
+                                        <Rating valueRating={averageRate}/>
                                         <span
                                             className="ml-3 text-lg text-[#d4d4d4] ">{feedbacks?.length} reviews</span>
                                     </div>

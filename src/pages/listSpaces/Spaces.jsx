@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import LayoutListSpaces from "../../layouts/LayoutListSpaces";
 import * as serviceSpaces from '../../services/spaces'
-import {toast} from "react-toastify";
 import {useLocation, useNavigate} from "react-router-dom";
 import MethodContext from "../../context/methodProvider";
 
