@@ -1,18 +1,35 @@
 import { React, useState, useEffect, useContext, Fragment } from "react";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import * as adminsService from "../../services/admin";
 import AuthContext from "../../context/authProvider";
 import Modal from "../admin/ModalUser";
 import { deleteUserById } from "../../services/user";
+import useClickOutSide from "../../hooks/useClickOutSide";
+import Dropdown from "./Dropdown";
+
+const dataDropdown = [
+  {
+    value: "R1",
+    text: "Admin",
+  },
+  {
+    value: "R2",
+    text: "Owner",
+  },
+  {
+    value: "R3",
+    text: "User",
+  },
+];
 
 //show list
 const User = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalRemove, setModalRemove] = useState(false);
-  const [rowToEdit, setRowToEdit] = useState(null);
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const { auth, setAuth } = useContext(AuthContext);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,40 +60,28 @@ const User = () => {
     }
   }, []);
 
-  //edit user
-  const [editingUser, setEditingUser] = useState(null);
-
-  const handleSubmit = (newRow) => {
-    rowToEdit === null
-      ? setUsers([...users, newRow])
-      : setUsers(
-          users.map((currRow, idx) => {
-            if (idx !== rowToEdit) return currRow;
-
-            return newRow;
-          }),
-        );
-  };
-
-  const handleSave = (editedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === editedUser.id ? editedUser : user,
-    );
-    setUsers(updatedUsers);
-    setEditingUser(null);
-  };
-
-  const handleEdit = async (user) => {
+  const handleEdit = () => {
     setModalOpen(true);
-    // setRowToEdit(user.id);
-    // console.log(user.id);
-    // const accessToken = auth.accessToken;
-    // const param = {
-    //   userId: user,
-    //   role: "R2",
-    // };
-    // const responseUpdate = await adminsService.updateUser(param, accessToken);
-    // console.log(responseUpdate);
+  };
+
+  const handleSubmitEdit = async () => {
+    if (!user) return;
+    if (user.roles[0].roleCode === role) return;
+    const accessToken = auth.accessToken;
+    const param = {
+      userId: user.id,
+      role: role,
+    };
+
+    const responseUser = await adminsService.updateUser(param, accessToken);
+    console.log(responseUser);
+    if (responseUser.status === HttpStatusCode.Ok) {
+      setUsers((users) =>
+        users.filter((userFilter) => userFilter.id !== user.id),
+      );
+    }
+
+    setModalOpen(false);
   };
 
   //delete user
@@ -155,7 +160,10 @@ const User = () => {
                 <td className="ml-auto rounded-r-xl py-3 pl-3">
                   <div className="flex gap-2">
                     <button
-                      onClick={handleEdit}
+                      onClick={() => {
+                        setUser(() => user);
+                        handleEdit();
+                      }}
                       className="rounded-xl bg-[#23A9F9] px-6 py-2 text-white"
                     >
                       Update
@@ -187,7 +195,7 @@ const User = () => {
 
           <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div class="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div class="sm:flex sm:items-start">
                     <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -206,29 +214,32 @@ const User = () => {
                         />
                       </svg>
                     </div>
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div class="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <h3
                         class="text-base font-semibold leading-6 text-gray-900"
                         id="modal-title"
                       >
-                        Deactivate account
+                        Update Role
                       </h3>
-                      <div class="mt-2">
-                        <p class="text-sm text-gray-500">
-                          Are you sure you want to deactivate your account? All
-                          of your data will be permanently removed. This action
-                          cannot be undone.
-                        </p>
+                      <div class="mt-2 w-full">
+                        <Dropdown
+                          data={dataDropdown.filter(
+                            (userFilter) =>
+                              userFilter.value !== user.roles[0].roleCode,
+                          )}
+                          setRole={setRole}
+                        ></Dropdown>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
+                    onClick={handleSubmitEdit}
                     type="button"
                     class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                   >
-                    Deactivate
+                    Update
                   </button>
                   <button
                     onClick={() => setModalOpen(false)}
@@ -280,13 +291,7 @@ const User = () => {
                       >
                         Deactivate account
                       </h3>
-                      <div class="mt-2">
-                        <p class="text-sm text-gray-500">
-                          Are you sure you want to deactivate your account? All
-                          of your data will be permanently removed. This action
-                          cannot be undone.
-                        </p>
-                      </div>
+                      <div class="mt-2"></div>
                     </div>
                   </div>
                 </div>

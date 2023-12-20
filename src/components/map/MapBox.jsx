@@ -15,8 +15,6 @@ const MapBox = ({address = null}) => {
         longitude: 108.1679869
     })
 
-    console.log(address)
-
     useEffect(() => {
         if (address !== null) {
             // Construct the Mapbox Geocoding API URL
@@ -65,7 +63,7 @@ const MapBox = ({address = null}) => {
             <ReactMapLG
                 import={'reactMap-gl'}
                 {...viewPort}
-                style={{width: "100%", height: "500px"}}
+                style={{width: "100%", height: 500}}
 
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 mapboxAccessToken={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}

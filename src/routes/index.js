@@ -19,6 +19,7 @@ import Owner from "../components/admin/Owner";
 import User from "../components/admin/User";
 import { LayoutAdmin, LayoutAuth, LayoutUser } from "../layouts/index";
 import PostSpace from "../components/admin/PostSpace";
+import Notification from "../components/admin/Notification";
 
 const router = [
   { path: "/", component: Home },
@@ -38,6 +39,7 @@ const router = [
   { path: "/admin/dashboard", layout: LayoutAdmin, component: Dashboard },
   { path: "/admin/user", layout: LayoutAdmin, component: User },
   { path: "/admin/owner", layout: LayoutAdmin, component: Owner },
+  { path: "/admin/notification", layout: LayoutAdmin, component: Notification },
   // { path: "/admin/posts-space", layout: LayoutAdmin, component: PostSpaceHome },
   {
     path: "/admin/posts-space/:statusId",

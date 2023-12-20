@@ -21,7 +21,7 @@ const LogIn = () => {
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
-            notify(location.state?.toastMessage, location.state?.statusMessage);
+            notify(location.state?.toastMessage, 'error');
             navigate(location.pathname, {replace: true, state: {}});
         }
     }, []);
@@ -34,49 +34,13 @@ const LogIn = () => {
                 navigate('/', {state: {toastMessage: "Đăng Nhập Thành Công!"}});
         })
     }
-    const handleForgotPassword = async (e) => {
-        e.preventDefault();
-        if (email === '') {
-            notify("Email không được để trống!")
-            return;
-        }
-        const id = toast.loading("Please wait...")
-        const responseForgotPassword = await authService.forgotPassword(email);
-        if (responseForgotPassword?.status === 200) {
-            localStorage.setItem("email", JSON.stringify({email}));
-            navigate('/forgot-password', {
-                state: {
-                    id:id,
-                    toastMessage: "Vui lòng nhập mã OTP được gửi trên email của bạn để xác nhận!",
-                    statusMessage: "success"
-                }
-            })
-        } else {
-            console.log(responseForgotPassword)
-            if(responseForgotPassword?.response?.status === 404) {
-                toast.update(id, {
-                    render: "Email chưa được đăng ký!",
-                    type: "error",
-                    isLoading: false,
-                    autoClose: true,
-                    closeButton: "Close",
-                });
-            }else {
-                toast.update(id, {
-                    render: "Gửi OTP thất bại!",
-                    type: "error",
-                    isLoading: false,
-                    autoClose: true,
-                    closeButton: "Close"
-                });
-            }
-        }
-    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
         // fetch api login
+        console.log({email, password})
         const loginResponse = await authService.login(email, password)
+        console.log(loginResponse)
         if (loginResponse?.status === 200) {
             const accessToken = loginResponse?.data?.accessToken;
             const refreshToken = loginResponse?.data?.refreshToken;
@@ -84,13 +48,10 @@ const LogIn = () => {
             const roles = loginResponse?.data?.roles
             setAuth({...auth, refreshToken, accessToken, type, roles});
             localStorage.setItem('auth', JSON.stringify({...auth, refreshToken, accessToken, type, roles}));
-            localStorage.setItem("access-token",JSON.stringify({accessToken}) )
-            localStorage.setItem("refresh-token",JSON.stringify({refreshToken}))
             // navigation
             handleNavigate(roles)
         } else {
-            console.log(loginResponse)
-            if (loginResponse?.response?.status === 400 && loginResponse?.response?.data?.message === "Password is invalid!")
+            if (loginResponse?.response?.status === 401)
                 notify("Mật khẩu không chính xác!", "error")
             else
                 notify("Email chưa được đăng ký!", "error")
@@ -108,7 +69,7 @@ const LogIn = () => {
                     <div className="w-full h-[200px] mb-9 overflow-hidden">
                         <img className="w-full h-full object-cover"
                              src={require('../../assets/images/logoTransparent.png')} alt=""/>
-                    </div>
+                             </div>
                     <div className="w-full mb-4">
                         <label className="block text-[18px] font-bold text-textBoldColor mb-2"
                                htmlFor="inputEmail">Email</label>
@@ -146,8 +107,7 @@ const LogIn = () => {
                             {/*<input type="checkbox" className="h-full mr-1 mt-1 pt-1 hover:cursor-pointer"/>*/}
                             {/*<span className=" text-primaryColor">lưu mật khẩu</span>*/}
                         </div>
-                        <p className=" text-primaryColor hover:cursor-pointer"
-                           onClick={(e) => handleForgotPassword(e)}>Quên mật khẩu!</p>
+                        <Link to="/" className=" text-primaryColor">Quên mật khẩu!</Link>
                     </div>
                     <div className=" mt-5">
                         <button

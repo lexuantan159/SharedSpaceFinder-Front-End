@@ -22,10 +22,10 @@ import * as spaceService from "../../services/spaces";
 import { createPortal } from "react-dom";
 import useClickOutSide from "../../hooks/useClickOutSide";
 import axios from "axios";
+import { useSpace } from "../../context/space-context";
 
 const PostSpace = () => {
   const { statusId } = useParams();
-  console.log("🚀 ~ PostSpace ~ statusId:", typeof statusId);
   const [spaces, setSpaces] = useState([]);
   useEffect(() => {
     const fetchingSpaces = async () => {
@@ -110,7 +110,7 @@ border border-b-[#E7ECF3]"
             />
           </Link>
         </div>
-        <div className="flex w-full flex-col justify-between gap-8 p-5 ">
+        <div className="flex flex-col justify-between w-full gap-8 p-5 ">
           <div className="flex flex-col gap-5">
             <Link to={`/spaces/${space.id}`}>
               <h2 className="text-4xl font-bold">
@@ -132,7 +132,7 @@ border border-b-[#E7ECF3]"
               </span>
             </div>
           </div>
-          <div className="flex w-full justify-between">
+          <div className="flex justify-between w-full">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-[#3B3E44]">
                 <FontAwesomeIcon icon={faHouse} />
@@ -161,7 +161,7 @@ border border-b-[#E7ECF3]"
                 <span>{space.peopleNumbers}</span>
               </div>
             </div>
-            <div className="flex flex-col gap-5 self-end">
+            <div className="flex flex-col self-end gap-5">
               <Link
                 to={`/spaces/${space.id}`}
                 className="flex items-center gap-2 text-[#84878B]"

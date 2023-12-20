@@ -3,19 +3,14 @@ import * as request from "../ultils/request";
 const USERS_ENDPOINT = "/api/users/current-user";
 
 export const getcurrentuser = async (accessToken) => {
-
-    try {
-        const response = await request.get(USERS_ENDPOINT, {
-            headers: {
-                "Content-Type": "Application/json",
-                "Authorization": `Bearer ${accessToken}`
-            },
-            withCredentials: true
-        });
-        return response
-    } catch (error) {
-        return error
-    }
+  try {
+    const response = await request.get(USERS_ENDPOINT, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 const EDIDIT_USERS = "/api/users/edit-profile/";

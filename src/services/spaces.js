@@ -6,7 +6,6 @@ const ACCEPT_ENDPOINT = "/api/spaces/accept-space";
 const DENIED_ENDPOINT = "/api/spaces/denied-space";
 
 export const getSpace = async (paramsObject) => {
-
   try {
     const response = await request.get(SPACES_ENDPOINT, {
       params: paramsObject,
@@ -36,7 +35,6 @@ export const acceptSpace = async (paramsObject, accessToken) => {
   }
 };
 
-
 export const deniedSpace = async (paramsObject, accessToken) => {
   console.log(paramsObject);
   try {
@@ -54,23 +52,4 @@ export const deniedSpace = async (paramsObject, accessToken) => {
   } catch (error) {
     return error;
   }
-}
-
-
-const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
-
-export const createSpace = async (accessToken, formData) => {
-    try {
-        return await request.post(POST_SPACES_ENDPOINT,
-          formData
-        , {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                "Authorization": `Bearer ${accessToken}`
-            },
-            withCredentials: true
-        });
-    } catch (error) {
-        return error
-    }
 };

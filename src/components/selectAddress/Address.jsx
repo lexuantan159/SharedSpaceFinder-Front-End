@@ -2,15 +2,19 @@ import SelectAddress from "./SelectAddress";
 import React, { useEffect, useState } from "react";
 import { getDistrict, getProvinces, getWard } from "../../services/address";
 
-const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setResetAddress}) => {
+const Address = ({
+  setAddress,
+  hiddenTitle = false,
+  resetAddress = false,
+  setResetAddress,
+}) => {
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
 
-    const [provinces, setProvinces] = useState([])
-    const [districts, setDistricts] = useState([])
-    const [wards, setWards] = useState([])
-
-    const [provinceId, setProvinceId] = useState("")
-    const [districtId, setDistrictId] = useState("")
-    const [wardId, setWardId] = useState("")
+  const [provinceId, setProvinceId] = useState("");
+  const [districtId, setDistrictId] = useState("");
+  const [wardId, setWardId] = useState("");
 
   useEffect(() => {
     if (resetAddress) {
@@ -56,11 +60,28 @@ const Address = ({setAddress, hiddenTitle = false, resetAddress = false, setRese
     districtId && fetchWards();
   }, [districtId]);
 
-    useEffect(() => {
-        const fullAddress = `${wardId ? `${wards.find((item) => item.ward_id === wardId)?.ward_name},` : ''} ${districtId ? `${districts.find((item) => item.district_id === districtId)?.district_name},` : ''} ${provinceId ? `${provinces.find((item) => item.province_id === provinceId)?.province_name}` : ''}`
-        setAddress(fullAddress)
-    }, [provinceId, districtId, wardId]);
-
+  useEffect(() => {
+    const fullAddress = `${
+      wardId
+        ? `${wards.find((item) => item.ward_id === wardId)?.ward_name},`
+        : ""
+    } ${
+      districtId
+        ? `${
+            districts.find((item) => item.district_id === districtId)
+              ?.district_name
+          },`
+        : ""
+    } ${
+      provinceId
+        ? `${
+            provinces.find((item) => item.province_id === provinceId)
+              ?.province_name
+          }`
+        : ""
+    }`;
+    setAddress(fullAddress);
+  }, [provinceId, districtId, wardId]);
 
   return (
     <>

@@ -1,9 +1,12 @@
 import React from "react";
-import SidebarAdmin from "../components/sidebarAdmin/SidebarAdmin";
 import HeaderAdmin from "../components/headerAdmin/HeaderAdmin";
 import SidebarAdminClone from "../components/sidebarAdmin/SidebarAdminClone";
+import { SpaceProvider } from "../context/space-context";
+import { useParams } from "react-router-dom";
 
 const LayoutAdmin = ({ children }) => {
+  const { statusId } = useParams();
+  console.log("🚀 ~ LayoutAdmin ~ statusId:", statusId);
   return (
     <>
       <SidebarAdminClone />

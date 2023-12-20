@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faArrowsLeftRight,
@@ -7,18 +7,24 @@ import {
     faStar,
     faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
+
 import {Link, useParams} from "react-router-dom";
+
+
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
 import * as spaceServices from "../../services/spaces";
-import MethodContext from "../../context/methodProvider";
+import {toast} from "react-toastify";
 
 const SpaceDetail = () => {
     const {spaceId} = useParams();
     const [spaceDetail, setSpaceDetail] = useState({})
     console.log(spaceId)
-    const {notify} = useContext(MethodContext)
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
 
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
@@ -36,7 +42,7 @@ const SpaceDetail = () => {
             const fetchSpaceDetails = async () => {
                 const spaceParam = {
                     spaceId: spaceId,
-                    status: 0
+                    status: 3
                 };
                 const listSpaces = await spaceServices.getSpace(spaceParam);
                 if (listSpaces?.status === 200) {
@@ -227,17 +233,17 @@ const SpaceDetail = () => {
                             <p className="text-xm text-primaryColor font-bold mb-3">Bản Đồ</p>
                             <p className="mb-4">Địa chỉ: {spaceDetail?.address}</p>
                             <div className="w-full h-[500px] rounded overflow-hidden shadow-[0_0_10px_gray]">
-                                <MapBox address={spaceDetail?.address}></MapBox>
+                                <MapBox address={spaceDetail?.province}></MapBox>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-            </div>
-            {/*slide show*/}
+                {/*slide show*/}
 
-            <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
+                <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
+            </div>
         </>
     )
 }

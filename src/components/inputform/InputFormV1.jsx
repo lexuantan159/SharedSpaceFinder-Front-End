@@ -11,6 +11,7 @@ const InputFormV1 = ({label, unit, value, setValue, small,name,invaLidFields,set
           className={`${unit ? 'rounded-tl-md rounded-bl-md' : 'rounded-md'} outline-none border flex-auto border-gray-300 p-2`} 
           value={value}
           onChange={(e) => setValue(prev => ({...prev, [name]:e.target.value}))}
+
           onFocus={() => setInvalidFields([])}
           />
     
