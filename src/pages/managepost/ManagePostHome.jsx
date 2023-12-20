@@ -11,12 +11,15 @@ import * as userService from "../../services/user"
 
 const ManagePostHome = () => {
   const [IsEdit, setIsEdit] = useState(false) 
+  
   const {auth, setAuth} = useContext(AuthContext);
   const [dataEdit, setDataEdit] = useState({}) 
 
   const [spaces, setSpaces] = useState([]);
   const [deleteSpaces, setDeleteSpaces] = useState(false)
   const [user, setUser] = useState("");
+  
+
     useEffect(() => {
         const getUser = async () => {
             if (auth.accessToken === undefined) {
@@ -46,14 +49,14 @@ const ManagePostHome = () => {
   
 
     const { ownerId } = {
-      ownerId: user?.id
+      ownerId: user?.id,
     }
+    
   useEffect(() => {
     if(ownerId){
       const fetchSpace = async () => {
         const param = {
           ownerId: ownerId,
-            
         };
         
         const responseSpaces = await spaceService.getSpace(param);
@@ -67,7 +70,7 @@ const ManagePostHome = () => {
     fetchSpace();
     
     }
-  }, [ownerId,deleteSpaces]);
+  }, [ownerId,deleteSpaces,IsEdit]);
 
 
   const handleDeleteSpace = async (e) => {

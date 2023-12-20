@@ -8,13 +8,15 @@ import MethodContext from "../../context/methodProvider";
 import AddressEdit from "../../components/selectAddress/AddressEdit";
 
 const EditSpace = ({ setIsEdit, dataEdit }) => {
+  console.log(dataEdit)
   const [categoryId, setCategoryID] = useState(
-    dataEdit?.categoryId?.categoryName || "none",
+    dataEdit?.categoryId?.id || "none",
   );
   
-  const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
-
+    
   const [address, setAddress] = useState(" , , ");
+  const [addressOnly, setAddressOnly] = useState(dataEdit?.address || " , , ");
+
   const [province, setProvince] = useState(dataEdit?.province || "");
   const [district, setDistrict] = useState(dataEdit?.district || "");
   const [ward, setWard] = useState(dataEdit?.ward || "");
@@ -77,14 +79,16 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
 
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 top-0 flex h-[700px] justify-center backdrop-brightness-75"
+       className="absolute bottom-0 left-0 right-0 top-0 flex h-[700px] justify-center backdrop-brightness-75"
+
       onClick={(e) => {
         e.stopPropagation();
         setIsEdit(false);
       }}
     >
       <div
-        className="h-full w-[950px] overflow-y-auto bg-white"
+         className="h-full w-[950px] overflow-y-auto bg-white"
+
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -105,6 +109,7 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
                 options={categories}
                 label="Danh Mục"
               />
+             
               <AddressEdit
                 space={dataEdit}
                 setAddress={setAddress}
@@ -125,7 +130,23 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
                 className="mb-2 block text-[18px] font-semibold text-textBoldColor"
                 htmlFor="inputAdress"
               >
-                Địa Chỉ
+                Địa Chỉ Chính Xác
+              </label>
+              <input
+                className="block h-[50px] w-full py-3 pl-4 pr-10 shadow border border-gray-200 outline-none rounded-md bg-gray-100"
+                id="inputAdress"
+                placeholder="Địa chỉ..."
+                readOnly
+                value={addressOnly}
+                onChange={(e) => setAddressOnly(e.target.value)}
+              />
+            </div>
+            <div className="mb-4 w-full">
+              <label
+                className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                htmlFor="inputAdress"
+              >
+                Địa Chỉ Thay Đổi
               </label>
               <textarea
                 className="block h-[50px] w-full rounded-xl py-3 pl-4 pr-10 shadow outline-none"
@@ -293,6 +314,8 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
           </form>
         </div>
       </div>
+     
+
     </div>
   );
 };
