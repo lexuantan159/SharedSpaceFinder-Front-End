@@ -89,7 +89,6 @@ const SlideShow = ({typeSlide = "space", id = null,titlePart, background = false
     }, []);
 
 
-
     return (
         <div className={`${background ? "py-12 bg-[#F7F8F9]" : ""}`}>
             <TitlePart title={titlePart} subTitle="Lựa Chọn Nhanh Chóng"
