@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+import React from "react";
+import {useEffect, useContext, useState} from "react";
+
 import SelectAddress from "../../components/selectAddress/SelectAddress";
 import Address from "../../components/selectAddress/Address";
 import Swal from "sweetalert2";
@@ -6,17 +8,15 @@ import Swal from "sweetalert2";
 import * as spaceService from "../../services/spaces";
 import MethodContext from "../../context/methodProvider";
 import AddressEdit from "../../components/selectAddress/AddressEdit";
+import SlideImagesEdit from "../../components/slideImages/SlideImagesEdit";
 
 const EditSpace = ({ setIsEdit, dataEdit }) => {
   console.log(dataEdit)
   const [categoryId, setCategoryID] = useState(
     dataEdit?.categoryId?.id || "none",
   );
-  
-    
   const [address, setAddress] = useState(" , , ");
   const [addressOnly, setAddressOnly] = useState(dataEdit?.address || " , , ");
-
   const [province, setProvince] = useState(dataEdit?.province || "");
   const [district, setDistrict] = useState(dataEdit?.district || "");
   const [ward, setWard] = useState(dataEdit?.ward || "");
@@ -39,12 +39,21 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
     { id: 5, name: "Mặt Bằng" },
     { id: 6, name: "Chung Cư" },
   ];
+  const handleFileChange = (e) => {
+    // Access the selected files from the input element
+    const selectedFiles = e.target.files;
+    // Convert the FileList to an array and update the state
+    setFiles(Array.from(selectedFiles));
+};
+
+console.log(dataEdit)
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const params = {
       spaceId: dataEdit?.id,
     };
-    console.log(params);
     formData.append("title", title);
     formData.append("description", description);
     formData.append("price", price);
@@ -56,6 +65,11 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
     formData.append("ward", ward);
     formData.append("address", address);
     formData.append("categoryId", categoryId);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('images', files[i]);
+  }
+
 
     let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
     console.log(accessToken);
@@ -76,6 +90,8 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
         Swal.fire("Xóa bài viết không thành công!", "error")
     }
   };
+
+  
 
   return (
     <div
@@ -118,12 +134,7 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
                 setWard={setWard}
               />
 
-              {/* <Address
-                            space={dataEdit}
-                            setAddress={setAddress} 
-                            setProvince={setProvince}   
-                            setDistrict={setDistrict}
-                             setWard={setWard}/>  */}
+              
             </div>
             <div className="mb-4 w-full">
               <label
@@ -284,29 +295,34 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <img
-              className="h-[500px] w-full "
-              src={
-                dataEdit?.images[0]?.imageUrl ||
-                "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"
-              }
-              alt="anh phong"
-            />
-            {/* <div className="mb-3">
+            <div className="mb-4 w-full">
+              <label
+                className="mb-2 block text-[18px] font-semibold text-textBoldColor"
+                htmlFor="anh"
+              >
+                Ảnh bài đăng
+              </label>
+              <SlideImagesEdit images={dataEdit?.images || []}/>
+            </div>
+
+
+
+
+
+            <div className="mb-3 mt-8 ">
                     <label
                         htmlFor="formFileMultiple"
-                        className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                    >Chọn nhiều file</label
+                        className="mb-2  text-[18px] font-semibold text-textBoldColor "
+                    >Chọn file thay đổi ảnh </label
                     >
                     <input
-                        className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                        className="mt-4 relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
                         type="file"
                         id="formFileMultiple"
                         accept=".png, .jpg, .jpeg"
                         onChange={(e) => handleFileChange(e)}
-                        required
                         multiple/>
-                </div> */}
+                </div>
             <button className="block w-full rounded-xl bg-primaryColor py-3 pl-4 pr-10 text-lg font-bold text-white shadow outline-none">
             Chỉnh Sửa
             </button>
