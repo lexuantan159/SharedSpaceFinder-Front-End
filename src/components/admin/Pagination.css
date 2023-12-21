@@ -1,0 +1,25 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.previous.disabled,
+.next.disabled {
+  opacity: 0.2;
+  /* visibility: hidden; */
+  pointer-events: none;
+}
+
+.pagination > li {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 171.429%;
+  user-select: none;
+}
+
+.pagination > .selected {
+  font-weight: 700;
+  color: #796eff;
+}

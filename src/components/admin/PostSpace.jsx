@@ -23,21 +23,28 @@ import { createPortal } from "react-dom";
 import useClickOutSide from "../../hooks/useClickOutSide";
 import axios from "axios";
 import { useSpace } from "../../context/space-context";
+import Pagination from "./Pagination";
 
 const PostSpace = () => {
   const { statusId } = useParams();
   const [spaces, setSpaces] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     const fetchingSpaces = async () => {
       const param = {
         status: statusId,
-        limit: 3,
+        limit: itemPerPage,
+        page: currentPage,
       };
       const data = await spaceService.getSpace(param);
+      console.log("🚀 ~ fetchingSpaces ~ data:", data);
+      setTotalPages(() => data?.data?.totalPages);
       setSpaces(() => data?.data?.listSpaces || []);
     };
     fetchingSpaces();
-  }, [statusId]);
+  }, [statusId, currentPage]);
 
   const { auth } = useContext(AuthContext);
   const accessToken = auth.accessToken;
@@ -45,6 +52,7 @@ const PostSpace = () => {
     e.preventDefault();
     const param = {
       spaceId: id,
+      limit: itemPerPage,
     };
     const data = await spaceService.acceptSpace(param, accessToken);
     if (data?.status === 200) {
@@ -84,6 +92,11 @@ const PostSpace = () => {
               ></ItemSpace>
             );
           })}
+        <Pagination
+          itemsPerPage={itemPerPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
     </div>
   );

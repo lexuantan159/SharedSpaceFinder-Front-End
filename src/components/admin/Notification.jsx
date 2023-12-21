@@ -3,10 +3,15 @@ import AuthContext from "../../context/authProvider";
 import * as notificationService from "../../services/notification";
 import moment from "moment";
 import { HttpStatusCode } from "axios";
+import Pagination from "./Pagination";
 
 const Notification = () => {
   const [notification, setNotification] = useState([]);
   const { auth } = useContext(AuthContext);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     const fetchNotification = async () => {
       const accessToken = auth.accessToken;
@@ -16,10 +21,11 @@ const Notification = () => {
         param,
         accessToken,
       );
-      console.log("🚀 ~ fetchUser ~ responseUser:", response);
+      console.log("🚀 ~ fetchNotification ~ response:", response);
 
       if (response?.status === 200) {
         setNotification(response.data.listNotifications);
+        setTotalPages(response.data.totalPages);
       } else {
         console.log(response);
       }
@@ -80,6 +86,11 @@ const Notification = () => {
             ></NotificationItem>
           );
         })}
+        <Pagination
+          itemsPerPage={itemPerPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
     </Fragment>
   );
@@ -110,7 +121,7 @@ const NotificationItem = ({
         <img
           src="https://mighty.tools/mockmind-api/content/human/7.jpg"
           alt="avatar"
-          className="h-9 w-9 rounded-full object-cover"
+          className="object-cover rounded-full h-9 w-9"
         />
         <div className="flex flex-col justify-between">
           <p className="text-[#4E5D78]">

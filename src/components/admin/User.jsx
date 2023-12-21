@@ -6,6 +6,7 @@ import Modal from "../admin/ModalUser";
 import { deleteUserById } from "../../services/user";
 import useClickOutSide from "../../hooks/useClickOutSide";
 import Dropdown from "./Dropdown";
+import Pagination from "./Pagination";
 
 const dataDropdown = [
   {
@@ -31,6 +32,10 @@ const User = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const [role, setRole] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     const fetchUser = async () => {
       const accessToken = auth.accessToken;
@@ -43,6 +48,7 @@ const User = () => {
 
       if (responseUser?.status === 200) {
         setUsers(responseUser.data.listUsers);
+        setTotalPages(() => responseUser.data.totalPages);
       } else {
         console.log(responseUser);
       }
@@ -132,12 +138,12 @@ const User = () => {
           {users.map((user, index) => {
             return (
               <tr key={index} className=" bg-[#FFF]">
-                <td className="rounded-l-xl py-3 pl-3">
+                <td className="py-3 pl-3 rounded-l-xl">
                   <div className="flex items-center gap-2">
                     <img
                       src="https://mighty.tools/mockmind-api/content/human/7.jpg"
                       alt="avatar"
-                      className="h-9 w-9 rounded-full object-cover"
+                      className="object-cover rounded-full h-9 w-9"
                     />
                     <span>{user.name}</span>
                   </div>
@@ -157,7 +163,7 @@ const User = () => {
                 <td className="py-3 pl-3">
                   <span>{user.roles[0].roleValue}</span>
                 </td>
-                <td className="ml-auto rounded-r-xl py-3 pl-3">
+                <td className="py-3 pl-3 ml-auto rounded-r-xl">
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
@@ -184,6 +190,11 @@ const User = () => {
           })}
         </tbody>
       </table>
+      <Pagination
+        itemsPerPage={itemPerPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
       {modalOpen && (
         <div
           class="relative z-10"

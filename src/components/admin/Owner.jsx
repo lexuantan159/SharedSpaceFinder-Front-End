@@ -3,6 +3,7 @@ import * as adminsService from "../../services/admin";
 import AuthContext from "../../context/authProvider";
 import { deleteUserById } from "../../services/user";
 import Dropdown from "./Dropdown";
+import Pagination from "./Pagination";
 
 const dataDropdown = [
   {
@@ -28,11 +29,17 @@ const Owner = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const [role, setRole] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     const fetchUser = async () => {
       const accessToken = auth.accessToken;
       const param = {
         searchByRole: "Owner",
+        page: currentPage,
+        limit: itemPerPage,
       };
 
       const responseUser = await adminsService.getUser(param, accessToken);
@@ -40,6 +47,7 @@ const Owner = () => {
 
       if (responseUser?.status === 200) {
         setOwners(responseUser.data.listUsers);
+        setTotalPages(() => responseUser.totalPages);
       } else {
         console.log(responseUser);
       }
@@ -130,12 +138,12 @@ const Owner = () => {
           {owners.map((user, index) => {
             return (
               <tr key={index} className=" bg-[#FFF]">
-                <td className="rounded-l-xl py-3 pl-3">
+                <td className="py-3 pl-3 rounded-l-xl">
                   <div className="flex items-center gap-2">
                     <img
                       src="https://mighty.tools/mockmind-api/content/human/7.jpg"
                       alt="avatar"
-                      className="h-9 w-9 rounded-full object-cover"
+                      className="object-cover rounded-full h-9 w-9"
                     />
                     <span>{user.name}</span>
                   </div>
@@ -152,7 +160,7 @@ const Owner = () => {
                 <td className="py-3 pl-3">
                   <span>{user.address}</span>
                 </td>
-                <td className="ml-auto rounded-r-xl py-3 pl-3">
+                <td className="py-3 pl-3 ml-auto rounded-r-xl">
                   <div className="flex gap-2">
                     <button
                       onClick={() => {
@@ -179,6 +187,11 @@ const Owner = () => {
           })}
         </tbody>
       </table>
+      <Pagination
+        itemsPerPage={itemPerPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
       {modalOpen && (
         <div
           class="relative z-10"
