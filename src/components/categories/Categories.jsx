@@ -1,10 +1,10 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as categoriesService from "../../services/Category"
 
 
 const Categories = () => {
-
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
 
     const imagUrl= "https://afamilycdn.com/2017/photo-1-1507000784256.jpg";
@@ -25,6 +25,10 @@ const Categories = () => {
         fetchCategory();
     }, [])
 
+    const handleNavigate = (categoryId) => {
+        navigate('/spaces', {state: {categoryId}})
+    }
+
 
 
     return (
@@ -35,8 +39,7 @@ const Categories = () => {
                 {
                     categories.length > 0 && categories.map(category => {
                         return (
-                            <Link to="/spaces" key={category?.categorySpace?.id}>
-                                <div className="h-[250px] relative group rounded-xl hover:shadow-lg overflow-hidden">
+                                <div className="h-[250px] relative group rounded-xl hover:shadow-lg overflow-hidden"  key={category?.categorySpace?.id} onClick={ () => handleNavigate(category?.categorySpace?.id)}>
                                     <img
                                         className="h-full w-full object-cover rounded-xl transition-all group-hover:rotate-6 group-hover:scale-125 group-hover:transform group-hover:origin-center "
                                         src={imagUrl}
@@ -49,7 +52,6 @@ const Categories = () => {
                                         <span className="">{category?.categoryQuantity} Phòng</span>
                                     </div>
                                 </div>
-                            </Link>
                         )
                     })
                 }

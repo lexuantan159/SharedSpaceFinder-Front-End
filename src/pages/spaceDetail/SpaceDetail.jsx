@@ -12,14 +12,25 @@ import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
 import * as spaceServices from "../../services/spaces";
+import * as sharingServices from "../../services/sharing";
 import MethodContext from "../../context/methodProvider";
+import FormReview from "../../components/review/FormReview";
+import ItemSharing from "../../components/share/ItemSharing";
+import ListSharing from "../../components/share/ListSharing";
+import TitlePart from "../../components/titlePart/TitlePart";
+import Rating from "../../components/review/Rating";
+import * as feedbackService from "../../services/review";
+
 
 const SpaceDetail = () => {
     const {spaceId} = useParams();
     const [spaceDetail, setSpaceDetail] = useState({})
-    console.log(spaceId)
-    const {notify} = useContext(MethodContext)
-
+    const [isOpenFormReview, setIsOpenFormReview] = useState(false)
+    const [isOpenShares, setIsOpenShares] = useState(false)
+    const [shares, setShares] = useState([1, 2, 3])
+    const {notify, filteredKeyNull} = useContext(MethodContext)
+    const [averageRate, setAverageRate] = useState(0)
+    const [feedbacks, setFeedbacks] = useState([])
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
             const formattedString = number.toLocaleString('en-US', {
@@ -30,6 +41,14 @@ const SpaceDetail = () => {
         }
     }
 
+    const fetchShared = async ({spaceId}) => {
+        const responseShared = await sharingServices.getSharing(filteredKeyNull({spaceId}))
+        if (responseShared?.status === 200) {
+            const listShares = responseShared?.data?.listSharing
+            setShares(listShares)
+        } else
+            setShares([])
+    }
 
     useEffect(() => {
         if (spaceId) {
@@ -41,14 +60,36 @@ const SpaceDetail = () => {
                 const listSpaces = await spaceServices.getSpace(spaceParam);
                 if (listSpaces?.status === 200) {
                     const spaceDetail = listSpaces?.data?.listSpaces[0];
-                    console.log(spaceDetail)
                     setSpaceDetail(spaceDetail)
                 } else
                     notify("Không tìm thấy phòng nào!");
             }
             fetchSpaceDetails();
+            fetchShared(spaceId);
         }
     }, [])
+
+
+
+
+    useEffect(() => {
+        const fetchFeedback = async () => {
+            const paramsFiltered = filteredKeyNull({
+                ownerId: spaceDetail?.ownerId?.id
+            })
+            // call API to get feedback
+            const responseFeedback = await feedbackService.getListFeedback(paramsFiltered);
+            if (responseFeedback?.status === 200) {
+                setAverageRate(responseFeedback?.data?.averageRate)
+                const listFeedback = responseFeedback?.data?.listFeedbacks;
+                setFeedbacks(listFeedback)
+            }else
+                setFeedbacks([])
+        }
+        // call list feedback
+        fetchFeedback()
+
+    }, []);
 
 
     return (
@@ -86,7 +127,8 @@ const SpaceDetail = () => {
                     </div>
 
                     {/* info owner */}
-                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6">
+                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6 hover:cursor-pointer"
+                         onClick={() => setIsOpenFormReview(true)}>
                         <div className="p-4 bg-[#f4f4f4] rounded-t-lg">
                             <h4 className="text-textBoldColor text-xm font-bold">Thông Tin Chủ</h4>
                         </div>
@@ -96,12 +138,8 @@ const SpaceDetail = () => {
                                  alt="customer"></img>
 
                             <div className="mb-2 ml-2 mt-5">
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
-                                <span className="ml-3 text-[#d4d4d4] ">0 reviews</span>
+                                <Rating valueRating={averageRate}/>
+                                <span className="ml-3 text-[#d4d4d4] ">{averageRate} reviews</span>
                             </div>
                             <div className="grid grid-cols-2">
                                 <p className="ml-2 text-xm font-semibold text-textBoldColor">{spaceDetail?.ownerId?.name}</p>
@@ -113,7 +151,8 @@ const SpaceDetail = () => {
                             <p className="mx-2 text-xm font-semibold text-textBoldColor">Địa
                                 Chỉ: {spaceDetail?.ownerId?.address}</p>
                         </div>
-
+                        {isOpenFormReview &&
+                            <FormReview closeModal={setIsOpenFormReview} ownerData={spaceDetail?.ownerId} averageRate={averageRate} feedbacks={feedbacks}/>}
                     </div>
 
                 </div>
@@ -121,13 +160,12 @@ const SpaceDetail = () => {
                     {/*Type of space*/}
                     <h2 className="text-xl font-bold text-primaryColor mb-2">
                         {spaceDetail?.description}</h2>
-
                     <h2 className="text-xl font-bold text-textBoldColor">{spaceDetail?.categoryId?.categoryName}</h2>
 
                     {/**/}
                     <div className="mb-4">
                         <p className="text-xm text-primaryColor font-bold mb-3">Tiện Ích</p>
-                        <div className="flex flex-wrap text-textBoldColor">
+                        <div className="flex flex-wrap text-textBoldColor mb-3">
                             <div className="mr-10">
                                 <FontAwesomeIcon className="-rotate-45" icon={faArrowsLeftRight}/>
                                 <span className="ml-3">{spaceDetail?.area} m^2</span>
@@ -143,20 +181,6 @@ const SpaceDetail = () => {
                             <div className="mr-10 ">
                                 <FontAwesomeIcon icon={faBath}/>
                                 <span className="ml-3">{spaceDetail?.bathroomNumbers} Bathroom</span>
-
-                                <div>
-                                    <div className="mb-2 ml-2 ">
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#f5ed00",}}/>
-                                        <FontAwesomeIcon className="text-xs" icon={faStar} style={{color: "#d4d4d4",}}/>
-                                        <span className="ml-3 text-[#d4d4d4] ">12 reviews</span>
-                                    </div>
-                                    <p className="ml-2 text-xm font-semibold text-textBoldColor mr-auto">Nguyễn Văn
-                                        A</p>
-
-                                </div>
                             </div>
                         </div>
                         {/* price detail*/}
@@ -230,14 +254,37 @@ const SpaceDetail = () => {
                                 <MapBox address={spaceDetail?.address}></MapBox>
                             </div>
                         </div>
+
+                        {/*list Sharing*/}
+                        {shares.length > 0 &&
+                            <div className="mt-5">
+                                <TitlePart title="Danh sách chia sẽ" subTitle="Chia sẽ tạo thuận lợi cho việc booking"
+                                           subDesc="hỗ trọ nhiệt tình"/>
+                                <div className="">
+                                    {
+                                        (shares.length > 2 ? <> {shares.slice(0, 2).map(item => (
+                                            <ItemSharing itemSharing={item} key={item?.id}/>
+                                        ))}
+                                            <p className="text-lg text-white text-center font-semibold bg-primaryColor rounded py-1 hover:cursor-pointer hover:opacity-90 mt-4"
+                                               onClick={() => setIsOpenShares(true)}
+                                            > Xem Thêm...
+                                            </p></> : shares.map(item => {
+                                            return (<ItemSharing itemSharing={item} key={item?.id}/>)
+                                        }))
+                                    }
+                                </div>
+                            </div>
+                        }
+                        {isOpenShares && <ListSharing closeModal={setIsOpenShares} listShares={shares}/>}
                     </div>
 
                 </div>
 
             </div>
-            {/*slide show*/}
+            {/*slide show*/
+            }
 
-            <SlideShow typeSlide="space" titlePart="Không Gian Liên Quan" background={true}/>
+            <SlideShow typeSlide="relate" titlePart="Không Gian Liên Quan" id={spaceDetail?.categoryId?.id} background={true}/>
         </>
     )
 }

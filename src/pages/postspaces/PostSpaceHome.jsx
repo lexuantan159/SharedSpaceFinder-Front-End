@@ -83,9 +83,9 @@ const PostSpaceHome = () => {
 
     return (
         <div className="px-6">
-            <h1 className="text-3x1 border-b border-gray-200 py-4 text-xl font-medium text-primaryColor">
-                Đăng Tin Cho Thuê
-            </h1>
+            <div className="py-4 border-b border-gray-200">
+                <h1 className="text-2xl text-primaryColor font-semibold text-center">Đăng bài</h1>
+            </div>
             <form className="w-full p-5 border-primaryColor border-2 rounded" onSubmit={(e) => handleSubmit(e)}>
                 <div
                     className="md:grid md:grid-cols-2 md:gap-5 md:items-center lg:flex lg:items-center lg:justify-around">

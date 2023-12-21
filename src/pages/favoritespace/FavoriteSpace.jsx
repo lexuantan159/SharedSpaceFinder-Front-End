@@ -48,10 +48,10 @@ const FavoriteSpace = () => {
 
     return (
         <div>
-            <h1 className="text-3x1 w-full border-b border-gray-200 py-4 text-start font-medium text-primaryColor mb-7">
-                Không Gian Yêu Thích
-            </h1>
-            <div className="flex flex-col justify-between min-h-[550px]">
+            <div className="py-4 border-b border-gray-200">
+                <h1 className="text-2xl text-primaryColor font-semibold text-center">Không gian yêu thích</h1>
+            </div>
+            <div className="flex flex-col justify-between">
                 {
                     favorites.length > 0 ? favorites.map(favorite => {
                             return (
@@ -62,12 +62,12 @@ const FavoriteSpace = () => {
                                 </div>
                             )
                         }) :
-                        <p className="text-2xl py-4 font-medium text-center text-primaryColor min-h-[490px]">
+                        <p className="text-xl font-medium text-center text-primaryColor mt-5">
                             Không có phòng nào!
                         </p>
                 }
-                <div className="text-end">
-                    <Pagination state={state} setState={setState}/>
+                <div className="absolute bottom-0 left-5 right-5">
+                    <Pagination state={state} setState={setState} />
                 </div>
             </div>
         </div>

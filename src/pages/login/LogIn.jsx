@@ -5,19 +5,17 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 
 const LogIn = () => {
     const {setAuth, auth} = useContext(AuthContext);
+    const {notify} = useContext(MethodContext);
     const [hiddenPassword, setHiddenPassword] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const location = useLocation();
     const navigate = useNavigate();
 
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {

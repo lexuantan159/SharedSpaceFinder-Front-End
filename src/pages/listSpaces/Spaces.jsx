@@ -1,27 +1,17 @@
 import Address from "../../components/selectAddress/Address";
 import SelectAddress from "../../components/selectAddress/SelectAddress";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import LayoutListSpaces from "../../layouts/LayoutListSpaces";
 import * as serviceSpaces from '../../services/spaces'
-import {toast} from "react-toastify";
+import {useLocation, useNavigate} from "react-router-dom";
+import MethodContext from "../../context/methodProvider";
 
 const Spaces = ({type = "None"}) => {
 
     const initialState = {
-        categoryId: null,
-        address: null,
         page: 1,
-        sortBy: null,
-        sortDir: null,
-        searchByProvince: null,
-        searchByDistrict: null,
-        searchByWard: null,
-        priceFrom: null,
-        priceTo: null,
-        areaFrom: null,
-        areaTo: null,
         status: 0,
     }
 
@@ -34,17 +24,15 @@ const Spaces = ({type = "None"}) => {
         {id: 6, name: 'Chung Cư'},
     ]
 
+    const {notify , filteredKeyNull} = useContext(MethodContext);
     const [categoryId, setCategoryID] = useState("None")
     const [address, setAddress] = useState(" , , ")
     const [state, setState] = useState(initialState);
     const [spaces, setSpaces] = useState([])
     const [resetAddress, setResetAddress] = useState(false)
+    const location = useLocation();
+    const navigate = useNavigate();
 
-
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
 
     const handleSearch = () => {
         // handel split address
@@ -65,15 +53,23 @@ const Spaces = ({type = "None"}) => {
         }));
     }
 
+    useEffect(() => {
+        if (location.state?.categoryId) {
+            setState((prevState) => ({
+                ...prevState,
+                categoryId: location.state?.categoryId
+            }));
+            setCategoryID(location.state?.categoryId)
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+    }, []);
+
+    console.log(state)
 
     useEffect(() => {
         const fetchSpaces = async () => {
-
             // Filters out null or undefined values from the object
-            const filteredParams = Object.fromEntries(
-                Object.entries(state).filter(([_, value]) => value !== null && value !== undefined)
-            );
-            console.log(filteredParams)
+            const filteredParams = filteredKeyNull(state)
             // The result is an object that contains only parameters that are not null or undefined
             const response = await serviceSpaces.getSpace(filteredParams)
             if (response?.status === 200)

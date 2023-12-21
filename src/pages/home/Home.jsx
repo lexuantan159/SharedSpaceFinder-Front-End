@@ -1,18 +1,16 @@
 
 import TitlePart from "../../components/titlePart/TitlePart";
 import Categories from "../../components/categories/Categories";
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import SlideShow from "../../components/slideShow/SlideShow";
 import {useLocation, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import MethodContext from "../../context/methodProvider";
 
 const Home = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
+    const {notify } = useContext(MethodContext);
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
@@ -37,7 +35,7 @@ const Home = () => {
             {/*    */}
 
 
-            <SlideShow typeSlide='space' typeSpace="Top Rate" titlePart="Không Gian Nổi Trội"/>
+            <SlideShow typeSlide='top rate' titlePart="Không Gian Nổi Trội"/>
 
             {/**/}
             {/*<div className="h-[300px] w-full mb-100 bg-cover bg-fixed bg-center bg-[url('https://e.khoahoc.tv/photos/image/2016/02/25/thien-nhien-650.jpg')]" >*/}

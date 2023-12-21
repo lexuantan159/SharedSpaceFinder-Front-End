@@ -5,8 +5,6 @@ import 'slick-carousel/slick/slick-theme.css';
 
 const SlideImages = ({images}) => {
 
-
-
     const settings = {
         dots: false,
         infinite: true,
@@ -30,7 +28,7 @@ const SlideImages = ({images}) => {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow:images.length < 3 ? images.length : 3,
+                    slidesToShow: images.length < 3 ? images.length : 3,
                     slidesToScroll: 1
                 },
             },
@@ -53,8 +51,10 @@ const SlideImages = ({images}) => {
 
     const [thisImage, setThisImage] = useState({})
     useEffect(() => {
-        setThisImage(images[0])
-    }, [])
+        if (images.length > 0) {
+            setThisImage(images[0])
+        }
+    }, [images])
 
     return (
         <div className="">
@@ -65,20 +65,17 @@ const SlideImages = ({images}) => {
             </div>
             <div className="col-span-8 my-5">
                 <Slider {...settings}>
-                {
-                    images.map((image) => {
-                        return (
-                            <div key={image?.imageId} className="pr-5">
-                                <img onMouseOver={() => setThisImage(image)}
-                                     className="w-full h-[110px] object-cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
-                                     src={image?.imageUrl} alt={image?.imageId}/>
-                            </div>
-                        )
-                    })
-                }
-
-
-
+                    {
+                        images.map((image) => {
+                            return (
+                                <div key={image?.imageId} className="pr-5">
+                                    <img onMouseOver={() => setThisImage(image)}
+                                         className="w-full h-[110px] object-cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
+                                         src={image?.imageUrl} alt={image?.imageId}/>
+                                </div>
+                            )
+                        })
+                    }
                 </Slider>
             </div>
         </div>

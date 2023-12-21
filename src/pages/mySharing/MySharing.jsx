@@ -21,7 +21,7 @@ const MySharing = () => {
     const [confirm, setConfirm] = useState(false)
     const [deleteSharing, setDeleteSharing] = useState({
         isDelete: false,
-        spaceId: null
+        id: null
     })
 
 
@@ -44,18 +44,18 @@ const MySharing = () => {
     useEffect(() => {
         const fetchDeleteSharing = async () => {
             console.log(deleteSharing)
-            if (deleteSharing.isDelete && deleteSharing.spaceId !== null) {
+            if (deleteSharing.isDelete && deleteSharing.id !== null) {
                 // get token
                 const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
                 // call api
                 const id = toastLoadingId("Đang chờ...")
-                const spaceId = deleteSharing.spaceId
+                const spaceId = deleteSharing.id
                 const responseDelete = await sharingServices.deleteSharing(spaceId, accessToken)
                 // handle response update
                 if (responseDelete?.status === 200) {
                     toastUpdateLoadingId("Xóa chia sẻ thành công!", "success", id)
                     // reset status
-                    setDeleteSharing({isDelete: false, spaceId: null})
+                    setDeleteSharing({isDelete: false, id: null})
                 } else {
                     console.log(responseDelete?.response)
                     toastUpdateLoadingId("Xóa chia sẻ thất bại!", "error", id)
@@ -68,8 +68,8 @@ const MySharing = () => {
     return (
         <>
             <div className="flex flex-col gap-6">
-                <div className="py-4 border-b border-gray-200 flex items-center justify-between">
-                    <h1 className="text-2xl text-primaryColor font-semibold">Chia Sẻ Của Tôi</h1>
+                <div className="py-4 border-b border-gray-200">
+                    <h1 className="text-2xl text-primaryColor font-semibold text-center">Chia Sẻ Của Tôi</h1>
                 </div>
                 <div className="">
 
@@ -79,7 +79,6 @@ const MySharing = () => {
                                     return (
                                         <div key={item?.id}>
                                             <div
-
                                                 className=" max-h-[220px] grid grid-cols-12 transition-all hover:shadow-md hover:shadow-gray-200 rounded border-gray-400 border-[1px]">
                                                 <div className="col-span-12 md:col-span-5 p-2 rounded-lg">
                                                     <Link to={`/spaces/${item?.spaceId?.id}`} relative="route">
@@ -116,13 +115,13 @@ const MySharing = () => {
                                         </div>
                                     )
                                 }) :
-                                <p className="text-2xl py-4 font-medium text-center text-primaryColor min-h-[490px]">
+                                <p className="text-xl font-medium text-center text-primaryColor">
                                     Chưa có chia sẻ nào!
                                 </p>
                         }
                     </div>
-                    <div className="text-end">
-                        <Pagination state={state} setState={setState}/>
+                    <div className="absolute bottom-0 left-5 right-5">
+                        <Pagination state={state} setState={setState} />
                     </div>
                 </div>
             </div>
