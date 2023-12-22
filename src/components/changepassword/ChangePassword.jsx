@@ -20,14 +20,13 @@ const ChangePassword = ({setEditPass,dataEdit}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (newPassword !== confirmNewPassword)
-            { notify("Mật Khẩu KHông Trùng Nhau", "error")
-         }
+        const accessToken = auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
+
         formData.append('oldpassword', oldpassword);
         formData.append('newPassword', newPassword);
-
-        const accessToken = auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-        console.log(accessToken)
+        if (newPassword !== confirmNewPassword)
+        { notify("Mật Khẩu KHông Trùng Nhau", "error")
+     }
         setIsLoading(true);
         const id = toastLoadingId("Vui lòng chờ...")
         const responseUpdateProfile = await userService.editProfile(formData,accessToken);
