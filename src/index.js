@@ -7,14 +7,17 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import {AuthProvider} from "./context/authProvider";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {MethodProvider} from "./context/methodProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
-        <ToastContainer />
+        <MethodProvider>
+            <AuthProvider>
+                <App/>
+            </AuthProvider>
+        </MethodProvider>
+        <ToastContainer/>
     </Router>
 );
 

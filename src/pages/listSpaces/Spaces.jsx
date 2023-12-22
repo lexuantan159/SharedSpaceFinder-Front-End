@@ -64,7 +64,6 @@ const Spaces = ({type = "None"}) => {
         }
     }, []);
 
-    console.log(state)
 
     useEffect(() => {
         const fetchSpaces = async () => {

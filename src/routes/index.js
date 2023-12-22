@@ -5,7 +5,7 @@ import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
 import User from '../components/admin/User';
 import  {LayoutAdmin,LayoutAuth,LayoutUser} from "../layouts/index";
-
+import Notification from "../components/admin/Notification";
 const router = [
     { path: '/', component: Home },
     { path: '/spaces', component: Spaces },
@@ -33,6 +33,7 @@ const router = [
     { path: '/admin/owner', layout: LayoutAdmin, component: Owner},
     { path: '/editspace',layout: LayoutAuth ,component: EditSpace },
     { path: '/profileedit',layout: LayoutAuth ,component: ProfileEdit },
+    { path: "/admin/notification", layout: LayoutAdmin, component: Notification },
 
     // { path: '/admin/posts-pace', layout: LayoutAdmin, component: PostSpace}
 ];

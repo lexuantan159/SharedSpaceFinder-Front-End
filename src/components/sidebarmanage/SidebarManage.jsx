@@ -43,7 +43,7 @@ const SidebarManage = () => {
         };
 
         getuser();
-    }, [auth.accessToken, setAuth,user]);
+    }, [auth.accessToken, setAuth]);
 
     return (
         <div className='p-4 w-[256px] flex-none bg-[#F6F9F9] shadow-md'>

@@ -13,8 +13,6 @@ export const getcurrentuser = async (accessToken) => {
   }
 };
 
-const EDIDIT_USERS = "/api/users/edit-profile/";
-
 const EDIT_PROFILE_ENDPOINT = "/api/users/edit-profile"
 
 export const editProfile = async (formData, accessToken) => {
@@ -32,5 +30,19 @@ export const editProfile = async (formData, accessToken) => {
             });
     } catch (error) {
         return error
+    }
+};
+
+
+const DELETE_ENDPOINT = "/api/users/delete-user";
+
+export const deleteUserById = async (accessToken, id) => {
+    try {
+        const response = await request.deleteRe(`${DELETE_ENDPOINT}?userId=${id}`, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        return response;
+    } catch (error) {
+        return error;
     }
 };
