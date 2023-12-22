@@ -35,7 +35,7 @@ const Dashboard = () => {
       </div>
       <div className="">
         <h2 className="my-5 text-3xl font-bold">Recent Post</h2>
-        <table class="w-full table-auto bg-white">
+        <table className="w-full table-auto bg-white">
           <thead>
             <tr className="flex w-full bg-gray-100">
               <th className="flex-1 border p-2 text-black ">ID</th>

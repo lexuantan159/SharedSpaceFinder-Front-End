@@ -1,16 +1,14 @@
-
 import TitlePart from "../../components/titlePart/TitlePart";
 import Categories from "../../components/categories/Categories";
 import React, {useContext, useEffect} from "react";
 import SlideShow from "../../components/slideShow/SlideShow";
 import {useLocation, useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
 import MethodContext from "../../context/methodProvider";
 
 const Home = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const {notify } = useContext(MethodContext);
+    const {notify} = useContext(MethodContext);
 
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
