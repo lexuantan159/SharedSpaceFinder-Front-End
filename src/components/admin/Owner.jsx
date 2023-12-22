@@ -47,7 +47,7 @@ const Owner = () => {
 
       if (responseUser?.status === 200) {
         setOwners(responseUser.data.listUsers);
-        setTotalPages(() => responseUser.totalPages);
+        setTotalPages(() => responseUser.data.totalPages);
       } else {
         console.log(responseUser);
       }
