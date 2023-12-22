@@ -6,47 +6,18 @@ export const register = async (name, email, password, province, district, ward, 
     try {
         const response = await request.post(REGISTER_ENDPOINT,
             {
-                name,
-                email,
-                password,
-                province,
-                district,
-                ward,
-                address
+                name: name,
+                email: email,
+                password: password,
+                province: province,
+                district: district,
+                ward: ward,
+                address: address
             },
             {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
-                },
-                withCredentials: true
-            }
-        );
-        return response;
-    } catch (error) {
-        return error
-    }
-};
-
-
-const VERIFY_EMAIL_ENDPOINT = "/api/auth/verify-email"
-export const verifyEmail = async (name, email, password, province, district, ward, address, otp) => {
-    try {
-        const response = await request.post(VERIFY_EMAIL_ENDPOINT,
-            {
-                name,
-                email,
-                password,
-                province,
-                district,
-                ward,
-                address,
-                otp
-            },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                withCredentials: true
+                }
             }
         );
         return response;
@@ -98,48 +69,6 @@ export const refreshToken = async (refreshToken) => {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 }
-            }
-        );
-    } catch (error) {
-        return error
-    }
-};
-
-const FORGOT_PASS_ENDPOINT = "/api/auth/forgot-password"
-
-export const forgotPassword = async (email) => {
-    try {
-        return await request.post(FORGOT_PASS_ENDPOINT,
-            {
-                email: email
-            },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                withCredentials: true
-            }
-        );
-    } catch (error) {
-        return error
-    }
-};
-
-const RESET_PASS_ENDPOINT = "/api/auth/reset-password"
-
-export const resetPass = async (password, otp, email) => {
-    try {
-        return await request.post(RESET_PASS_ENDPOINT,
-            {
-                password: password,
-                otp: otp,
-                email: email
-            },
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                withCredentials: true
             }
         );
     } catch (error) {

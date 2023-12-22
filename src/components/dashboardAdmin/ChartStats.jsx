@@ -1,26 +1,26 @@
 import React from "react";
 import Chart from "chart.js/auto";
 
-export default function CardBarChart() {
+export default function CardBarChart({ data, ...props }) {
   React.useEffect(() => {
     let config = {
       type: "bar",
       data: {
-        labels: [
-          "Admin",
-          "User",
-          "Owner",
-          "Post",
-        ],
+        labels: ["Admin", "User", "Owner", "Post"],
         datasets: [
           {
             label: "Number",
             backgroundColor: "#0CA3DB",
             borderColor: "#ed64a6",
-            data: [1, 30, 25, 50],
+            data: [
+              data.NumberAdminAccount,
+              data.NumberUserAccount,
+              data.NumberOwnerAccount,
+              data.NumberPostSpaceHadRent,
+            ],
             fill: false,
             barThickness: 120,
-          }
+          },
         ],
       },
       options: {
@@ -89,17 +89,15 @@ export default function CardBarChart() {
   }, []);
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-0 shadow-lg rounded">
-        <div className="rounded-t mb-0 px-4 py-3 bg-transparent">
+      <div className="relative mb-0 flex w-full min-w-0 flex-col break-words rounded bg-white shadow-lg">
+        <div className="mb-0 rounded-t bg-transparent px-4 py-3">
           <div className="flex flex-wrap items-center">
-            <div className="relative w-full max-w-full flex-grow flex-1">
-              
-            </div>
+            <div className="relative w-full max-w-full flex-1 flex-grow"></div>
           </div>
         </div>
-        <div className="p-4 flex-auto">
+        <div className="flex-auto p-4">
           {/* Chart */}
-          <div className="relative h-350-px">
+          <div className="h-350-px relative">
             <canvas id="bar-chart"></canvas>
           </div>
         </div>

@@ -7,12 +7,14 @@ import {toast} from "react-toastify";
 
 const SidebarFilter = ({setState}) => {
 
+    const notify = (message, type) => {
+        const toastType = type === "success" ? toast.success : toast.error
+        return toastType(message);
+    }
+
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
-            const formattedString = number.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            const formattedString = number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             return formattedString.replace(/\.00$/, '');
         }
     }
@@ -67,9 +69,10 @@ const SidebarFilter = ({setState}) => {
             const topSpaces = await spaceServices.getSpace(spaceParam);
             if (topSpaces?.status === 200) {
                 const spaces = topSpaces?.data?.listSpaces;
+                console.log(spaces)
                 setTopSpaces(spaces)
             } else
-                console.log("Not found favorite spaces")
+                notify("Không tìm thấy phòng nào!");
         }
         fetchTopSpaces();
     }, [])
@@ -85,22 +88,41 @@ const SidebarFilter = ({setState}) => {
                 <div className="border-b-[0.5px] border-[#B2B2B2] pb-4">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Diện tích: </p>
                     <div className="grid grid-cols-2 gap-3 pl-4 ">
-                        {
-                            areaValue.map((area) => {
-                                return (<div className="" key={area.id}>
-                                    <input id="20" className="text-xl hover:cursor-pointer" type="radio"
-                                           value={area.id}
-                                           onClick={(e) => handleSetArea(e)}
-                                           name="area"/>
-                                    <label className="pl-2" htmlFor="">{area.areaFrom}m<sup>2</sup> - {area.areaTo}m<sup>2</sup></label>
-                                </div>)
-                            })
-                        }
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={1}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">0m<sup>2</sup> - 20m<sup>2</sup></label>
+                        </div>
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={2}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">20m<sup>2</sup> - 40m<sup>2</sup></label>
+                        </div>
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={3}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">40m<sup>2</sup> - 60m<sup>2</sup></label>
+                        </div>
+                        <div className="">
+                            <input id="20" className="text-xl hover:cursor-pointer" type="radio"
+                                   value={4}
+                                   onClick={(e) => handleSetArea(e)}
+                                   name="dientich"/>
+                            <label className="pl-2" htmlFor="">60m<sup>2</sup> - 80m<sup>2</sup></label>
+                        </div>
                     </div>
                 </div>
                 <div className="pb-4 h-[120px]">
                     <p className="p-4 text-textBoldColor text-xm font-semibold ">Giá: </p>
+
                     <MultiRangeSlider min={100000} max={12000000} onRangeChange={handleRangeChange}/>
+
                 </div>
             </div>
             {/* Top Rate   */}
@@ -111,7 +133,7 @@ const SidebarFilter = ({setState}) => {
 
                 {/*Space hight rate*/}
                 {topSpaces.length > 0 ? topSpaces.map(space => {
-                    return (<Link key={space?.id} to={`${space?.id}`}>
+                    return ( <Link key={space?.id} to={`${space?.id}`}>
                         <div
                             className="m-4 p-2 grid grid-cols-4 gap-3 hover:shadow hover:shadow-gray-300 hover:rounded ">
                             <img className="w-full h-[60px] object-cover col-span-1 rounded-lg"
@@ -124,7 +146,7 @@ const SidebarFilter = ({setState}) => {
                             </div>
                         </div>
                     </Link>)
-                }) : <p className="text-sm font-bold text-primaryColor text-center py-4">Chưa Có Phòng Nào</p>}
+                }) : <p className="text-lg font-bold text-primaryColor text-center">Không Có Phòng Nào</p>}
 
             </div>
         </>

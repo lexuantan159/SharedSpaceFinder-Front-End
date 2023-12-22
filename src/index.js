@@ -3,21 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import {AuthProvider} from "./context/authProvider";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {MethodProvider} from "./context/methodProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Router>
-        <MethodProvider>
-            <AuthProvider>
-                <App/>
-            </AuthProvider>
-        </MethodProvider>
-        <ToastContainer/>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+        <ToastContainer />
     </Router>
 );
 
