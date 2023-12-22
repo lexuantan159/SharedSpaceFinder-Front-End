@@ -4,7 +4,7 @@ import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
 import {toast} from "react-toastify";
 
 
-const Pagination = ({state, setState}) => {
+const Pagination = ({state, setState , numberPage = 5}) => {
 
     const notify = (message, type) => {
         const toastType = type === "success" ? toast.success : toast.error
@@ -23,6 +23,10 @@ const Pagination = ({state, setState}) => {
             notify('Không tồn tại trang bé hơn 1!', "error")
             return;
         }
+        if(pageNumber > numberPage ) {
+            notify('Số trang đã tối đa!', "error")
+            return;
+        }
         setState((prevState) => ({
             ...prevState,
             page: pageNumber,
@@ -30,10 +34,22 @@ const Pagination = ({state, setState}) => {
         setCurrentPage(pageNumber);
     };
 
-    const totalPage = 7
+
     const renderPageButtons = () => {
         const pageButtons = [];
-        for (let i = 1; i <= totalPage; i++) {
+        for (let i = 1; i <= numberPage; i++) {
+            if (i === 6) {
+                pageButtons.push(
+                    <li key={i} className={`mx-2`}>
+                        <button
+                            className={`px-3 py-1 border-[0.5px] border-gray-400 transition-all hover:bg-primaryColor hover:text-white rounded-lg ${currentPage >= i ? 'bg-primaryColor text-white' : ''}`}
+                        >
+                            {"..."}
+                        </button>
+                    </li>
+                );
+                break;
+            }
             pageButtons.push(
                 <li key={i} className={`mx-2`}>
                     <button
@@ -47,6 +63,10 @@ const Pagination = ({state, setState}) => {
         }
         return pageButtons;
     };
+
+
+
+
 
     return (
         <div className="col-span-12 flex justify-between mb-9 ">
