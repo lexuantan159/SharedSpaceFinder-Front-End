@@ -20,7 +20,6 @@ export const getcurrentuser = async (accessToken) => {
 
 const EDIT_PROFILE_ENDPOINT = "/api/users/edit-profile"
 
-
 export const editProfile = async (formData, accessToken) => {
     try {
         return await request.put(EDIT_PROFILE_ENDPOINT,

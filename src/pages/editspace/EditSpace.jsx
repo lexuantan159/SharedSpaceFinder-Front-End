@@ -1,10 +1,6 @@
 import React from "react";
 import {useEffect, useContext, useState} from "react";
-
 import SelectAddress from "../../components/selectAddress/SelectAddress";
-import Address from "../../components/selectAddress/Address";
-import Swal from "sweetalert2";
-
 import * as spaceService from "../../services/spaces";
 import MethodContext from "../../context/methodProvider";
 import AddressEdit from "../../components/selectAddress/AddressEdit";
@@ -30,6 +26,8 @@ const EditSpace = ({ setIsEdit, dataEdit }) => {
   const [files, setFiles] = useState([]);
   const formData = new FormData();
   const [updateSpaces, setUpdateSpaces] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
 
   const categories = [
     { id: 1, name: "Phòng Trọ" },
@@ -72,7 +70,8 @@ console.log(dataEdit)
 
 
     let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
-    console.log(accessToken);
+    setIsLoading(true);
+        const id = toastLoadingId("Vui lòng chờ...")
     const responseUpdateSpace = await spaceService.updateSpace(
       params,
       formData,
@@ -80,14 +79,11 @@ console.log(dataEdit)
     );
     if(responseUpdateSpace?.status === 200) {
          
-        Swal.fire("chỉnh sửa bài viết thành công!").then(() =>{
-            
-            setUpdateSpaces(true)
-        })
+      toastUpdateLoadingId("Cập Nhật Thành công,", "success", id);
       }
       else {
-        console.log(responseUpdateSpace)
-        Swal.fire("Xóa bài viết không thành công!", "error")
+        toastUpdateLoadingId("Gửi yêu thất bại!", "error", id);
+        setIsLoading(false);
     }
   };
 

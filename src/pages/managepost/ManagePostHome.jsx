@@ -1,24 +1,25 @@
 import React, {useContext, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-// import EditSpace from "../editspace/EditSpace";
 import * as spaceService from "../../services/spaces";
 import AuthContext from "../../context/authProvider";
-import Swal from "sweetalert2";
 import EditSpace from "../editspace/EditSpace";
 
 import * as userService from "../../services/user"
+import MethodContext from "../../context/methodProvider";
+import DeleteSpace from "../../components/deletespace/DeleteSpace";
 
 
 const ManagePostHome = () => {
   const [IsEdit, setIsEdit] = useState(false) 
-  
+
   const {auth, setAuth} = useContext(AuthContext);
   const [dataEdit, setDataEdit] = useState({}) 
 
   const [spaces, setSpaces] = useState([]);
   const [deleteSpaces, setDeleteSpaces] = useState(false)
   const [user, setUser] = useState("");
-  
+  const [isLoading, setIsLoading] = useState(false)
+  const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
 
     useEffect(() => {
         const getUser = async () => {
@@ -73,23 +74,23 @@ const ManagePostHome = () => {
   }, [ownerId,deleteSpaces,IsEdit]);
 
 
-  const handleDeleteSpace = async (e) => {
+  // const handleDeleteSpace = async (e) => {
     
-    const accessToken = auth.accessToken
+  //   const accessToken = auth.accessToken
      
-     const responseDeleteSpace = await spaceService.deleteSpace(e,accessToken)
-   
-   if(responseDeleteSpace?.status === 200) {
+  //    const responseDeleteSpace = await spaceService.deleteSpace(e,accessToken)
+  //    setIsLoading(true);
+  //    const id = toastLoadingId("Vui lòng chờ...")
+  //  if(responseDeleteSpace?.status === 200) {
          
-         Swal.fire("Xóa bài viết thành công!").then(() =>{
-           setDeleteSpaces(true)
-         })
-       }
-       else {
-         console.log(responseDeleteSpace)
-         Swal.fire("Xóa bài viết không thành công!", "error")
-     }
-   }
+  //   toastUpdateLoadingId("Xóa Bài Viết Thành công,", "success", id);
+  //      }
+  //      else {
+  //        console.log(responseDeleteSpace)
+  //        toastUpdateLoadingId("Gửi yêu thất bại!", "error", id);
+  //        setIsLoading(false);
+  //    }
+  //  }
  
 
 
@@ -165,7 +166,12 @@ const ManagePostHome = () => {
                                </button>
                                <button
                                  className="rounded-md bg-red-600 px-2 py-1 text-white hover:underline"
-                                 onClick={(e) => handleDeleteSpace(item?.id)}
+                                //  onClick={(e) => handleDeleteSpace(item?.id)}
+                                onClick={(e) => {
+                                  setDataEdit(item)
+                                  setDeleteSpaces(true)
+                                 } 
+                                }     
                                >
                                  Xóa
                                </button>
@@ -182,7 +188,8 @@ const ManagePostHome = () => {
 
       {/* hiển thị page EditSpace lên */}
       {IsEdit && <EditSpace  setIsEdit={setIsEdit} dataEdit={dataEdit}/>}
-     
+      {deleteSpaces && <DeleteSpace  setDeleteSpaces={setDeleteSpaces} dataEdit={dataEdit}/>}
+           
       
     </div>
   );

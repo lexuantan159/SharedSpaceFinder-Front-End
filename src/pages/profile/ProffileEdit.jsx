@@ -31,7 +31,7 @@ const ProffileEdit = ({setIsEdit,dataEdit}) => {
         // formData.append("dateOfBirth", dateOfBirth);
           formData.append('avartar', avartar);
         let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
-        console.log(accessToken)
+        
         setIsLoading(true);
         const id = toastLoadingId("Vui lòng chờ...")
 
