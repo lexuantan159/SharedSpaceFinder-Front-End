@@ -13,50 +13,9 @@ const notActiveStyle = 'hover:bg-primaryColor hover:text-white text-[14px] flex 
 
 const SidebarManage = () => {
 
-    const {setAuth, auth} = useContext(AuthContext);
-    const [user, setUser] = useState("");
-
-    useEffect(() => {
-        const getuser = async () => {
-
-            if (auth.accessToken === undefined) {
-                const myDataString = localStorage.getItem("auth");
-                if (myDataString !== null) {
-                    const myDataObject = JSON.parse(myDataString);
-                    setAuth(myDataObject);
-                }
-            }
-
-            // Only retrieve the access token if it's not already defined in auth.
-            const accessToken =
-                auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-            try {
-                const user = await userService.getcurrentuser(accessToken);
-                if (user?.status === 200) {
-                    setUser(user.data);
-                } else {
-                    console.log(user);
-                }
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-        };
-
-        getuser();
-    }, [auth.accessToken, setAuth]);
-
     return (
         <div className='p-4 w-[256px] flex-none bg-[#F6F9F9] shadow-md'>
-            <div className='flex items-center gap-4'>
-                <div>
-                    <img src={user?.avatar || anonAvatar} alt="avatar"
-                         className='w-20 h-20 object-cover rounded-full border-2 border-grey'/>
-                </div>
-                <div className='flex flex-col justify-center'>
-                    <span className='font-bold'>{user?.name || "Name User"}</span>
-                    <small>{user?.phone || "Phone"}</small>
-                </div>
-            </div>
+
             <div className="mt-5">
                 {sidebarMenu.map((item, index) => (
                     <NavLink
