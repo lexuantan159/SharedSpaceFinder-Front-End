@@ -15,43 +15,22 @@ export const getcurrentuser = async (accessToken) => {
 
 const EDIDIT_USERS = "/api/users/edit-profile/";
 
-export const EditUser = async (
-  accessToken,
-  name,
-  address,
-  dateOfBirth,
-  phone,
-  avatar,
-) => {
-  try {
-    const response = await request.post(
-      EDIDIT_USERS,
-      {
-        name: name,
-        phone: phone,
-        dateOfBirth: dateOfBirth,
-        address: address,
-        avatar: avatar,
-      },
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
+const EDIT_PROFILE_ENDPOINT = "/api/users/edit-profile"
 
-const DELETE_ENDPOINT = "/api/users/delete-user";
+export const editProfile = async (formData, accessToken) => {
+    try {
+        return await request.put(EDIT_PROFILE_ENDPOINT,
+            formData,
 
-export const deleteUserById = async (accessToken, id) => {
-  try {
-    const response = await request.deleteRe(`${DELETE_ENDPOINT}?userId=${id}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return response;
-  } catch (error) {
-    return error;
-  }
+            {
+
+                headers: {
+                    "Content-Type": "application/form-data",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
+    } catch (error) {
+        return error
+    }
 };

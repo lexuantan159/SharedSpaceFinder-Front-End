@@ -60,6 +60,7 @@ const SpaceDetail = () => {
                 const listSpaces = await spaceServices.getSpace(spaceParam);
                 if (listSpaces?.status === 200) {
                     const spaceDetail = listSpaces?.data?.listSpaces[0];
+                    console.log(spaceDetail)
                     setSpaceDetail(spaceDetail)
                 } else
                     notify("Không tìm thấy phòng nào!");
@@ -127,8 +128,7 @@ const SpaceDetail = () => {
                     </div>
 
                     {/* info owner */}
-                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6 hover:cursor-pointer"
-                         onClick={() => setIsOpenFormReview(true)}>
+                    <div className="border-[0.5px] border-[#B2B2B2] rounded-lg mt-6">
                         <div className="p-4 bg-[#f4f4f4] rounded-t-lg">
                             <h4 className="text-textBoldColor text-xm font-bold">Thông Tin Chủ</h4>
                         </div>
@@ -159,7 +159,7 @@ const SpaceDetail = () => {
                 <div className="col-span-12">
                     {/*Type of space*/}
                     <h2 className="text-xl font-bold text-primaryColor mb-2">
-                        {spaceDetail?.description}</h2>
+                        {spaceDetail?.title}</h2>
                     <h2 className="text-xl font-bold text-textBoldColor">{spaceDetail?.categoryId?.categoryName}</h2>
 
                     {/**/}

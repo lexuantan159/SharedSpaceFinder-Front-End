@@ -16,6 +16,50 @@ export const getSpace = async (paramsObject) => {
   }
 };
 
+// const UPDATE_SPACES_ENDPOINT = "/api/spaces/update-space"
+
+// export const updateSpace = async (spaceId,accessToken, formData) => {
+//     try {
+//         return await request.put(UPDATE_SPACES_ENDPOINT,
+//             {
+//                 params: spaceId,
+//             },
+//             {
+//                 formData
+//             }, 
+            
+//             {
+//             headers: {
+//                 'Content-Type': 'multipart/json',
+//                 "Authorization": `Bearer ${accessToken}`
+//             },
+//             withCredentials: true
+//         });
+//     } catch (error) {
+//         return error
+//     }
+// };
+const UPDATE_SPACE_ENDPOINT = "/api/spaces/update-space"
+
+export const updateSpace = async (spaceId,formData, accessToken) => {
+    try {
+        return await request.put(UPDATE_SPACE_ENDPOINT,
+            formData, 
+
+            {
+                params:spaceId,
+
+                headers: {
+                    "Content-Type": "application/form-data",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                withCredentials: true
+            });
+    } catch (error) {
+        return error
+    }
+};
+
 const POST_SPACES_ENDPOINT = "/api/spaces/create-space"
 
 export const createSpace = async (accessToken, formData) => {
@@ -71,3 +115,21 @@ export const deniedSpace = async (paramsObject, accessToken) => {
     return error;
   }
 };
+
+const DELETESPACE_ENDPOINT = "/api/spaces/delete-space"
+export const deleteSpace = async (spaceId, accessToken) => {
+    try {
+        const response = await request.deleteRe(DELETESPACE_ENDPOINT, {
+            params:spaceId,
+            headers: {
+                "Content-Type": "Application/json",
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+        return response;
+
+    } catch (error) {
+        return error
+    }
+};
+

@@ -18,6 +18,7 @@ const SidebarManage = () => {
 
     useEffect(() => {
         const getuser = async () => {
+
             if (auth.accessToken === undefined) {
                 const myDataString = localStorage.getItem("auth");
                 if (myDataString !== null) {
@@ -42,7 +43,7 @@ const SidebarManage = () => {
         };
 
         getuser();
-    }, [auth.accessToken, setAuth]);
+    }, [auth.accessToken, setAuth,user]);
 
     return (
         <div className='p-4 w-[256px] flex-none bg-[#F6F9F9] shadow-md'>

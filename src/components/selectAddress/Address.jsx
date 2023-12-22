@@ -2,19 +2,42 @@ import SelectAddress from "./SelectAddress";
 import React, { useEffect, useState } from "react";
 import { getDistrict, getProvinces, getWard } from "../../services/address";
 
-const Address = ({
-  setAddress,
-  hiddenTitle = false,
-  resetAddress = false,
-  setResetAddress,
-}) => {
-  const [provinces, setProvinces] = useState([]);
-  const [districts, setDistricts] = useState([]);
-  const [wards, setWards] = useState([]);
+const Address = ({ space,
+                     setAddress, hiddenTitle = false, resetAddress = false, setResetAddress = () => {
+    }, setProvince = () => {
+    }, setDistrict = () => {
+    }, setWard = () => {
+    }
+                 }) => {
+    const [provinces, setProvinces] = useState([])
+    const [districts, setDistricts] = useState([])
+    const [wards, setWards] = useState([])
+    const [provinceId, setProvinceId] = useState("")
+    const [districtId, setDistrictId] = useState("")
+    const [wardId, setWardId] = useState("")
 
-  const [provinceId, setProvinceId] = useState("");
-  const [districtId, setDistrictId] = useState("");
-  const [wardId, setWardId] = useState("");
+
+    // useEffect(() => {
+    //     if(space){
+    //         let addressArr = space?.address?.split(',')
+    //     let foundProvince = provinces.length && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1]?.trim())
+    //     setProvinceId(foundProvince ? foundProvince.province_id : '')
+    //     }
+    //  }, [provinces, space]);
+    //  useEffect(() => {
+    //     if(space){
+    //         let addressArr = space?.address?.split(',')
+    //         let foundDistrict = districts.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2]?.trim())
+    //         setDistrictId(foundDistrict ? foundDistrict.district_id : '')
+    //     }
+    //   }, [districts, space]);
+    //   useEffect(() => {
+    //      if(space){
+    //         let addressArr = space?.address?.split(',')
+    //      let foundWards = wards.length > 0 && wards?.find(item => item.ward_name === addressArr[addressArr.length - 3]?.trim())
+    //      setWardId(foundWards ? foundWards.ward_id : '')
+    //      }
+    //   }, [wards,space]);
 
   useEffect(() => {
     if (resetAddress) {
