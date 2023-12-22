@@ -25,7 +25,7 @@ const Pagination = ({ itemsPerPage, setCurrentPage, totalPages }) => {
     // console.log(
     //   `User requested page number ${event.selected}, which is offset ${newOffset}`,
     // );
-    setCurrentPage(event.selected);
+    setCurrentPage(() => event.selected + 1);
   };
 
   return (
@@ -33,7 +33,7 @@ const Pagination = ({ itemsPerPage, setCurrentPage, totalPages }) => {
       <ReactPaginate
         breakLabel="..."
         nextLabel={
-          <div className="flex items-center justify-center border rounded-lg h-7 w-7">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border">
             <FontAwesomeIcon icon={faAngleRight} />
           </div>
         }
@@ -41,7 +41,7 @@ const Pagination = ({ itemsPerPage, setCurrentPage, totalPages }) => {
         pageRangeDisplayed={5}
         pageCount={totalPages}
         previousLabel={
-          <div className="flex items-center justify-center border rounded-lg h-7 w-7">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border">
             <FontAwesomeIcon icon={faAngleLeft} />
           </div>
         }

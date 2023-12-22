@@ -29,9 +29,10 @@ const PostSpace = () => {
   const { statusId } = useParams();
   const [spaces, setSpaces] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(5);
+  const [itemPerPage, setItemPerPage] = useState(3);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
+    console.log("🚀 ~ PostSpace ~ currentPage:", currentPage);
     const fetchingSpaces = async () => {
       const param = {
         status: statusId,
@@ -39,12 +40,11 @@ const PostSpace = () => {
         page: currentPage,
       };
       const data = await spaceService.getSpace(param);
-      console.log("🚀 ~ fetchingSpaces ~ data:", data);
       setTotalPages(() => data?.data?.totalPages);
       setSpaces(() => data?.data?.listSpaces || []);
     };
     fetchingSpaces();
-  }, [statusId, currentPage]);
+  }, [statusId, currentPage, itemPerPage]);
 
   const { auth } = useContext(AuthContext);
   const accessToken = auth.accessToken;
@@ -123,7 +123,7 @@ border border-b-[#E7ECF3]"
             />
           </Link>
         </div>
-        <div className="flex flex-col justify-between w-full gap-8 p-5 ">
+        <div className="flex w-full flex-col justify-between gap-8 p-5 ">
           <div className="flex flex-col gap-5">
             <Link to={`/spaces/${space.id}`}>
               <h2 className="text-4xl font-bold">
@@ -145,7 +145,7 @@ border border-b-[#E7ECF3]"
               </span>
             </div>
           </div>
-          <div className="flex justify-between w-full">
+          <div className="flex w-full justify-between">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-[#3B3E44]">
                 <FontAwesomeIcon icon={faHouse} />
@@ -174,7 +174,7 @@ border border-b-[#E7ECF3]"
                 <span>{space.peopleNumbers}</span>
               </div>
             </div>
-            <div className="flex flex-col self-end gap-5">
+            <div className="flex flex-col gap-5 self-end">
               <Link
                 to={`/spaces/${space.id}`}
                 className="flex items-center gap-2 text-[#84878B]"
