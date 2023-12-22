@@ -53,7 +53,7 @@ const Owner = () => {
       }
     };
     fetchUser();
-  }, [auth]);
+  }, [auth,currentPage]);
 
   useEffect(() => {
     const myDataString = localStorage.getItem("auth");

@@ -15,7 +15,12 @@ const Notification = () => {
   useEffect(() => {
     const fetchNotification = async () => {
       const accessToken = auth.accessToken;
-      const param = {};
+      
+        const param = {
+          page: currentPage,
+          limit: itemPerPage,
+        
+      };
 
       const response = await notificationService.getNotifications(
         param,
@@ -31,7 +36,7 @@ const Notification = () => {
       }
     };
     fetchNotification();
-  }, [auth]);
+  }, [auth,currentPage]);
 
   const handleClickReaded = async (data) => {
     if (data.status.id === 7) return;
