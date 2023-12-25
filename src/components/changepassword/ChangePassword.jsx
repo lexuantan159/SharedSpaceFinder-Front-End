@@ -6,9 +6,8 @@ import AuthContext from "../../context/authProvider";
 
 
 
-const ChangePassword = ({setEditPass,dataEdit}) => {
-  
-    const [oldpassword, setOldPassword] = useState("")
+const ChangePassword = ({setEditPass}) => {
+    const [oldPassword, setOldPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [confirmNewPassword, setConfirmNewPassword] = useState("")
     const {auth, setAuth} = useContext(AuthContext);
@@ -16,17 +15,32 @@ const ChangePassword = ({setEditPass,dataEdit}) => {
     const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
     const formData = new FormData();
     const [isLoading, setIsLoading] = useState(false)
-    
+
+
+    const validationPassword = (oldPass, newPass) => {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      // Use a regular expression to enforce password strength rules
+      const isStrong = passwordRegex.test(newPassword)
+      if (!isStrong) {
+          notify("Mật khẩu ít nhất 6 ký tự và bao gồm chữ in hoa, chữ thường, và số!", "error")
+          return false;
+      }
+      if (oldPass !== newPass) {
+          notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+          return false;
+      }
+      return true;
+
+  }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const accessToken = auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-
-        formData.append('oldpassword', oldpassword);
+        if( !validationPassword(newPassword, confirmNewPassword) )
+        return;
+    formData.append('oldPassword', oldPassword);
         formData.append('newPassword', newPassword);
-        if (newPassword !== confirmNewPassword)
-        { notify("Mật Khẩu KHông Trùng Nhau", "error")
-     }
+    
         setIsLoading(true);
         const id = toastLoadingId("Vui lòng chờ...")
         const responseUpdateProfile = await userService.editProfile(formData,accessToken);
@@ -70,7 +84,7 @@ const ChangePassword = ({setEditPass,dataEdit}) => {
                 <div className="flex">
                         <label
                         className="w-[192px] flex-none font-medium"
-              htmlFor="oldpassword"
+              htmlFor="matkhau"
             >
               Mật Khẩu
             </label>
@@ -78,9 +92,9 @@ const ChangePassword = ({setEditPass,dataEdit}) => {
               type="text"
               placeholder=" Nhập Mật Khẩu"
 
-              id="oldpassword"
+              id="matkhau"
               className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
-              value={oldpassword}
+              value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
