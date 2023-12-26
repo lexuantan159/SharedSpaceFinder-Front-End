@@ -6,9 +6,10 @@ import Address from "../../components/selectAddress/Address";
 import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import AuthContext from "../../context/authProvider";
+import MethodContext from "../../context/methodProvider";
 
 const Register = () => {
-    const {setAuth} = useContext(AuthContext);
+
     const [hiddenPassword, setHiddenPassword] = useState(true)
     const [hiddenRePassword, setHiddenRePassword] = useState(true)
     const [email, setEmail] = useState("")
@@ -19,17 +20,16 @@ const Register = () => {
     const [province, setProvince] = useState("")
     const [district, setDistrict] = useState("")
     const [ward, setWard] = useState("")
-    const [resetAddress,setResetAddress] = useState(false)
+    const [resetAddress, setResetAddress] = useState(false)
     const location = useLocation();
     const navigate = useNavigate();
-    const notify = (message, type) => {
-        const toastType = type === "success" ? toast.success : toast.error
-        return toastType(message);
-    }
+    const [isLoading, setIsLoading] = useState(false)
+    const { notify, toastLoadingId,toastUpdateLoadingId } = useContext(MethodContext);
+
     // Set state for navigation register success
     useEffect(() => {
         if (location.state?.toastMessage !== '') {
-            notify(location.state?.toastMessage, 'success');
+            notify(location.state?.toastMessage, location.state?.statusMessage);
             navigate(location.pathname, {replace: true, state: {}});
         }
     }, []);
@@ -38,40 +38,58 @@ const Register = () => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         // Use a regular expression to enforce password strength rules
         const isStrong = passwordRegex.test(password)
-        !isStrong && notify("Mật khẩu ít nhất 6 ký tự và báo gồm chữ in hoa, chữ thường, và số!", "error")
-        if (oldPass !== newPass) notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+        if (!isStrong) {
+            notify("Mật khẩu ít nhất 6 ký tự và bao gồm chữ in hoa, chữ thường, và số!", "error")
+            return false;
+        }
+        if (oldPass !== newPass) {
+            notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+            return false;
+        }
+        return true;
+
     }
 
-    const validAddress = () => {
-        const arrayAddress = address !== "" ? address.split(",") : []
-        if (arrayAddress.length >= 4) {
-            setProvince(arrayAddress[3].trim())
-            setDistrict(arrayAddress[2].trim())
-            setWard(arrayAddress[1].trim())
-        } else
-            notify("Địa chỉ không được để trống!", "error")
-    }
 
     // handle call api register
     const handleSubmit = async (e) => {
         e.preventDefault();
-        validationPassword(password, rePassword);
-        validAddress();
+        // verify password before start another way
+        if( !validationPassword(password, rePassword) )
+            return;
+
+        setIsLoading(true);
+        const id = toastLoadingId("Đang chờ...")
         // fetch register
         const registerResponse = await authService.register(name, email, password, province, district, ward, address)
-        console.log(registerResponse)
-        console.log({name, email, password, province, district, ward, address})
         // check output and display error if has error
         if (registerResponse?.status === 200) {
-            setAuth({name, email, password, province, district, ward, address})
-            localStorage.setItem('auth',JSON.stringify({name, email, password, province, district, ward, address}));
-            navigate('/login', {state: {toastMessage: "Đăng Ký Thành Công!"}});
+            localStorage.setItem('register', JSON.stringify({
+                name,
+                email,
+                password,
+                province,
+                district,
+                ward,
+                address
+            }));
+            setIsLoading(false);
+            navigate('/verify-email',  {
+                state: {
+                    id:id,
+                    toastMessage: "Vui lòng nhập mã OTP được gửi trên email của bạn để xác nhận!",
+                    statusMessage: "success"
+                }
+            });
         } else {
             if (registerResponse?.response?.status === 409) {
-                notify("Email đã tồn tại, vui lòng đăng ký bằng email khác!", "error")
+                console.log(registerResponse?.response)
+                toastUpdateLoadingId("Email đã tồn tại!", "error", id)
+                setIsLoading(false);
             } else {
                 console.log(registerResponse?.response)
-                notify("Đăng ký thất bại!", "error")
+                toastUpdateLoadingId("Đăng ký thất bại!", "error",id)
+                setIsLoading(false);
             }
         }
     }
@@ -87,7 +105,7 @@ const Register = () => {
                     <div className="w-[400px] h-[200px] mb-9 overflow-hidden mx-auto">
                         <img className="w-full h-full object-cover"
                              src={require('../../assets/images/logoTransparent.png')} alt=""/>
-                             </div>
+                    </div>
                     <div className="block md:flex md:justify-between">
                         <div className="w-full md:w-[45%] ">
                             <div className="w-full mb-4">
@@ -168,7 +186,7 @@ const Register = () => {
                         </div>
                         <div className="w-full md:w-[45%] ">
                             {/* Address */}
-                            <Address setAddress={setAddress} setResetAddress={setResetAddress} />
+                            <Address setAddress={setAddress} setResetAddress={setResetAddress} setProvince={setProvince} setDistrict={setDistrict} setWard={setWard}/>
 
                             <div className="w-full mb-4">
                                 <label className="block text-[18px] font-bold text-textBoldColor mb-2"
@@ -186,8 +204,9 @@ const Register = () => {
                     </div>
                     <div className=" mt-5">
                         <button
-                            className=" w-full px-4 py-3 text-xl font-bold text-white bg-primaryColor rounded-2xl shadow-primaryColor hover:shadow-lg hover:opacity-90">Đăng
-                            Ký
+                            className=" w-full px-4 py-3 text-xl font-bold text-white bg-primaryColor rounded-2xl shadow-primaryColor hover:shadow-lg hover:opacity-90">{
+                            isLoading ? "Loading..." : "Đăng Ký"
+                        }
                         </button>
                     </div>
                     <div className=" mt-5 text-center">
@@ -196,7 +215,7 @@ const Register = () => {
                     </div>
                 </form>
             </div>
-            <div className="h-full hidden md:block lg:block  lg:col-span-5">
+            <div className="h-full hidden lg:block  lg:col-span-5">
                 <img
                     className="w-full h-full object-cover"
                     src="https://img.freepik.com/fotos-premium/diseno-hogar-moderno-fondo-jardin-cielo_741910-5826.jpg?w=2000"
