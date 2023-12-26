@@ -9,6 +9,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faXmark} from "@fortawesome/free-solid-svg-icons";
 
 const MySharing = () => {
+
     const [state, setState] = useState({
         userSharingId: JSON.parse(localStorage.getItem("auth")).userInfo.id,
         page: null,

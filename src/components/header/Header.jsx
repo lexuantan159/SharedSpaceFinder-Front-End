@@ -29,7 +29,10 @@ const Header = () => {
             console.log(responseUser)
             if(responseUser?.status === 200) {
                 const userInfo = responseUser?.data
+                console.log(userInfo)
                 setUser(userInfo)
+                const newAuth  = {...auth, userInfo}
+                localStorage.setItem('auth', JSON.stringify(newAuth));
                 setIsLogin(true)
             }
         }
