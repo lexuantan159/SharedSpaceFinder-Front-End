@@ -73,10 +73,11 @@ const PostSpaceHome = () => {
         const id = toastLoadingId("Vui lòng chờ...")
         // Call your API with the FormData object
         const responseCreateSpace = await spaceService.createSpace(accessToken, formData);
+        console.log(responseCreateSpace)
         if (responseCreateSpace?.status === 201)
             toastUpdateLoadingId("Gửi yêu cầu đăng bài thành công, vui lòng chờ duyệt bài!", "success", id);
         else
-            toastUpdateLoadingId("Gửi yêu cầu đăng bài thất bại!", "success", id);
+            toastUpdateLoadingId("Gửi yêu cầu đăng bài thất bại!", "error", id);
         setIsLoading(false);
     }
 
@@ -214,7 +215,6 @@ const PostSpaceHome = () => {
                 }
                 </button>
             </form>
-
 
         </div>
     );

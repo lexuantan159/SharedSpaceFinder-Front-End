@@ -1,9 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
+import SidebarManage from "../../components/sidebarmanage/SidebarManage";
+// import Footer from "../../components/footer/Footer";
+
+// import HeaderManage from "../../components/header/HeaderManage";
 import ItemFavoriteSpace from "../../components/itemfavoritespace/ItemFavoriteSpace";
 import Pagination from "../../components/pagination/Pagination";
 import * as favouritesService from "../../services/favourite"
 import AuthContext from "../../context/authProvider";
 import {toast} from "react-toastify";
+import {accessToken} from "mapbox-gl";
 
 const FavoriteSpace = () => {
     const [favorites, setFavorites] = useState([])
@@ -31,7 +36,6 @@ const FavoriteSpace = () => {
             const accessToken = auth.accessToken
             const fetchFavorites = async () => {
                 const responseFavorites = await favouritesService.getFavourite(filteredParams, accessToken)
-                console.log(responseFavorites)
                 if (responseFavorites?.data?.status === 200) {
                     const listFavorites = responseFavorites?.data?.listFavourites
                     setFavorites(listFavorites)
@@ -52,12 +56,12 @@ const FavoriteSpace = () => {
             <div className="py-4 border-b border-gray-200">
                 <h1 className="text-2xl text-primaryColor font-semibold text-center">Không gian yêu thích</h1>
             </div>
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-between max-h-[450px] overflow-y-scroll">
                 {
                     favorites.length > 0 ? favorites.map(favorite => {
                             return (
-                                < div key={favorite?.id}>
-                                    <ItemFavoriteSpace spaceDetail={favorite} favouriteId={favorite.id}
+                                < div key={favorite?.id} className="">
+                                    <ItemFavoriteSpace favouriteItem={favorite} favouriteId={favorite.id}
                                                        accessToken={auth.accessToken || null}
                                                        setDeleteFavourite={setDeleteFavorite}/>
                                 </div>
@@ -68,7 +72,7 @@ const FavoriteSpace = () => {
                         </p>
                 }
                 <div className="absolute bottom-0 left-5 right-5">
-                    <Pagination state={state} setState={setState} />
+                    <Pagination state={state} setState={setState} numberPage={7} />
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { Home,ProfileEdit, EditSpace,MySharing,Notifications,Feedback, BooingHis
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
 import User from '../components/admin/User';
+import PostSpace from "../components/admin/PostSpace";
 import  {LayoutAdmin,LayoutAuth,LayoutUser} from "../layouts/index";
 import Notification from "../components/admin/Notification";
 const router = [
@@ -34,7 +35,11 @@ const router = [
     { path: '/editspace',layout: LayoutAuth ,component: EditSpace },
     { path: '/profileedit',layout: LayoutAuth ,component: ProfileEdit },
     { path: "/admin/notification", layout: LayoutAdmin, component: Notification },
-
+    {
+        path: "/admin/posts-space/:statusId",
+        layout: LayoutAdmin,
+        component: PostSpace,
+    },
     // { path: '/admin/posts-pace', layout: LayoutAdmin, component: PostSpace}
 ];
 
