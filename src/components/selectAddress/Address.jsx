@@ -40,6 +40,7 @@ const Address = ({ space,
     //   }, [wards,space]);
 
   useEffect(() => {
+      console.log(resetAddress)
     if (resetAddress) {
       setProvinces([]);
       setDistricts([]);
@@ -59,7 +60,7 @@ const Address = ({ space,
       setWards([]);
       setDistrictId("");
       setWardId("");
-      // setResetAddress(false)
+       // setResetAddress(false)
     };
     fetchProvince();
   }, [resetAddress]);

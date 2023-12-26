@@ -36,13 +36,23 @@ const Spaces = ({type = "None"}) => {
 
     const handleSearch = () => {
         // handel split address
+        setResetAddress(false)
         const splitAddress = address.split(',').map((item) => item.trim());
         const [province, district, ward] = splitAddress.reverse();
         // handle error when province district ward undefined
         if (province === "undefined" || district === "undefined" || ward === "undefined") {
+            if(!isNaN(categoryId)) {
+                // handle add parram
+                setState((prevState) => ({
+                    ...prevState,
+                    categoryId:categoryId
+                }));
+                return;
+            }
             notify("Lỗi Tìm Kiếm, Vui Lòng Chọn Lại Địa Chỉ!", "error")
             return;
         }
+        console.log(categoryId)
         // handle add parram
         setState((prevState) => ({
             ...prevState,

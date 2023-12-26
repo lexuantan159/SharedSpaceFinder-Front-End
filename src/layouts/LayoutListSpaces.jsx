@@ -4,7 +4,7 @@ import SidebarFilter from "../components/sidebarFilter/SidebarFilter";
 import Pagination from "../components/pagination/Pagination";
 
 
-const LayoutListSpaces = ({initialState, state, setState, type = 'none', spacesList = [], setResetAddress = null, setCategory}) => {
+const LayoutListSpaces = ({initialState, state, setState, type = 'none', spacesList = [], setResetAddress = () =>{}, setCategory}) => {
     const handelSetSortDir = (e) => {
         if(e.target.value !== "None")
             setState((prevState) => ({
