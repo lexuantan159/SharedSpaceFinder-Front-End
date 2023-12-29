@@ -1,47 +1,40 @@
-import React, {useEffect, useState} from "react";
-import { RiDeleteBack2Line } from "react-icons/ri";
+import React, { useState} from "react";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faX} from "@fortawesome/free-solid-svg-icons";
 
-const SlideImagesEdit = ({images}) => {
+const SlideImagesEdit = ({images, setImagesDeleted = () => {}}) => {
 
-    const [thisImage, setThisImage] = useState({})
-    useEffect(() => {
-        setThisImage(images[0])
-    }, [])
-    const handleDeleteImage = async (e) => {
-        // setThisImage(prev => prev?.filter(e => images?.id !== e));
-       }
+    const [listImages, setListImages] = useState(images)
 
+    const handleDeleteImage = async (imageId) => {
+        setListImages(prev => prev.filter(image => image.imageId !== imageId));
+        setImagesDeleted(prev => [...prev, imageId]);
+    }
 
-  return (
-    
-    <div className="flex gap-4 items-center col-span-8 my-5">
-        {
-            images.map((image) => {
-                return (
-                    <div key={image?.imageId} className="relative w-1/3 h-1/3">
-                        <img onMouseOver={() => setThisImage(image)}
-                             className="w-full h-[150px] object-Cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
-                             src={image?.imageUrl} alt={image?.imageId}/>
-                        <span 
-                        
-                        title="Xóa ảnh" 
-                        onClick={(e) => handleDeleteImage(image?.imageId)}
- 
-                        
-                        className="absolute top-0 right-0 p-1 cursor-pointer hover:bg-green-600 rounded-md ">
-                            <RiDeleteBack2Line 
-                            
-                            
-                            size={23} color="black"/>
+    return (
+
+        <div className="flex gap-4 items-center col-span-8 my-5">
+            {
+                listImages.map((image) => {
+                    return (
+                        <div key={image?.imageId} className="relative w-[150px] h-[150px]">
+                            <img
+                                className="w-[150px] h-[150px] object-Cover rounded transition-all hover:border-2 hover:border-primaryColor hover:cursor-pointer"
+                                src={image?.imageUrl} alt={image?.imageId}/>
+                            <span
+                                title="Xóa ảnh"
+                                onClick={(e) => handleDeleteImage(image?.imageId)}
+                                className="absolute top-0 right-0 p-1 cursor-pointer rounded-md ">
+                            <FontAwesomeIcon icon={faX} className="text-red-600 font-bold p-2"/>
                         </span>
-                    </div>
-                )
-            })
-        }
-</div>
-  )
+                        </div>
+                    )
+                })
+            }
+        </div>
+    )
 }
 
 export default SlideImagesEdit

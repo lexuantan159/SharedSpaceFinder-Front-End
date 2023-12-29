@@ -11,14 +11,14 @@ instance.interceptors.response.use(
     (res) => res,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !isRefreshing && error.response.data.message === "Expired JWT token" ) {
+        console.log(error)
+        if (error.response.status === 401 && !isRefreshing) {
             console.log("Access token expired");
             isRefreshing = true;
             try {
                 console.log("Call api refresh token");
-                const auth = localStorage.getItem("auth");
+                const auth = localStorage.getItem("refresh-token");
                 const refreshToken = JSON.parse(auth).refreshToken;
-
                 const result = await instance.post(
                     `/api/auth/refresh-token`,
                     {refreshToken: refreshToken},
@@ -34,7 +34,7 @@ instance.interceptors.response.use(
                 return instance(originalRequest);
             } catch (error) {
                 console.log(error.message)
-                if (error.response.status === 401 && error.response.data.message === "Expired JWT token") {
+                if (error.response.status === 401) {
                     console.log("Refresh token expired");
                     toast.info("Hết phiên đăng nhập. Vui lòng đăng nhập lại");
                     localStorage.removeItem("access-token");

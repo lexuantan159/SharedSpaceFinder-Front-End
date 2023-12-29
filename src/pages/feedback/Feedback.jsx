@@ -61,7 +61,7 @@ const Feedback = () => {
         </div>
         <div className=" w-full flex flex-col justify-between">
             <div className="mt-4">
-                <div className="grid grid-cols-12">
+                {feedbacks.length > 0 && (<div className="grid grid-cols-12">
                     <p className="text-sm text-center text-primaryColor bg-gray-100 py-2 px-3 border font-bold col-span-1">Id</p>
                     <p className="text-sm text-center text-primaryColor bg-gray-100 py-2 px-3 border font-bold col-span-2">Tên
                         chủ phòng</p>
@@ -73,7 +73,8 @@ const Feedback = () => {
                         phải hồi</p>
                     <p className="text-sm text-center text-primaryColor bg-gray-100 py-2 px-3 border font-bold col-span-2">Tùy
                         chọn</p>
-                </div>
+                </div>)}
+
                 {feedbacks.length > 0 ? feedbacks.map(feedback => {
                     return (
                         <div className="grid grid-cols-12" key={feedback?.id}>

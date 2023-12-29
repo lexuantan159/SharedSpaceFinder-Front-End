@@ -26,8 +26,7 @@ const Editprofile = () => {
                 }
             }
             // Only retrieve the access token if it's not already defined in auth.
-            const accessToken =
-                auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
 
             try {
                 const user = await userService.getcurrentuser(accessToken);
@@ -43,17 +42,6 @@ const Editprofile = () => {
         getUser();
     }, [auth.accessToken, setAuth, IsEdit]);
 
-    // const handleSubmit = async (e) => {
-
-
-    //   e.preventDefault();
-    //     let accessToken = JSON.parse(localStorage.getItem("auth")).accessToken;
-    //     formData.append("fullName", fullName);
-
-
-    //       const responseUpdateProfile = await userService.editProfile(formData,accessToken);
-    //       console.log(responseUpdateProfile);
-    // }
 
 
     return (
