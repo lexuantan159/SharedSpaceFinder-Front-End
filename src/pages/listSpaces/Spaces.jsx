@@ -5,12 +5,15 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import LayoutListSpaces from "../../layouts/LayoutListSpaces";
 import * as serviceSpaces from '../../services/spaces'
+import * as sharingServices from '../../services/sharing'
 import {useLocation, useNavigate} from "react-router-dom";
 import MethodContext from "../../context/methodProvider";
 
 const Spaces = ({type = "None"}) => {
 
-    const initialState = {
+    let initialState = type === "sharing" ? {
+        page: 1,
+    } : {
         page: 1,
         status: 0,
     }
@@ -24,7 +27,7 @@ const Spaces = ({type = "None"}) => {
         {id: 6, name: 'Chung Cư'},
     ]
 
-    const {notify , filteredKeyNull} = useContext(MethodContext);
+    const {notify, filteredKeyNull} = useContext(MethodContext);
     const [categoryId, setCategoryID] = useState("None")
     const [address, setAddress] = useState(" , , ")
     const [state, setState] = useState(initialState);
@@ -41,11 +44,11 @@ const Spaces = ({type = "None"}) => {
         const [province, district, ward] = splitAddress.reverse();
         // handle error when province district ward undefined
         if (province === "undefined" || district === "undefined" || ward === "undefined") {
-            if(!isNaN(categoryId)) {
+            if (!isNaN(categoryId)) {
                 // handle add parram
                 setState((prevState) => ({
                     ...prevState,
-                    categoryId:categoryId
+                    categoryId: categoryId
                 }));
                 return;
             }
@@ -80,13 +83,19 @@ const Spaces = ({type = "None"}) => {
             // Filters out null or undefined values from the object
             const filteredParams = filteredKeyNull(state)
             // The result is an object that contains only parameters that are not null or undefined
-            const response = await serviceSpaces.getSpace(filteredParams)
+            let response;
+            if (type === "sharing")
+                response = await sharingServices.getSharing(filteredParams)
+            else
+                response = await serviceSpaces.getSpace(filteredParams)
+
             if (response?.status === 200)
                 setSpaces(response?.data?.listSpaces)
             else {
                 setSpaces([])
                 console.log("Call Api: ", response?.message)
             }
+
         }
         fetchSpaces()
     }, [state])
@@ -117,7 +126,8 @@ const Spaces = ({type = "None"}) => {
                 </div>
             </div>
             {/*Layout display item */}
-            <LayoutListSpaces type={type} initialState={initialState} setCategory={setCategoryID} setResetAddress={setResetAddress}
+            <LayoutListSpaces type={type} initialState={initialState} setCategory={setCategoryID}
+                              setResetAddress={setResetAddress}
                               state={state} setState={setState} spacesList={spaces}/>
         </div>
     )

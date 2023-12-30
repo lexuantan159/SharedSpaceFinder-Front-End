@@ -3,12 +3,9 @@ import Spaces from "../listSpaces/Spaces";
 
 
 const Sharing = () => {
-
-
-
     return (
         <div className="">
-            <Spaces type="Sharing" />
+            <Spaces type="sharing" />
         </div>
     )
 }

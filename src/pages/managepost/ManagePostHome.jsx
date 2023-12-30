@@ -128,24 +128,22 @@ const ManagePostHome = () => {
                                 <tr className="flex items-center h-16" key={item.id}>
                                     <td className="border px-2 flex-1 h-full flex justify-center items-center">{`#${item?.id}`}</td>
                                     <td className="border px-2 flex-1 h-full flex justify-center items-center">
-                                        <img className="w-[100px] h-[50px] "
+                                        <img className="w-[100px] h-[50px] object-cover"
                                              src={item?.images[0]?.imageUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
                                              alt="anh phong"/>
-
                                     </td>
-                                    <td className="border px-2 flex-1 h-full text-center justify-center items-center ">{item?.title}</td>
-                                    <td className="border px-2 flex-1 h-full text-center justify-center items-center">{item?.categoryId?.categoryName}</td>
-                                    <td className="border px-2 flex-1 h-full text-center justify-center items-center truncate">{item?.address}</td>
-                                    <td className="border px-2 flex-1 h-full  text-center justify-center items-center">{formatNumber(item?.price) + " VND"}</td>
-                                    <td className="border px-2 flex-1 h-full  text-center justify-center items-center">{item?.status?.status}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.title}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.categoryId?.categoryName}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center truncate">{item?.address}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{formatNumber(item?.price) + " VND"}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.status?.status}</td>
                                     <td className="flex h-full flex-1 items-center justify-center gap-4 border px-2">
                                         <button
                                             className="rounded-md bg-green-600 px-2 py-1 text-white font-semibold hover:opacity-90"
                                             onClick={(e) => {
                                                 setDataEdit(item)
                                                 setIsEdit(true)
-                                            }
-                                            }
+                                            }}
                                         >
                                             Sửa
                                         </button>

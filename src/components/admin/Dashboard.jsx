@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <div className="bg-lightBlue-600">
       <div>
-        <h2 className="text-3xl font-bold">Dashboard</h2>
+        <h2 className="text-3xl font-bold">Bảng điều khiển</h2>
         <HeaderStats data={data}></HeaderStats>
       </div>
       <div className="pb-5">

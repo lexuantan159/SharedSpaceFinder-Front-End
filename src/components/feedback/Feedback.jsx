@@ -2,6 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faQuoteLeft, faQuoteRight} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import {Link} from "react-router-dom";
+import Rating from "../review/Rating";
 
 const Feedback = ({feedbackValue}) => {
     return (
@@ -10,8 +11,10 @@ const Feedback = ({feedbackValue}) => {
                 <div
                     className="w-auto mx-3 bg-white text-center shadow p-4 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2 h-[300px]">
                     <div className="text-primaryColor text-4xl mb-3">
-                        <FontAwesomeIcon className="mr-3" icon={faQuoteLeft}/>
-                        <FontAwesomeIcon className="" icon={faQuoteRight}/>
+                        <FontAwesomeIcon className="mr-3 text-lg"  icon={faQuoteLeft}/>
+
+                        <Rating valueRating={feedbackValue?.rate}/>
+                        <FontAwesomeIcon className="text-lg" icon={faQuoteRight}/>
                     </div>
                     <p className="px-2">{feedbackValue?.comment}</p>
                     <img className="w-[50px] h-[50px] rounded-full mx-auto mt-3"

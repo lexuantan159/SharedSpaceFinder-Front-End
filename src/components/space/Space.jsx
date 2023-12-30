@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faArrowsLeftRight,
     faBath,
-    faBed, faEllipsisVertical,
+    faBed,
     faHeart,
     faLayerGroup, faMapLocationDot, faShare,
     faStar,
@@ -56,7 +56,6 @@ const Space = ({typeSpace = "none", spaceValue}) => {
                 }
             }
             fetchSetIsSaved();
-
         }
     }, [])
 
@@ -111,7 +110,7 @@ const Space = ({typeSpace = "none", spaceValue}) => {
            <div className="py-4">
                <Link to={`/spaces/${spaceValue?.id}`}>
                    <div
-                       className="w-auto mx-3 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2 ">
+                       className="w-auto mx-3 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2">
                        <div className="h-[300px] w-full relative">
                            <img className="w-full h-full object-cover rounded-t-xl"
                                 src={spaceValue?.images[0]?.imageUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
@@ -181,7 +180,7 @@ const Space = ({typeSpace = "none", spaceValue}) => {
                                <div className="">
                                    <FontAwesomeIcon className="inline" icon={faMapLocationDot}/>
                                    <span
-                                       className="mx-5"> {spaceValue?.address ? cutOverLetter(`${spaceValue?.address}, ${spaceValue?.ward}, ${spaceValue?.district}, ${spaceValue?.province}`, 28) : cutOverLetter("380 Tôn Đức Thắng, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng", 28)}</span>
+                                       className="px-2 truncate"> {spaceValue?.address ? cutOverLetter(`${spaceValue?.address}, ${spaceValue?.ward}, ${spaceValue?.district}, ${spaceValue?.province}`, 28) : cutOverLetter("380 Tôn Đức Thắng, Phường Hòa Minh, Quận Liên Chiểu, Đà Nẵng", 28)}</span>
                                </div>
                                <FontAwesomeIcon icon={faShare} onClick={(e) => handleSharing(e)} />
                            </div>

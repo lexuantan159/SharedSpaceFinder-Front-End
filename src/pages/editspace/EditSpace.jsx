@@ -25,8 +25,7 @@ const EditSpace = ({setIsEdit, dataEdit}) => {
     const [description, setDescription] = useState(dataEdit?.description || "");
     const [files, setFiles] = useState([]);
     const formData = new FormData();
-    const [updateSpaces, setUpdateSpaces] = useState(false)
-    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
+    const {toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
     const [imagesDeleted, setImagesDeleted] = useState([])
 
     const categories = [

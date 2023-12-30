@@ -17,7 +17,6 @@ const Home = () => {
         }
     }, []);
 
-
     return (
         <div className="">
             <div className="max-w-[1200px] mx-auto px-10 mt-4 text-center">
@@ -35,11 +34,6 @@ const Home = () => {
 
             <SlideShow typeSlide='top rate' titlePart="Không Gian Nổi Trội"/>
 
-            {/**/}
-            {/*<div className="h-[300px] w-full mb-100 bg-cover bg-fixed bg-center bg-[url('https://e.khoahoc.tv/photos/image/2016/02/25/thien-nhien-650.jpg')]" >*/}
-            {/*    /!*<img className="w-full h-full " src="" alt="" />*!/*/}
-            {/*</div>*/}
-            {/*feedback*/}
 
             <SlideShow typeSlide='feedback' titlePart="Phản Hồi Của Khách Hàng" background={true}/>
 

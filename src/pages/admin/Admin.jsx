@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react'
-import LayoutAdmin from '../../layouts/LayoutAdmin'
 
 const Admin = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)

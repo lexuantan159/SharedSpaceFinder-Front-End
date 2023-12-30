@@ -35,6 +35,7 @@ const SidebarAdminClone = () => {
     };
     fetchingSpaces();
   }, []);
+
   return (
     <nav className="relative z-10 flex flex-wrap items-center justify-between px-6 py-4 bg-white shadow-xl md:fixed md:bottom-0 md:left-0 md:top-0 md:block md:w-64 md:flex-row md:flex-nowrap md:overflow-hidden md:overflow-y-auto">
       <div className="flex flex-col items-center w-full gap-8 px-0 mx-auto md:min-h-full md:flex-col md:flex-nowrap md:items-stretch">
@@ -53,7 +54,7 @@ const SidebarAdminClone = () => {
           <img
             src="/logoTransparent.png"
             alt=""
-            className="h-[38px] w-[107px] object-cover"
+            className="h-[38px] w-[107px] scale-150 object-cover"
           />
         </Link>
         <ul className="flex flex-col w-full">
@@ -61,30 +62,30 @@ const SidebarAdminClone = () => {
             <NavLink
               to="/admin/dashboard"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl px-3 py-3 font-medium ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
-              <FontAwesomeIcon icon={faBars} />
-              Dashboard
+              <FontAwesomeIcon className="text-xl" icon={faBars} />
+              Bảng điều khiển
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/admin/user"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl  px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl font-medium px-3 py-3  ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
-              <FontAwesomeIcon icon={faUser} />
-              User
+              <FontAwesomeIcon className="text-xl" icon={faUser} />
+              Người dùng
             </NavLink>
           </li>
 
@@ -92,45 +93,45 @@ const SidebarAdminClone = () => {
             <NavLink
               to="/admin/owner"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl  px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl font-medium px-3 py-3  ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
-              <FontAwesomeIcon icon={faUserTie} />
-              Owner
+              <FontAwesomeIcon className="text-xl" icon={faUserTie} />
+              Chủ phòng
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/admin/notification"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl  px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl font-medium px-3 py-3  ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
-              <FontAwesomeIcon icon={faBell} />
-              Notification
+              <FontAwesomeIcon className="text-xl" icon={faBell} />
+              Thông báo
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/admin/posts-space/3"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl  px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl font-medium px-3 py-3  ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
               <div className="relative">
-                <FontAwesomeIcon icon={faClock} />
+                <FontAwesomeIcon className="text-xl" icon={faClock} />
                 {spaces.length > 0 && (
                   <div className="absolute top-0 left-0 flex items-center justify-center w-3 h-3 translate-x-2 bg-red-500 rounded-full">
                     <span className="text-[8px] text-white">
@@ -139,22 +140,22 @@ const SidebarAdminClone = () => {
                   </div>
                 )}
               </div>
-              Pending Spaces
+              Không gian chờ
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/admin/posts-space/0"
               className={({ isActive }) =>
-                `flex w-full items-center gap-2 rounded-xl  px-4 py-3  ${
+                `flex w-full items-center gap-2 rounded-xl font-medium px-3 py-3  ${
                   isActive
-                    ? "bg-[#0C0B1A] text-white"
+                    ? "bg-primaryColor text-white"
                     : "bg-transparent text-[#5F666F]"
                 }`
               }
             >
-              <FontAwesomeIcon icon={faSquareCheck} />
-              Accepted Spaces
+              <FontAwesomeIcon className="text-xl" icon={faSquareCheck} />
+              Không gian đã duyệt
             </NavLink>
           </li>
         </ul>
