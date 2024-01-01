@@ -97,7 +97,7 @@ const ManagePostHome = () => {
                         placeholder="Tìm Kiếm"
                     />
                     <Link to="/post-spaces">
-                        <button className="px-3 py-2 text-white bg-red-600 rounded-md hover:underline">
+                        <button className="px-3 py-2 text-white bg-red-600 rounded-md hover:opacity-90" >
                             Đăng tin mới
                         </button>
                     </Link>

@@ -54,6 +54,19 @@ const Feedback = () => {
         fetchDeleteFeedback()
     }, [confirm]);
 
+    function formatTimestampToVietnameseDate(timestamp) {
+        const dateObj = new Date(timestamp);
+
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC'
+        };
+
+        const vietnameseDate = dateObj.toLocaleDateString('vi-VN', options);
+        return vietnameseDate;
+    }
 
     return (<>
         <div className="py-4 border-b border-gray-200">
@@ -83,7 +96,7 @@ const Feedback = () => {
                             <p className="text-sm text-center text-textBoldColor py-3  border font-semibold col-span-2">
                                 <Rating valueRating={feedback?.rate}/></p>
                             <p className="text-sm text-center text-textBoldColor py-3 px-5  border font-semibold col-span-3 truncate">{feedback?.comment}</p>
-                            <p className="text-sm text-center text-textBoldColor py-3  border font-semibold col-span-2">{feedback?.createdAt}</p>
+                            <p className="text-sm text-center text-textBoldColor py-3  border font-semibold col-span-2">{formatTimestampToVietnameseDate(feedback?.createdAt)}</p>
                             <div
                                 className="text-sm text-center text-textBoldColor py-3  border font-semibold col-span-2">
                                 <button className="px-3 py-1 text-white bg-green-600 rounded mr-3"

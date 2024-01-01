@@ -44,7 +44,7 @@ const EditSpace = ({setIsEdit, dataEdit}) => {
         setFiles(Array.from(selectedFiles));
     };
 
-
+    console.log(dataEdit)
     const handleSubmit = async (e) => {
         e.preventDefault();
         const params = {
@@ -80,6 +80,7 @@ const EditSpace = ({setIsEdit, dataEdit}) => {
         );
         if (responseUpdateSpace?.status === 200) {
             toastUpdateLoadingId("Cập Nhật Thành công,", "success", id);
+            setIsEdit(false)
         } else {
             toastUpdateLoadingId("Gửi yêu thất bại!", "error", id);
         }
@@ -310,7 +311,8 @@ const EditSpace = ({setIsEdit, dataEdit}) => {
                         </div>
                         <button
                             className="block w-full rounded-lg bg-primaryColor py-2  text-lg font-medium text-white hover:opacity-90 outline-none">
-                            Chỉnh Sửa
+                            {dataEdit?.status?.id === 5 ? "Đăng lại" : "Chỉnh sửa"}
+
                         </button>
                         <div className="h-[20px]"></div>
                     </form>

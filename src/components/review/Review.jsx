@@ -4,15 +4,16 @@ import React, {useContext, useState} from "react";
 import MethodContext from "../../context/methodProvider";
 import * as feedbackServices from "../../services/review";
 
-const Review = ({closeModal, feedback, type = "update"}) => {
+const Review = ({closeModal, feedback = null, type = "update", idOwner = null}) => {
     const {notify, toastLoadingId, toastUpdateLoadingId, filteredKeyNull} = useContext(MethodContext)
     const [rating, setRating] = useState(type === "update" ? feedback?.rate : 0)
     const [comment, setComment] = useState(type === "update" ? feedback?.comment : "")
 
+    console.log(idOwner)
     const handleCreateFeedback = async () => {
         if (localStorage.getItem("auth") !== null) {
             const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-            const ownerId = feedback?.userReceiveFeedBack?.id
+            const ownerId = idOwner
             const responseCreate = await feedbackServices.createFeedback(ownerId, accessToken, rating, comment);
             if (responseCreate?.status === 201) {
                 notify("Tạo đánh giá thành công!", "success")

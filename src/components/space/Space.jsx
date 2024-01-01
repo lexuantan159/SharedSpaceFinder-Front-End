@@ -17,18 +17,11 @@ import SharingModal from "../sharingModal";
 
 const Space = ({typeSpace = "none", spaceValue}) => {
     const {auth} = useContext(AuthContext);
-    const {notify} = useContext(MethodContext);
+    const {notify ,cutOverLetter} = useContext(MethodContext);
     const [saved, setSaved] = useState(false)
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false)
-    const cutOverLetter = (string, limit) => {
-        const dots = "...";
-        if (string.length > limit) {
-            // you can also use substr instead of substring
-            string = string.substring(0, limit) + dots;
-        }
-        return string;
-    }
+
 
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {

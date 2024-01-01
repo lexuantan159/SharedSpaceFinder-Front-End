@@ -80,8 +80,8 @@ const LogIn = () => {
             const refreshToken = loginResponse?.data?.refreshToken;
             const type = loginResponse?.data?.type;
             const roles = loginResponse?.data?.roles
-            setAuth({...auth, refreshToken, accessToken, type, roles});
-            localStorage.setItem('auth', JSON.stringify({...auth, refreshToken, accessToken, type, roles}));
+            setAuth({...auth,type, roles});
+            localStorage.setItem('auth', JSON.stringify({...auth,type}));
             localStorage.setItem("access-token",JSON.stringify({accessToken}) )
             localStorage.setItem("refresh-token",JSON.stringify({refreshToken}))
             // navigation
@@ -90,8 +90,10 @@ const LogIn = () => {
             console.log(loginResponse)
             if (loginResponse?.response?.status === 400 && loginResponse?.response?.data?.message === "Password is invalid!")
                 notify("Mật khẩu không chính xác!", "error")
-            else
+            else if(loginResponse?.response?.status === 404)
                 notify("Email chưa được đăng ký!", "error")
+            else
+                notify("Đăng nhập thất bại!", "error")
         }
 
     }

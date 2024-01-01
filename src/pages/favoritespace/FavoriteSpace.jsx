@@ -1,14 +1,9 @@
 import React, {useContext, useEffect, useState} from "react";
-import SidebarManage from "../../components/sidebarmanage/SidebarManage";
-// import Footer from "../../components/footer/Footer";
-
-// import HeaderManage from "../../components/header/HeaderManage";
 import ItemFavoriteSpace from "../../components/itemfavoritespace/ItemFavoriteSpace";
 import Pagination from "../../components/pagination/Pagination";
 import * as favouritesService from "../../services/favourite"
 import AuthContext from "../../context/authProvider";
 import {toast} from "react-toastify";
-import {accessToken} from "mapbox-gl";
 
 const FavoriteSpace = () => {
     const [favorites, setFavorites] = useState([])
@@ -33,7 +28,7 @@ const FavoriteSpace = () => {
             const filteredParams = Object.fromEntries(
                 Object.entries(state).filter(([_, value]) => value !== null && value !== undefined)
             );
-            const accessToken = auth.accessToken
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
             const fetchFavorites = async () => {
                 const responseFavorites = await favouritesService.getFavourite(filteredParams, accessToken)
                 if (responseFavorites?.data?.status === 200) {

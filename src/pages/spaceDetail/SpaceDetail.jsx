@@ -7,7 +7,7 @@ import {
     faStar,
     faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
@@ -31,6 +31,7 @@ const SpaceDetail = () => {
     const {notify, filteredKeyNull} = useContext(MethodContext)
     const [averageRate, setAverageRate] = useState(0)
     const [feedbacks, setFeedbacks] = useState([])
+    const navigate = useNavigate();
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
             const formattedString = number.toLocaleString('en-US', {
@@ -91,6 +92,14 @@ const SpaceDetail = () => {
 
     }, []);
 
+    const handleLinkBooking = () => {
+        navigate('/booking', {
+            state: {
+                spaceId:spaceDetail?.id,
+            }
+        })
+    }
+
 
     return (
         <>
@@ -117,11 +126,11 @@ const SpaceDetail = () => {
                                 <p className="text-primaryColor font-semibold">{formatNumber(spaceDetail?.price)}đ</p>
                             </div>
                             <div className="mx-5 text-center mt-5">
-                                <Link to="/booking"
-                                      className="block w-full px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow "
+                                <p onClick={handleLinkBooking}
+                                      className="block w-full px-8 py-2 rounded-xl border-2 border-primaryColor font-semibold transition-all hover:bg-primaryColor hover:text-white hover:shadow-primaryColor hover:shadow hover:cursor-pointer"
 
-                                >Thuê Ngay
-                                </Link>
+                                >Thuê ngay
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -267,7 +276,7 @@ const SpaceDetail = () => {
                                         ))}
                                             <p className="text-lg text-white text-center font-semibold bg-primaryColor rounded py-1 hover:cursor-pointer hover:opacity-90 mt-4"
                                                onClick={() => setIsOpenShares(true)}
-                                            > Xem Thêm...
+                                            > Xem thêm...
                                             </p></> : shares.map(item => {
                                             return (<ItemSharing itemSharing={item} key={item?.id}/>)
                                         }))

@@ -36,7 +36,7 @@ const Header = () => {
                 setIsLogin(true)
             }
         }
-        localStorage.getItem("access-token") !== null && fetchCurrentUser()
+        localStorage.getItem("auth") !== null && fetchCurrentUser()
 
     }, []);
 
@@ -105,22 +105,22 @@ const Header = () => {
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faUser}/>
                                         <Link to="/profile"
-                                              className="block pr-4 py-2">Thông Tin Cá Nhân</Link>
+                                              className="block pr-4 py-2">Thông tin cá nhân</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faHeart}/>
                                         <Link to="/favorite-space"
-                                              className="block pr-4 py-2">Không Gian Yêu Thích</Link>
+                                              className="block pr-4 py-2">Yêu thích</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faShare}/>
                                         <Link to="/my-sharing"
-                                              className="block pr-4 py-2">Chia Sẻ Của Tôi</Link>
+                                              className="block pr-4 py-2">Chia sẻ</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faCommentDots}/>
-                                        <Link to="/messenger"
-                                              className="block pr-4 py-2">Tin Nhắn</Link>
+                                        <Link to="/feedback"
+                                              className="block pr-4 py-2">Đánh giá</Link>
                                     </li>
                                     <li className="flex items-center hover:bg-primaryColor hover:text-white rounded">
                                         <FontAwesomeIcon className="mx-3" icon={faArrowRightFromBracket}

@@ -40,8 +40,28 @@ export const MethodProvider = ({children}) => {
         );
     }
 
+    const cutOverLetter = (string, limit) => {
+        const dots = "...";
+        if(string.hasOwnProperty("length"))
+            if (string.length > limit) {
+                // you can also use substr instead of substring
+                string = string.substring(0, limit) + dots;
+            }
+        return string;
+    }
+
+    const formatNumber = (number) => {
+        if (typeof number === 'number' && !isNaN(number)) {
+            const formattedString = number.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            return formattedString.replace(/\.00$/, '');
+        }
+    }
+
     return (
-        <MethodContext.Provider value={{notify, toastLoadingId, toastUpdateLoadingId , filteredKeyNull}}>
+        <MethodContext.Provider value={{notify, toastLoadingId, toastUpdateLoadingId , filteredKeyNull ,formatNumber ,cutOverLetter}}>
             {children}
         </MethodContext.Provider>
     );
