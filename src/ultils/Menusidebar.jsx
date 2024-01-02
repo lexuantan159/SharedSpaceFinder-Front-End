@@ -46,7 +46,7 @@ export const sidebarMenu = [
     },
     {
         path: '/notifications',
-        text: 'Đánh giá của bạn',
+        text: 'Thông báo',
         icons: <IoMdNotificationsOutline size={19} />
     },
 

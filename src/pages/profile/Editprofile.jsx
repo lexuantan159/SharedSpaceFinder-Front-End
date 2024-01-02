@@ -55,7 +55,7 @@ const Editprofile = () => {
             }}
                   className="flex w-3/5 flex-auto items-center justify-center"
             >
-                <div className="flex w-full flex-col gap-4 py-6">
+                <div className="flex w-full flex-col gap-4 pb-6">
                     <div className="mb-6 flex flex-col justify-center items-center">
                         <div>
                             <img

@@ -4,10 +4,9 @@ import {
     faArrowsLeftRight,
     faBath,
     faBed,
-    faStar,
     faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams , useLocation} from "react-router-dom";
 import SlideShow from "../../components/slideShow/SlideShow";
 import SlideImages from "../../components/slideImages/SlideImages";
 import MapBox from "../../components/map/MapBox";
@@ -32,6 +31,12 @@ const SpaceDetail = () => {
     const [averageRate, setAverageRate] = useState(0)
     const [feedbacks, setFeedbacks] = useState([])
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
             const formattedString = number.toLocaleString('en-US', {
