@@ -60,10 +60,21 @@ const PostSpaceHome = () => {
         getUser()
     }, []);
 
+    const checkAddressFormat = (address) => {
+        var addressParts = address.split(',').map(part => part.trim());
+        return addressParts.length === 4;
+    }
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!checkAddressFormat(address)) {
+            notify("Vui lòng nhập địa chỉ đầy đủ!", "error");
+            return;
+        }
         // Create a new FormData object
-        const storedAuth = JSON.parse(localStorage.getItem('auth'));
+        const ownerId = JSON.parse(localStorage.getItem('auth'))?.userInfo?.id;
         // Append each state variable to the FormData
         formData.append('title', title);
         formData.append('description', description);
@@ -76,7 +87,7 @@ const PostSpaceHome = () => {
         formData.append('district', district);
         formData.append('ward', ward);
         formData.append('address', address);
-        formData.append('ownerId', storedAuth?.userInfo?.id);
+        formData.append('ownerId', ownerId);
         formData.append('categoryId', categoryId);
 
         // Append each file to the 'files' field

@@ -1,5 +1,28 @@
 
-import { Home,ProfileEdit, EditSpace,MySharing,Notifications,Feedback, BooingHistory,Spaces, LogIn, OtpResetPass, VerifyEmail,Register ,SpaceDetail,PostSpaceHome,FavoriteSpace,ManagePostHome,Editprofile,MessengeHome, Contact,Booking, Sharing } from '../pages/index';
+import {
+    Home,
+    ProfileEdit,
+    EditSpace,
+    MySharing,
+    Notifications,
+    Feedback,
+    BooingHistory,
+    Spaces,
+    LogIn,
+    OtpResetPass,
+    VerifyEmail,
+    Register,
+    SpaceDetail,
+    PostSpaceHome,
+    FavoriteSpace,
+    ManagePostHome,
+    Editprofile,
+    MessengeHome,
+    Contact,
+    Booking,
+    Sharing,
+    SpaceDetailSharing
+} from '../pages/index';
 
 import Dashboard from '../components/admin/Dashboard';
 import Owner from '../components/admin/Owner';
@@ -29,6 +52,7 @@ const router = [
     { path: '/notifications', layout: LayoutUser,component: Notifications },
     { path: '/feedback', layout: LayoutUser,component: Feedback },
     { path: '/spaces/:spaceId', component: SpaceDetail },
+    { path: '/shares/:spaceId', component: SpaceDetailSharing },
     { path: '/admin/dashboard', layout: LayoutAdmin, component: Dashboard},
     { path: '/admin/user', layout: LayoutAdmin, component: User},
     { path: '/admin/owner', layout: LayoutAdmin, component: Owner},

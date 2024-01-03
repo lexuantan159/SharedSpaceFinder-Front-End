@@ -7,23 +7,21 @@ import {toast} from "react-toastify";
 
 const FavoriteSpace = () => {
     const [favorites, setFavorites] = useState([])
-    const {auth} = useContext(AuthContext);
     const [state, setState] = useState({
         status: 3,
         page: null,
         limit: null
     })
     const [deleteFavorite, setDeleteFavorite] = useState(false)
-
+    const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
     const notify = (message, type) => {
         const toastType = type === "success" ? toast.success : toast.error
         return toastType(message);
     }
 
     useEffect(() => {
-
-        if (auth.hasOwnProperty('accessToken') || localStorage.getItem('auth')) {
-
+        const accessToken = localStorage.getItem('access-token');
+        if (accessToken && accessToken !== "null") {
             // Lọc bỏ các giá trị null hoặc undefined khỏi object
             const filteredParams = Object.fromEntries(
                 Object.entries(state).filter(([_, value]) => value !== null && value !== undefined)
@@ -38,7 +36,6 @@ const FavoriteSpace = () => {
                     console.log(responseFavorites)
                 }
             }
-
             fetchFavorites()
         } else {
             notify("Yêu cầu đăng nhập!", "error")
@@ -57,7 +54,7 @@ const FavoriteSpace = () => {
                             return (
                                 < div key={favorite?.id} className="">
                                     <ItemFavoriteSpace favouriteItem={favorite} favouriteId={favorite.id}
-                                                       accessToken={auth.accessToken || null}
+                                                       accessToken={accessToken}
                                                        setDeleteFavourite={setDeleteFavorite}/>
                                 </div>
                             )

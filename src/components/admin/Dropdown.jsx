@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import useClickOutSide from "../../hooks/useClickOutSide";
 
 const Dropdown = ({setRole, data, ...props}) => {
-    console.log("🚀 ~ Dropdown ~ data:", data);
 
     const {show, setShow, nodeRef} = useClickOutSide();
     const [label, setLabel] = useState("Chọn vai trò");

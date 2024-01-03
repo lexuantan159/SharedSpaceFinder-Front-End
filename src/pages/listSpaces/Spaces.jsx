@@ -52,7 +52,7 @@ const Spaces = ({type = "None"}) => {
                 }));
                 return;
             }
-            notify("Lỗi Tìm Kiếm, Vui Lòng Chọn Lại Địa Chỉ!", "error")
+            notify("Lỗi tìm kiếm, Vui lòng chọn lại địa chỉ!", "error")
             return;
         }
         console.log(categoryId)
@@ -89,9 +89,22 @@ const Spaces = ({type = "None"}) => {
             else
                 response = await serviceSpaces.getSpace(filteredParams)
 
-            if (response?.status === 200)
-                setSpaces(response?.data?.listSpaces)
-            else {
+            if (response?.status === 200) {
+                if (type === "sharing") {
+                    const listSharing = response?.data?.listSharing
+                    const spaceIds = [];
+
+                    // Duyệt qua mảng listSharing và lấy ra giá trị của spaceId
+                    listSharing.forEach(item => {
+                        if (item && item.spaceId) {
+                            spaceIds.push(item.spaceId);
+                        }
+                    });
+                    setSpaces(spaceIds)
+                } else {
+                    setSpaces(response?.data?.listSpaces)
+                }
+            } else {
                 setSpaces([])
                 console.log("Call Api: ", response?.message)
             }
@@ -99,6 +112,8 @@ const Spaces = ({type = "None"}) => {
         }
         fetchSpaces()
     }, [state])
+
+    console.log(type)
 
     return (
         <div className="">

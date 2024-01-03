@@ -24,7 +24,7 @@ const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
-    const { notify, toastLoadingId,toastUpdateLoadingId } = useContext(MethodContext);
+    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
 
     // Set state for navigation register success
     useEffect(() => {
@@ -50,16 +50,24 @@ const Register = () => {
 
     }
 
+    const checkAddressFormat = (address) => {
+        var addressParts = address.split(',').map(part => part.trim());
+        return addressParts.length === 4;
+    }
+
 
     // handle call api register
     const handleSubmit = async (e) => {
         e.preventDefault();
         // verify password before start another way
-        if( !validationPassword(password, rePassword) )
+        if (!validationPassword(password, rePassword))
             return;
-
-        setIsLoading(true);
+        if(!checkAddressFormat(address)) {
+            notify("Vui lòng nhập địa chỉ đầy đủ!", "error");
+            return;
+        }
         const id = toastLoadingId("Đang chờ...")
+        setIsLoading(true);
         // fetch register
         const registerResponse = await authService.register(name, email, password, province, district, ward, address)
         // check output and display error if has error
@@ -74,9 +82,9 @@ const Register = () => {
                 address
             }));
             setIsLoading(false);
-            navigate('/verify-email',  {
+            navigate('/verify-email', {
                 state: {
-                    id:id,
+                    id: id,
                     toastMessage: "Vui lòng nhập mã OTP được gửi trên email của bạn để xác nhận!",
                     statusMessage: "success"
                 }
@@ -88,7 +96,7 @@ const Register = () => {
                 setIsLoading(false);
             } else {
                 console.log(registerResponse?.response)
-                toastUpdateLoadingId("Đăng ký thất bại!", "error",id)
+                toastUpdateLoadingId("Đăng ký thất bại!", "error", id)
                 setIsLoading(false);
             }
         }
@@ -103,8 +111,10 @@ const Register = () => {
                 }} className="pb-12 w-[90%] mx-auto pl-5 pr-5">
                     <h1 className="pt-12 text-4xl text-primaryColor font-bold text-center">Đăng Ký</h1>
                     <div className="w-[400px] h-[200px] mb-9 overflow-hidden mx-auto">
-                        <img className="w-full h-full object-cover"
-                             src={require('../../assets/images/logoTransparent.png')} alt=""/>
+                        <Link to={"/"}>
+                            <img className="w-full h-full object-cover"
+                                 src={require('../../assets/images/logoTransparent.png')} alt="Logo"/>
+                        </Link>
                     </div>
                     <div className="block md:flex md:justify-between">
                         <div className="w-full md:w-[45%] ">
@@ -186,7 +196,8 @@ const Register = () => {
                         </div>
                         <div className="w-full md:w-[45%] ">
                             {/* Address */}
-                            <Address setAddress={setAddress} setResetAddress={setResetAddress} setProvince={setProvince} setDistrict={setDistrict} setWard={setWard}/>
+                            <Address setAddress={setAddress} setResetAddress={setResetAddress} setProvince={setProvince}
+                                     setDistrict={setDistrict} setWard={setWard}/>
 
                             <div className="w-full mb-4">
                                 <label className="block text-[18px] font-bold text-textBoldColor mb-2"

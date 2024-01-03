@@ -18,7 +18,7 @@ const ManagePostHome = () => {
     const [spaces, setSpaces] = useState([]);
     const [deleteSpaces, setDeleteSpaces] = useState(false)
     const [user, setUser] = useState("");
-    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
+    const {cutOverLetter , formatNumber} = useContext(MethodContext);
 
     useEffect(() => {
         const getUser = async () => {
@@ -72,17 +72,7 @@ const ManagePostHome = () => {
         }
     }, [ownerId, deleteSpaces, IsEdit]);
 
-    console.log(spaces);
 
-    const formatNumber = (number) => {
-        if (typeof number === 'number' && !isNaN(number)) {
-            const formattedString = number.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            return formattedString.replace(/\.00$/, '');
-        }
-    }
 
     return (
         <div className="flex flex-col gap-6">
@@ -91,11 +81,6 @@ const ManagePostHome = () => {
             </div>
             <div className="py-4 border-b border-gray-200 flex items-center justify-between">
                 <div className="">
-                    <input
-                        type="text"
-                        className="px-2 py-1 mx-4 border border-gray-200 outline-none rounded-md bg-gray-100 "
-                        placeholder="Tìm Kiếm"
-                    />
                     <Link to="/post-spaces">
                         <button className="px-3 py-2 text-white bg-red-600 rounded-md hover:opacity-90" >
                             Đăng tin mới
@@ -132,10 +117,10 @@ const ManagePostHome = () => {
                                              src={item?.images[0]?.imageUrl || "https://bandon.vn/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
                                              alt="anh phong"/>
                                     </td>
-                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.title}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{cutOverLetter(item?.title, 20)}</td>
                                     <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.categoryId?.categoryName}</td>
-                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center truncate">{item?.address}</td>
-                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{formatNumber(item?.price) + " VND"}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center truncate">{cutOverLetter(item?.address,20)}</td>
+                                    <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{formatNumber(cutOverLetter(item?.price, 20)) + " VND"}</td>
                                     <td className="border px-2 flex-1 h-full flex items-center justify-center text-center">{item?.status?.status}</td>
                                     <td className="flex h-full flex-1 items-center justify-center gap-4 border px-2">
                                         <button

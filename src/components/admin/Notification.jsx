@@ -7,19 +7,16 @@ import Pagination from "./Pagination";
 
 const Notification = () => {
     const [notification, setNotification] = useState([]);
-    const {auth} = useContext(AuthContext);
-
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
     const [totalPages, setTotalPages] = useState(0);
+
     useEffect(() => {
         const fetchNotification = async () => {
-            const accessToken = auth.accessToken;
-
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
             const param = {
                 page: currentPage,
                 limit: itemPerPage,
-
             };
 
             const response = await notificationService.getNotifications(
@@ -36,17 +33,18 @@ const Notification = () => {
             }
         };
         fetchNotification();
-    }, [auth, currentPage]);
+    }, [currentPage]);
 
     const handleClickReaded = async (data) => {
         if (data.status.id === 7) return;
         const param = {
             notificationId: data.notificationId,
         };
-        console.log("🚀 ~ handleClickReaded ~ param:", auth.accessToken);
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
+        console.log("🚀 ~ handleClickReaded ~ param:", accessToken);
         const response = await notificationService.updateNotification(
             param,
-            auth.accessToken,
+            accessToken,
         );
         console.log("🚀 ~ handleClickReaded ~ response:", response);
         if (response.status === HttpStatusCode.Ok) {
@@ -65,9 +63,10 @@ const Notification = () => {
         const param = {
             notificationId: data.notificationId,
         };
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const response = await notificationService.deleteNotification(
             param,
-            auth.accessToken,
+            accessToken,
         );
         if (response.status === HttpStatusCode.Ok) {
             setNotification((notification) =>
@@ -101,7 +100,7 @@ const Notification = () => {
     );
 };
 
-const NotificationItem = ({handleClickRemove, handleClickReaded,data,}) => {
+const NotificationItem = ({handleClickRemove, handleClickReaded, data,}) => {
 
     console.log(moment.now());
     const dateTimeAgo = moment

@@ -26,7 +26,6 @@ const Owner = () => {
     const [modalRemove, setModalRemove] = useState(false);
 
     const [owner, setOwner] = useState({});
-    const {auth, setAuth} = useContext(AuthContext);
     const [role, setRole] = useState("");
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -35,7 +34,7 @@ const Owner = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const accessToken = auth.accessToken;
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
             const param = {
                 searchByRole: "Owner",
                 page: currentPage,
@@ -53,32 +52,13 @@ const Owner = () => {
             }
         };
         fetchUser();
-    }, [auth, currentPage]);
+    }, [currentPage]);
 
-    useEffect(() => {
-        const myDataString = localStorage.getItem("auth");
-        if (myDataString !== null) {
-            const myDataObject = JSON.parse(myDataString);
-            setAuth(myDataObject);
-        } else {
-            setAuth({});
-        }
-    }, []);
-
-    useEffect(() => {
-        const myDataString = localStorage.getItem("auth");
-        if (myDataString !== null) {
-            const myDataObject = JSON.parse(myDataString);
-            setAuth(myDataObject);
-        } else {
-            setAuth({});
-        }
-    }, []);
 
     const handleSubmitEdit = async () => {
         if (!owner) return;
         if (owner.roles[0].roleCode === role) return;
-        const accessToken = auth.accessToken;
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const param = {
             userId: owner.id,
             role: role,
@@ -95,7 +75,7 @@ const Owner = () => {
     //delete user
     const deleteId = async () => {
         if (!owner) return;
-        const accessToken = auth.accessToken;
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const res = await deleteUserById(accessToken, owner.id);
         const userDelete = res.data.user;
         console.log(userDelete);
@@ -208,7 +188,8 @@ const Owner = () => {
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
                     <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div
+                            className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                             <div
                                 className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className="bg-white  px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -280,7 +261,8 @@ const Owner = () => {
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
                     <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div
+                            className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                             <div
                                 className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">

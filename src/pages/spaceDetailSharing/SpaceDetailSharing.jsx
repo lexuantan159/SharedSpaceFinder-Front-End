@@ -21,11 +21,12 @@ import Rating from "../../components/review/Rating";
 import * as feedbackService from "../../services/review";
 
 
-const SpaceDetail = () => {
+const SpaceDetailSharing = () => {
     const {spaceId} = useParams();
     const [spaceDetail, setSpaceDetail] = useState({})
     const [isOpenFormReview, setIsOpenFormReview] = useState(false)
     const [isOpenShares, setIsOpenShares] = useState(false)
+    const [shares, setShares] = useState([1, 2, 3])
     const {notify, filteredKeyNull} = useContext(MethodContext)
     const [averageRate, setAverageRate] = useState(0)
     const [feedbacks, setFeedbacks] = useState([])
@@ -46,7 +47,14 @@ const SpaceDetail = () => {
         }
     }
 
-
+    const fetchShared = async ({spaceId}) => {
+        const responseShared = await sharingServices.getSharing(filteredKeyNull({spaceId}))
+        if (responseShared?.status === 200) {
+            const listShares = responseShared?.data?.listSharing
+            setShares(listShares)
+        } else
+            setShares([])
+    }
 
     useEffect(() => {
         if (spaceId) {
@@ -63,6 +71,7 @@ const SpaceDetail = () => {
                     notify("Không tìm thấy phòng nào!");
             }
             fetchSpaceDetails();
+            fetchShared(spaceId);
         }
     }, [])
 
@@ -264,8 +273,32 @@ const SpaceDetail = () => {
                                 <MapBox address={spaceDetail?.address}></MapBox>
                             </div>
                         </div>
+
+                        {/*list Sharing*/}
+                        {shares.length > 0 &&
+                            <div className="mt-5">
+                                <TitlePart title="Danh sách chia sẽ" subTitle="Chia sẽ tạo thuận lợi cho việc booking"
+                                           subDesc="hỗ trọ nhiệt tình"/>
+                                <div className="">
+                                    {
+                                        (shares?.length > 2 ? <> {shares.slice(0, 2).map(item => (
+                                            <ItemSharing itemSharing={item} key={item?.id}/>
+                                        ))}
+                                            <p className="text-lg text-white text-center font-semibold bg-primaryColor rounded py-1 hover:cursor-pointer hover:opacity-90 mt-4"
+                                               onClick={() => setIsOpenShares(true)}
+                                            > Xem thêm...
+                                            </p></> : shares.map(item => {
+                                            return (<ItemSharing itemSharing={item} key={item?.id}/>)
+                                        }))
+                                    }
+                                </div>
+                            </div>
+                        }
+                        {isOpenShares && <ListSharing closeModal={setIsOpenShares} listShares={shares}/>}
                     </div>
+
                 </div>
+
             </div>
             {/*slide show*/
             }
@@ -276,4 +309,4 @@ const SpaceDetail = () => {
 }
 
 
-export default SpaceDetail
+export default SpaceDetailSharing

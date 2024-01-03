@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {toast} from "react-toastify";
 import * as authService from "../../services/auth"
 import {useLocation, useNavigate} from "react-router-dom";
 import AuthContext from "../../context/authProvider";
@@ -17,7 +16,7 @@ const VerifyEmail = () => {
     const {setAuth} = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
-    const { notify, toastLoadingId, toastUpdateLoadingId } = useContext(MethodContext);
+    const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -31,10 +30,10 @@ const VerifyEmail = () => {
         }
 
         if (location.state?.toastMessage !== '') {
-            const message  = location.state?.toastMessage
+            const message = location.state?.toastMessage
             const status = location.state?.statusMessage
             const idLoading = location.state?.id
-            toastUpdateLoadingId(message,status ,idLoading);
+            toastUpdateLoadingId(message, status, idLoading);
             navigate(location.pathname, {replace: true, state: {}});
         }
 
@@ -42,9 +41,11 @@ const VerifyEmail = () => {
 
 
     const validationOTP = () => {
-        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "")
+        if (numberOne === "" || numberTwo === "" || numberThree === "" || numberFour === "" || numberFive === "" || numberSix === "") {
             notify("OTP phải đủ 6 số!", "error");
-
+            return false;
+        }
+        return true
     }
 
     const handleResendOTP = async (e) => {
@@ -64,7 +65,8 @@ const VerifyEmail = () => {
     }
     const handleVerifyEmail = async (e) => {
         e.preventDefault();
-        validationOTP()
+        if (!validationOTP())
+            return;
         const {name, email, password, province, district, ward, address} = user
         const otpString = numberOne + numberTwo + numberThree + numberFour + numberFive + numberSix
         // fetch register
@@ -73,7 +75,7 @@ const VerifyEmail = () => {
         if (registerResponse?.status === 201) {
             // set info in context
             setAuth({name, email, password, province, district, ward, address})
-            localStorage.setItem('auth', JSON.stringify({name, email, password, province, district, ward, address}));
+            localStorage.setItem('auth', JSON.stringify({name, email, province, district, ward, address}));
             localStorage.removeItem("register")
             // navigation to page login when register successful
             navigate('/login', {state: {toastMessage: "Đăng Ký Thành Công!", statusMessage: "success"}});

@@ -85,8 +85,8 @@ const Header = () => {
                                     {user?.name || "Name User"}
                                 </span>
                                 <img className="w-[35px] h-[35px] rounded-full mx-3"
-                                     src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
-                                     alt="customer"></img>
+                                     src={user?.avatar || "https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"}
+                                     alt={user?.name || "customer"}></img>
                                 <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg" fill="none"
                                      viewBox="0 0 10 6">

@@ -27,7 +27,6 @@ const User = () => {
     const [modalRemove, setModalRemove] = useState(false);
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState({});
-    const {auth, setAuth} = useContext(AuthContext);
     const [role, setRole] = useState("");
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +35,7 @@ const User = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const accessToken = auth.accessToken;
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
             const param = {
                 searchByRole: "User",
             };
@@ -52,17 +51,8 @@ const User = () => {
             }
         };
         fetchUser();
-    }, [auth]);
-
-    useEffect(() => {
-        const myDataString = localStorage.getItem("auth");
-        if (myDataString !== null) {
-            const myDataObject = JSON.parse(myDataString);
-            setAuth(myDataObject);
-        } else {
-            setAuth({});
-        }
     }, []);
+
 
     const handleEdit = () => {
         setModalOpen(true);
@@ -71,7 +61,7 @@ const User = () => {
     const handleSubmitEdit = async () => {
         if (!user) return;
         if (user.roles[0].roleCode === role) return;
-        const accessToken = auth.accessToken;
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const param = {
             userId: user.id,
             role: role,
@@ -91,7 +81,7 @@ const User = () => {
     //delete user
     const deleteId = async () => {
         if (!user) return;
-        const accessToken = auth.accessToken;
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const res = await deleteUserById(accessToken, user.id);
         const userDelete = res.data.user;
         console.log(userDelete);

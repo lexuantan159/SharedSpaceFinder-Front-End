@@ -23,25 +23,31 @@ const Booking = () => {
     const [comment, setComment] = useState("");
     const [methodPayment, setMethodPayment] = useState("Khong");
     const [isLoading, setIsLoading] = useState(false);
-    const user = JSON.parse(localStorage.getItem("auth")).userInfo
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('auth')).userInfo || {})
 
-
+    console.log(1)
     useEffect(() => {
+        console.log(location.state?.spaceId)
         if (location.state?.spaceId !== null) {
-            console.log(location.state?.spaceId)
+            console.log(2)
             const fetchSpaceDetails = async () => {
                 const spaceParam = {
                     spaceId: location.state?.spaceId,
                     status: 0
                 };
                 const listSpaces = await spaceServices.getSpace(spaceParam);
-                if (listSpaces?.status === 200) {
+                console.log(listSpaces)
+                if (listSpaces?.status === 200 && listSpaces?.data?.listSpaces.length > 0) {
                     const spaceDetail = listSpaces?.data?.listSpaces[0];
                     setSpace(spaceDetail)
                 }
             }
             fetchSpaceDetails();
-            // navigate(location.pathname, {replace: true, state: {}});
+            navigate(location.pathname, {replace: true, state: {}});
+        }
+        if (!user) {
+            const localUser = JSON.parse(localStorage.getItem('auth')).userInfo
+            setUser(localUser)
         }
     }, [])
 
@@ -69,7 +75,7 @@ const Booking = () => {
         setIsLoading(true);
         let paymentSuccessful = false;
         const accessToken = await JSON.parse(localStorage.getItem("access-token")).accessToken;
-        const responseCreateOrder = await bookingServices.createOrder(space?.id,arriveDay,comment, accessToken)
+        const responseCreateOrder = await bookingServices.createOrder(space?.id, arriveDay, comment, accessToken)
         console.log(responseCreateOrder)
         if (responseCreateOrder?.status === 200) {
             console.log(responseCreateOrder)
@@ -85,7 +91,7 @@ const Booking = () => {
                     setIsLoading(false)
                     navigate('/booking-history', {
                         state: {
-                            id:id,
+                            id: id,
                             toastMessage: "Giao dịch thành công!",
                             statusMessage: "success"
                         }
@@ -104,7 +110,7 @@ const Booking = () => {
                 setIsLoading(false)
                 console.log("Dừng thực hiện sau 15 phút!");
             }, 15 * 60 * 1000); // 15 minutes * 60 second/minute * 1000 ms/second
-        }else {
+        } else {
             setIsLoading(false);
             toastUpdateLoadingId("Giao dịch thât bại!", "error", id);
         }
@@ -141,27 +147,28 @@ const Booking = () => {
                 {/*Item Space*/}
                 <div className="col-span-12 lg:col-span-8 ">
 
-                    <div className="grid grid-cols-12 transition-all hover:shadow-md hover:shadow-gray-200 rounded border-gray-400 border-[1px]">
+                    <div
+                        className="grid grid-cols-12 transition-all hover:shadow-md hover:shadow-gray-200 rounded border-gray-400 border-[1px]">
                         <div className="col-span-12 md:col-span-5 p-4 rounded-lg">
                             <img className="w-full h-[200px] object-cover rounded-lg shadow"
-                                 src={space?.images[0]?.imageUrl}
-                                 alt={space?.title}></img>
+                                 src={ space?.images?.length > 0 ? space?.images[0]?.imageUrl : "https://bandon.vn/resize/1000x700/a-c/zc-1/f/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"}
+                                 alt={space?.title || "ảnh"}></img>
                         </div>
 
                         <div className="col-span-12 md:col-span-7 px-4 my-4 md:mt-4 md:pr-4">
-                            <p className="text-sm text-primaryColor font-semibold">{space?.categoryId?.categoryName}</p>
+                            <p className="text-sm text-primaryColor font-semibold">{space?.categoryId?.categoryName || "Phòng trọ"}</p>
                             <div className="flex items-center py-3">
                                 <img className="w-[40px] h-[40px] rounded-full mr-3"
                                      src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&w=1000&q=80"
                                      alt="customer"></img>
-                                <h4 className="text-xm font-bold text-textBoldColor ">{space?.ownerId?.name}</h4>
+                                <h4 className="text-xm font-bold text-textBoldColor ">{space?.ownerId?.name || "Nguyen Van A"}</h4>
                                 <div className="ml-3">
                                     {/*<Rating valueRating={2}/>*/}
                                 </div>
                             </div>
 
                             <div className="flex justify-between items-center mb-2">
-                                <p className="text-xm font-bold text-textBoldColor">{formatNumber(space?.price)}VNĐ<span
+                                <p className="text-xm font-bold text-textBoldColor">{formatNumber(space?.price || 1000000)}VNĐ<span
                                     className="text-[#d4d4d4] font-thin">/ tháng</span></p>
                             </div>
 
@@ -170,19 +177,19 @@ const Booking = () => {
                                 <div className="text-left ">
                                     <FontAwesomeIcon className="-rotate-45"
                                                      icon={faArrowsLeftRight}/>
-                                    <span className="ml-3">{space?.area} m^2</span>
+                                    <span className="ml-3">{space?.area || 20} m^2</span>
                                 </div>
                                 <div className="text-right ">
                                     <FontAwesomeIcon icon={faBed}/>
-                                    <span className="ml-3">{space?.bedroomNumbers} Bedrooms</span>
+                                    <span className="ml-3">{space?.bedroomNumbers || 2} Bedrooms</span>
                                 </div>
                                 <div className="text-left ">
                                     <FontAwesomeIcon icon={faUserGroup}/>
-                                    <span className="ml-3">{space?.peopleNumbers} Guess</span>
+                                    <span className="ml-3">{space?.peopleNumbers || 2} Guess</span>
                                 </div>
                                 <div className="text-right ">
                                     <FontAwesomeIcon icon={faBath}/>
-                                    <span className="ml-3">{space?.bathroomNumbers} Bathroom</span>
+                                    <span className="ml-3">{space?.bathroomNumbers || 3} Bathroom</span>
                                 </div>
                             </div>
                             <div
@@ -190,7 +197,7 @@ const Booking = () => {
                                 <div>
                                     <FontAwesomeIcon icon={faMapLocationDot}/>
                                     <span
-                                        className="mx-3 truncate max-w-full">{space?.address !== undefined && cutOverLetter(space?.address, 40)}</span>
+                                        className="mx-3 truncate max-w-full">{space?.address !== undefined ? cutOverLetter(space?.address, 40) : "Tô hiệu, Phường hòa minh, Quận liên chiểu, Thành phố đà nẵng"}</span>
                                 </div>
                             </div>
                         </div>
@@ -201,11 +208,14 @@ const Booking = () => {
                         <div className="col-span-12 md:col-span-7">
                             <p className="text-xl text-primaryColor font-bold mb-4">Thông Tin Người Dùng</p>
                             <ul>
-                                <li className="text-lg font-medium">Họ Và Tên: <span className="text-lg font-thin ">Nguyễn Văn B</span>
+                                <li className="text-lg font-medium">Họ Và Tên: <span
+                                    className="text-lg font-thin ">{user?.name || "Nguyễn Văn B"}</span>
                                 </li>
-                                <li className="text-lg font-medium">Số Điện Thoại: <span className="text-lg font-thin ">0454 045 454</span>
+                                <li className="text-lg font-medium">Số Điện Thoại: <span
+                                    className="text-lg font-thin ">{user?.phone || "0454 045 454"}</span>
                                 </li>
-                                <li className="text-lg font-medium">Địa Chỉ: <span className="text-lg font-thin ">Tô hiệu, Phường Hòa Minh,Quận Liên Chiểu, Tp. Đà Nẵng</span>
+                                <li className="text-lg font-medium">Địa Chỉ: <span
+                                    className="text-lg font-thin ">{user?.address || "Tô hiệu, Phường Hòa Minh,Quận Liên Chiểu, Tp. Đà Nẵng"}</span>
                                 </li>
                             </ul>
                             <Link to="/profile"
@@ -239,13 +249,13 @@ const Booking = () => {
                                 <ul className="mt-5 pb-4 mb-4 border-b-[0.5px] border-[#B2B2B2]">
                                     <li className="flex justify-between">
                                         <p>Tiền Phòng</p>
-                                        <p>{formatNumber(space?.price)} VNĐ</p>
+                                        <p>{formatNumber(space?.price || 1000000)} VNĐ</p>
                                     </li>
 
                                 </ul>
                                 <div className="flex justify-between ">
                                     <p className="text-primaryColor font-semibold">Total</p>
-                                    <p className="text-primaryColor font-semibold">{formatNumber(space?.price)} VNĐ</p>
+                                    <p className="text-primaryColor font-semibold">{formatNumber(space?.price || 1000000)} VNĐ</p>
                                 </div>
 
                                 <select value={methodPayment} onChange={(e) => setMethodPayment(e.target.value)} name=""

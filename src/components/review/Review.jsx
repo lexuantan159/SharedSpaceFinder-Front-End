@@ -17,6 +17,9 @@ const Review = ({closeModal, feedback = null, type = "update", idOwner = null}) 
             const responseCreate = await feedbackServices.createFeedback(ownerId, accessToken, rating, comment);
             if (responseCreate?.status === 201) {
                 notify("Tạo đánh giá thành công!", "success")
+                closeModal(false)
+            }else {
+                notify("Đánh giá thất bại!", "success")
             }
         }
     }

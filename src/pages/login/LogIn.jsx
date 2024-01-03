@@ -27,9 +27,9 @@ const LogIn = () => {
     const handleNavigate = (roles) => {
         roles.forEach(role => {
             if (role?.authority === "Admin")
-                navigate('/admin/dashboard', {state: {toastMessage: "Đăng Nhập Thành Công!"}})
+                navigate('/admin/dashboard', {state: {toastMessage: "Đăng Nhập Thành Công!" ,  statusMessage: "success"}})
             else
-                navigate('/', {state: {toastMessage: "Đăng Nhập Thành Công!"}});
+                navigate('/', {state: {toastMessage: "Đăng Nhập Thành Công!",  statusMessage: "success"}});
         })
     }
     const handleForgotPassword = async (e) => {
@@ -106,8 +106,10 @@ const LogIn = () => {
                 }} className="pb-12 w-[90%] mx-auto pl-5 pr-10">
                     <h1 className="pt-12 text-4xl text-primaryColor font-bold text-center">Đăng Nhập</h1>
                     <div className="w-full h-[200px] mb-9 overflow-hidden">
-                        <img className="w-full h-full object-cover"
-                             src={require('../../assets/images/logoTransparent.png')} alt=""/>
+                        <Link to={"/"}>
+                            <img className="w-full h-full object-cover"
+                                 src={require('../../assets/images/logoTransparent.png')} alt="Logo"/>
+                        </Link>
                     </div>
                     <div className="w-full mb-4">
                         <label className="block text-[18px] font-bold text-textBoldColor mb-2"

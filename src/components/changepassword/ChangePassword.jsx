@@ -14,13 +14,29 @@ const ChangePassword = ({setEditPass}) => {
     const {notify, toastLoadingId, toastUpdateLoadingId} = useContext(MethodContext);
     const formData = new FormData();
 
+
+    const validationPassword = (oldPass, newPass) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        // Use a regular expression to enforce password strength rules
+        const isStrong = passwordRegex.test(oldPass)
+        if (!isStrong) {
+            notify("Mật khẩu ít nhất 6 ký tự và bao gồm chữ in hoa, chữ thường, và số!", "error")
+            return false;
+        }
+        if (oldPass !== newPass) {
+            notify("Mật khẩu không trùng khớp, vui lòng nhập lại!", "error");
+            return false;
+        }
+        return true;
+
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const accessToken = auth.accessToken || JSON.parse(localStorage.getItem("access-token")).accessToken;
-        if (newPassword !== confirmNewPassword) {
-            notify("Mật Khẩu KHông Trùng Nhau", "error")
+        if (!validationPassword(newPassword, confirmNewPassword))
             return;
-        }
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
+
         // add data in body
         formData.append('oldPassword', oldPassword);
         formData.append('newPassword', newPassword);
@@ -29,8 +45,10 @@ const ChangePassword = ({setEditPass}) => {
         const responseUpdateProfile = await userService.editProfile(formData, accessToken);
         if (responseUpdateProfile?.status === 200)
             toastUpdateLoadingId("Cập Nhật Thành công,", "success", id);
+        else if (responseUpdateProfile?.response?.data?.message === "Old Password Was Incorrect!")
+            toastUpdateLoadingId("Mật khẩu cũ không đúng!", "error", id);
         else
-            toastUpdateLoadingId("Gửi yêu thất bại!", "error", id);
+            toastUpdateLoadingId("Thay đổi mật khẩu thất bại!", "error", id);
     };
 
 
@@ -111,7 +129,8 @@ const ChangePassword = ({setEditPass}) => {
                                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                                 />
                             </div>
-                            <button className="w-full rounded-md bg-primaryColor px-2 py-2 text-white hover:bg-primaryColor/95 font-medium"
+                            <button
+                                className="w-full rounded-md bg-primaryColor px-2 py-2 text-white hover:bg-primaryColor/95 font-medium"
                             >
                                 Cập Nhật Mật Khẩu
                             </button>

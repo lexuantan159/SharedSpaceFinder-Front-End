@@ -25,7 +25,6 @@ const Space = ({typeSpace = "none", spaceValue}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [averageRate, setAverageRate] = useState(0)
     const [feedbackQuantity, setFeedbackQuantity] = useState(0)
-
     const formatNumber = (number) => {
         if (typeof number === 'number' && !isNaN(number)) {
             const formattedString = number.toLocaleString('en-US', {
@@ -37,9 +36,8 @@ const Space = ({typeSpace = "none", spaceValue}) => {
     }
 
     useEffect(() => {
-        if (auth.hasOwnProperty("accessToken")) {
             const fetchSetIsSaved = async () => {
-                const accessToken = auth.accessToken
+                const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
                 const params = {
                     spaceId: spaceValue?.id
                 }
@@ -52,7 +50,6 @@ const Space = ({typeSpace = "none", spaceValue}) => {
                 }
             }
             fetchSetIsSaved();
-        }
     }, [])
 
     useEffect(() => {
@@ -79,11 +76,12 @@ const Space = ({typeSpace = "none", spaceValue}) => {
         e.preventDefault();
         e.stopPropagation();
         // Call api
-        if (auth.hasOwnProperty("accessToken")) {
+        const token = localStorage.getItem('access-token');
+        if (token && token !== "null") {
             const params = {
                 spaceId: spaceValue?.id
             }
-            const accessToken = auth.accessToken
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
             if (saved) {
                 const updateSaved = await favouritesService.updateFavourite(params, accessToken)
                 if (updateSaved?.data?.status === 200) {
@@ -117,12 +115,13 @@ const Space = ({typeSpace = "none", spaceValue}) => {
         setIsOpen(true)
     }
 
+    console.log(typeSpace)
 
     return (
 
         <>
             <div className="py-4">
-                <Link to={`/spaces/${spaceValue?.id}`}>
+                <Link to={`${typeSpace === "sharing" ? `/shares/${spaceValue?.id}` : `/spaces/${spaceValue?.id}`}`}>
                     <div
                         className="w-auto mx-3 rounded-xl hover:shadow-xl transform transition-all translate-y-0 hover:-translate-y-2">
                         <div className="h-[300px] w-full relative">

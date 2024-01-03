@@ -1,28 +1,15 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import anonAvatar from "../../assets/images/avatar.jpg";
-import AuthContext from "../../context/authProvider";
 import {
-    faArrowsLeftRight,
     faBath,
     faBed,
-    faEllipsisVertical,
-    faHeart,
     faHouse,
-    faLayerGroup,
     faLocationDot,
-    faMapLocationDot,
-    faStar,
     faUser,
-    faUserGroup,
     faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import * as spaceService from "../../services/spaces";
-import {createPortal} from "react-dom";
-import useClickOutSide from "../../hooks/useClickOutSide";
-import axios from "axios";
-import {useSpace} from "../../context/space-context";
 import Pagination from "./Pagination";
 
 const PostSpace = () => {
@@ -46,14 +33,13 @@ const PostSpace = () => {
         fetchingSpaces();
     }, [statusId, currentPage, itemPerPage]);
 
-    const {auth} = useContext(AuthContext);
-    const accessToken = auth.accessToken;
     const handleAcceptSpace = async (e, id) => {
         e.preventDefault();
         const param = {
             spaceId: id,
             limit: itemPerPage,
         };
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const data = await spaceService.acceptSpace(param, accessToken);
         if (data?.status === 200) {
             setSpaces((spaces) => spaces.filter((item) => item.id !== id));
@@ -65,6 +51,7 @@ const PostSpace = () => {
         const param = {
             spaceId: id,
         };
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         const data = await spaceService.deniedSpace(param, accessToken);
         console.log(data);
         if (data?.status === 200) {

@@ -14,6 +14,8 @@ const LayoutListSpaces = ({initialState, state, setState, type = 'none', spacesL
             }))
     }
 
+    console.log(type)
+
     return (
         <div className="max-w-[1200px] mx-auto grid grid-cols-12 gap-5 mt-[200px] md:mt-[200px] lg:mt-[100px]  px-10">
             {/*    sidebar*/}

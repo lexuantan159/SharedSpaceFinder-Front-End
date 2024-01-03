@@ -11,7 +11,6 @@ import ItemBookingHistory from "../../components/itemBookingHistory/ItemBookingH
 const BookingHistory = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const {auth} = useContext(AuthContext);
     const {filteredKeyNull} = useContext(MethodContext);
     const [state, setState] = useState({
         page: 1,
