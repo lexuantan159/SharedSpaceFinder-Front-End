@@ -36,7 +36,8 @@ const Header = () => {
                 setIsLogin(true)
             }
         }
-        localStorage.getItem("auth") !== null && fetchCurrentUser()
+        console.log(localStorage.getItem("access-token"))
+        localStorage.getItem("access-token") !== null && fetchCurrentUser()
 
     }, []);
 

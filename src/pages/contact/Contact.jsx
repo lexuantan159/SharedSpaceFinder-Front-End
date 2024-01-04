@@ -1,11 +1,10 @@
 import TitlePart from "../../components/titlePart/TitlePart";
-import React, {useContext, useEffect, useState} from "react";
+import React, { useState} from "react";
 import MapBox from "../../components/map/MapBox";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faMapLocationDot, faPhone} from "@fortawesome/free-solid-svg-icons";
 import *as contactsService from "../../services/contact"
 import {toast} from "react-toastify";
-import AuthContext from "../../context/authProvider";
 
 const Contact = () => {
     const [firstName, setFirstName] = useState("")
@@ -13,7 +12,6 @@ const Contact = () => {
     const [email, setEmail] = useState("")
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-    const { auth} = useContext(AuthContext);
 
 
     const handleSendContact = async (e) => {
@@ -21,16 +19,17 @@ const Contact = () => {
         const id = toast.loading("Please wait...")
 
         //handle check login
-        if(!auth.hasOwnProperty("accessToken")) {
+        if(!localStorage.getItem("access-token")) {
             toast.update(id, {
                 render: "Bạn cần phải đăng nhập!",
                 type: "error",
                 isLoading: false,
                 autoClose: true
             });
+            return;
         }
 
-        const accessToken = auth.accessToken
+        const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
         // handle fetching contacts
         const responseSendContact = await contactsService.sendContact(firstName, lastName,email,title,content, accessToken);
         if (responseSendContact?.status === 201) {

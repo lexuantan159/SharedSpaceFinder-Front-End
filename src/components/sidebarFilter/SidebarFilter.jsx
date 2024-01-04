@@ -59,10 +59,11 @@ const SidebarFilter = ({setState}) => {
 
     const [topSpaces, setTopSpaces] = useState([])
 
+
     useEffect(() => {
         const fetchTopSpaces = async () => {
             const spaceParam = {
-                status: 4
+                topRate: 4, limit:5
             };
             const topSpaces = await spaceServices.getSpace(spaceParam);
             if (topSpaces?.status === 200) {

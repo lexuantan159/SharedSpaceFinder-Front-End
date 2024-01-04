@@ -101,9 +101,10 @@ const ProffileEdit = ({setIsEdit, dataEdit}) => {
                                     Số Điện Thoại
                                 </label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     id="inputPhone"
                                     className="flex-auto rounded-md border border-gray-300 p-2 outline-none"
+                                    size={10}
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
                                 />

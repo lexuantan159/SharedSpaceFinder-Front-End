@@ -66,7 +66,7 @@ const SlideShow = ({typeSlide = "space", id = null,titlePart, background = false
     }
 
     const fetchRelated = async () => {
-        const responseRelated = await spaceServices.getSpace({categoryId: id})
+        const responseRelated = await spaceServices.getSpace({categoryId: id, status:0})
         if(responseRelated?.status === 200){
             const listSpace =  responseRelated?.data?.listSpaces
             setItems(listSpace)

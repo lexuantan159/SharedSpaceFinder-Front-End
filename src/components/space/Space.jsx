@@ -18,7 +18,6 @@ import * as feedbackService from "../../services/review";
 import Rating from "../review/Rating";
 
 const Space = ({typeSpace = "none", spaceValue}) => {
-    const {auth} = useContext(AuthContext);
     const {notify, cutOverLetter, filteredKeyNull} = useContext(MethodContext);
     const [saved, setSaved] = useState(false)
     const navigate = useNavigate();
@@ -36,20 +35,20 @@ const Space = ({typeSpace = "none", spaceValue}) => {
     }
 
     useEffect(() => {
-            const fetchSetIsSaved = async () => {
-                const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
-                const params = {
-                    spaceId: spaceValue?.id
-                }
-                const responseFavourite = await favouritesService.getFavourite(params, accessToken)
-                if (responseFavourite?.data?.status === 200) {
-                    const isSaved = responseFavourite?.data?.saved;
-                    isSaved && setSaved(true)
-                } else {
-                    console.log(responseFavourite?.response)
-                }
+        const fetchSetIsSaved = async () => {
+            const accessToken = JSON.parse(localStorage.getItem("access-token")).accessToken;
+            const params = {
+                spaceId: spaceValue?.id
             }
-            fetchSetIsSaved();
+            const responseFavourite = await favouritesService.getFavourite(params, accessToken)
+            if (responseFavourite?.data?.status === 200) {
+                const isSaved = responseFavourite?.data?.saved;
+                isSaved && setSaved(true)
+            } else {
+                console.log(responseFavourite?.response)
+            }
+        }
+        localStorage.getItem("access-token") !== null && fetchSetIsSaved();
     }, [])
 
     useEffect(() => {

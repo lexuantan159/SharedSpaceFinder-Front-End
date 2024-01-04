@@ -18,20 +18,26 @@ const PostSpace = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(3);
     const [totalPages, setTotalPages] = useState(0);
-    useEffect(() => {
-        console.log("🚀 ~ PostSpace ~ currentPage:", currentPage);
-        const fetchingSpaces = async () => {
-            const param = {
-                status: statusId,
-                limit: itemPerPage,
-                page: currentPage,
-            };
-            const data = await spaceService.getSpace(param);
-            setTotalPages(() => data?.data?.totalPages);
-            setSpaces(() => data?.data?.listSpaces || []);
+
+
+    const fetchingSpaces = async () => {
+        const param = {
+            status: statusId,
+            limit: itemPerPage,
+            page: currentPage,
         };
+        const data = await spaceService.getSpace(param);
+        setTotalPages(() => data?.data?.totalPages);
+        setSpaces(() => data?.data?.listSpaces || []);
+    };
+
+    useEffect(() => {
         fetchingSpaces();
     }, [statusId, currentPage, itemPerPage]);
+
+    useEffect(() => {
+        fetchingSpaces();
+    }, []);
 
     const handleAcceptSpace = async (e, id) => {
         e.preventDefault();
@@ -60,6 +66,8 @@ const PostSpace = () => {
         }
     };
 
+    console.log(spaces)
+
     return (
         <div className="relative">
             <h2 className="my-5 text-2xl font-bold">
@@ -68,17 +76,18 @@ const PostSpace = () => {
                     : "Quản lý bài đăng đã duyệt"}
             </h2>
             <div className="flex flex-col gap-4">
-                {spaces.length > 0 &&
+                {spaces?.length > 0 ?
                     spaces.map((item, index) => {
                         return (
                             <ItemSpace
+                                key={index}
                                 space={item}
                                 statusId={statusId}
                                 handleAcceptClick={handleAcceptSpace}
                                 handleDeniedClick={handleDeniedSpace}
                             ></ItemSpace>
                         );
-                    })}
+                    }) : <p>Chưa có phòng nào!</p>}
                 <Pagination
                     itemsPerPage={itemPerPage}
                     setCurrentPage={setCurrentPage}
@@ -110,24 +119,20 @@ const ItemSpace = ({
         <>
             <div className="flex rounded-2xl border border-b-[#E7ECF3] max-h-[300px]">
                 <div className="flex-shrink-0">
-                    <Link to={`/spaces/${space.id}`}>
-                        <img
-                            src={space?.images[0].imageUrl}
-                            alt={space?.title}
-                            className="h-full w-[400px] rounded-l-2xl object-cover"
-                        />
-                    </Link>
+                    <img
+                        src={space?.images?.length > 0 ? space?.images[0].imageUrl : "https://i-connect.com.vn/data/news/7046/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg"}
+                        alt={space?.title || "Title"}
+                        className="h-full w-[400px] rounded-l-2xl object-cover"
+                    />
                 </div>
                 <div className="flex w-full flex-col gap-8 p-3">
                     <div className="">
-                        <Link to={`/spaces/${space.id}`}>
-                            <h2 className="text-xl text-primaryColor font-bold">
-                                {space.categoryId.categoryName.replaceAll('"', "")}
-                            </h2>
-                        </Link>
+                        <h2 className="text-xl text-primaryColor font-bold">
+                            {space.categoryId.categoryName.replaceAll('"', "")}
+                        </h2>
                         <div className="flex items-center gap-2 text-black font-bold">
                             <FontAwesomeIcon icon={faUser}/>
-                            <span>{space.ownerId.name}</span>
+                            <span>{space.ownerId.name || "Name Owner"}</span>
                         </div>
                         <div className="flex items-center gap-2 text-textBoldColor">
                             <FontAwesomeIcon icon={faLocationDot}/>
@@ -144,7 +149,7 @@ const ItemSpace = ({
                         <div className="flex flex-col gap-3">
                             <div className="flex items-center gap-2 text-sm text-[#3B3E44]">
                                 <FontAwesomeIcon icon={faHouse}/>
-                                <span>{space.area} m^2</span>
+                                <span>{space.area || 12} m^2</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-[#3B3E44]">
                                 <FontAwesomeIcon icon={faBed}/>
@@ -166,7 +171,7 @@ const ItemSpace = ({
                             </div>
                             <div className="flex items-center gap-2 text-sm text-[#3B3E44]">
                                 <FontAwesomeIcon icon={faUsers}/>
-                                <span>{space.peopleNumbers}</span>
+                                <span>{space.peopleNumbers || 12}</span>
                             </div>
                         </div>
                         <div className="flex flex-col gap-5 self-end">
